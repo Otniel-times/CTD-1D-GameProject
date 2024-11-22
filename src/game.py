@@ -12,15 +12,18 @@ class GameController:
     def __init__(self) -> None:
         # To store:
         # Click count
-        # Powerups
         self.coins = 0
-        # store as array
+        # array of powerup counts
+        # temporarily set to 32 entries until we decide how many we want
+        # or if we want to use dictionary for this instead
+        # but probably better as array for ease of entry into database
         self.powerups = [0] * 32
     def earn(self):
         self.coins += 1
     def get_powerup(self, powerup: Powerups):
         self.powerups[powerup] += 1
     def use_powerup(self, powerup: Powerups):
+        # validation here? or maybe ui
         self.powerups[powerup] -= 1
     def get_data(self):
         return self.coins, self.powerups
