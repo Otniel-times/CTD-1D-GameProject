@@ -14,14 +14,14 @@ class GameController:
         # Click count
         # Powerups
         self.coins = 0
-        # store as bitflags
-        self.powerups = 0
+        # store as array
+        self.powerups = [0] * 32
     def earn(self):
         self.coins += 1
     def get_powerup(self, powerup: Powerups):
-        self.powerups |= 1 << powerup
+        self.powerups[powerup] += 1
     def use_powerup(self, powerup: Powerups):
-        self.powerups &= ~(1 << powerup)
+        self.powerups[powerup] -= 1
     def get_data(self):
         return self.coins, self.powerups
     def generate_crisis(self):
