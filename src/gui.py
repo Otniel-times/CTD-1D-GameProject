@@ -20,7 +20,7 @@ class Main_GUI:
 
         # Code
         self.clicker = tk.Button(width=200, height=200, image = self.GFX_main_clicker)
-        self.clicker.place(x=50, y=260)
+        self.clicker.place(x=150, y=260)
         
         self.score = tk.IntVar()
         self.counter = tk.Label(textvariable=self.score)
