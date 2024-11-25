@@ -19,14 +19,14 @@ class GameController:
         self.score = 0
 
         # array of powerup counts
-        # temporarily set to 32 entries until we decide how many we want
         self.powerups = [0] * 32
+        self.items = [0] * 5
 
         # TODO:implement userid
         self.uid = 0
 
         # Setup values
-        self.prints_per_click = 2
+        self.prints_per_click = 1
         
         self.gui = Main_GUI()
         self.gui.clicker.configure(command=self.earn)
