@@ -25,10 +25,12 @@ class GameController:
         self.uid = 0
         
         self.gui = Main_GUI()
-        self.gui.clicker.config(command=self.earn)
+        self.gui.clicker.configure(command=self.earn)
         # TODO: link to counter display once created
+        self.gui.mainloop()
     def earn(self):
         self.score += 1
+        self.gui.score.set(self.score)
     def get_powerup(self, powerup: Powerups):
         self.powerups[powerup] += 1
     def use_powerup(self, powerup: Powerups):

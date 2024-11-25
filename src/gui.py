@@ -13,13 +13,25 @@ class Main_GUI:
         self.root.title("Jovan Clicker")
 
         # Assets
-        GFX_main_clicker = tk.PhotoImage(file=os.path.join(__location__, os.pardir, 'Assets', 'main_clicker.png'))
+        # need to be attribute otherwise it will be deleted after __init__ finishes
+        self.GFX_main_clicker = tk.PhotoImage(file=os.path.join(__location__, os.pardir, 'Assets', 'main_clicker.png'))
+        
+        self.onclick = lambda: None
 
         # Code
-        self.clicker = tk.Button(width=200, height=200, image = GFX_main_clicker)
+        self.clicker = tk.Button(width=200, height=200, image = self.GFX_main_clicker)
         self.clicker.place(x=50, y=260)
+        
+        self.score = tk.IntVar()
+        self.counter = tk.Label(textvariable=self.score)
+        self.counter.place(x=0, y=0)
+        
+        # cannot execute mainloop here because need to configure gui in other
+        # file
 
+    def mainloop(self):
         self.root.mainloop()
 
 if __name__ == "__main__":
-    Main_GUI()
+    gui = Main_GUI()
+    gui.mainloop()
