@@ -1,20 +1,20 @@
 import sqlite3
 
-connection = sqlite3.connect("index.db")
+connection = sqlite3.connect("../index.db")
 
 cursor = connection.cursor()
 
 
-def onInit(items):
+def onInit():
     ## Run on init to initialise both tables
 
     command = """CREATE TABLE "playerInfo" (
-   "id" INTEGER NOT NULL,
-   "firstName" VARCHAR(255) NOT NULL,
-   "lastName" VARCHAR(255) NOT NULL,
-   "userName" VARCHAR(255) NOT NULL,
-   "score" INTEGER,
-   PRIMARY KEY ("id" AUTOINCREMENT))"""
+    "id" INTEGER NOT NULL,
+    "firstName" VARCHAR(255) NOT NULL,
+    "lastName" VARCHAR(255) NOT NULL,
+    "userName" VARCHAR(255) NOT NULL,
+    "score" INTEGER,
+    PRIMARY KEY ("id" AUTOINCREMENT))"""
     cursor.execute(command)
     print("Player Info created")
 
@@ -267,3 +267,4 @@ def delete_record_by_uid(uid):
         connection.close()
     except sqlite3.Error as e:
         return e
+
