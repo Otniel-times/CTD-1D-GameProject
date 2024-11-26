@@ -27,10 +27,18 @@ class GameController:
 
         # Setup values
         self.prints_per_click = 1
+        # set at 1 for testing
+        self.prints_per_sec = 1
         
         self.gui = Main_GUI()
         self.gui.clicker.configure(command=self.earn)
+        self.gui.root.after(1000, self.per_sec)
         self.gui.mainloop()
+    
+    def per_sec(self):
+        self.score += self.prints_per_sec
+        self.gui.score.set(self.score)
+        self.gui.root.after(1000, self.per_sec)
 
     def earn(self):
         self.score += self.prints_per_click
