@@ -22,28 +22,27 @@ class Main_GUI:
         # Code
         self.background = tk.Canvas(width=900, height=600)
         self.background.create_image(450, 300, image=self.GFX_background)
-        self.background.create_image(260, 71, image=self.GFX_printer )
+        self.background.create_image(450, 300, image=self.GFX_printer )
 
         self.background.place(x=0, y=0)
 
-
         self.clicker = tk.Button(width=100, height=100, image = self.GFX_main_clicker)
-        self.clicker.place(x=397, y=250)
+        self.clicker.place(x=397, y=225)
         
         # Total
         self.score = tk.IntVar()
-        self.counter = tk.Label(textvariable=self.score, font=("Arial", 18), background="grey", foreground="white", width=5)
-        self.counter.place(x=410, y=150)
+        self.counter = tk.Label(textvariable=self.score, font=("Arial", 20), background="grey", foreground="white", width=5)
+        self.counter.place(x=409, y=370)
         
         # Prints per click
         self.ppc_display = tk.IntVar()
         self.counter = tk.Label(textvariable=self.ppc_display, font=("Arial", 14), background="grey", foreground="white", width=17)
-        self.counter.place(x=350, y=190)
+        self.counter.place(x=354, y=410)
         
         # Prints per click
         self.pps_display = tk.IntVar()
         self.counter = tk.Label(textvariable=self.pps_display, font=("Arial", 12), background="grey", foreground="white", width=17)
-        self.counter.place(x=365, y=220)
+        self.counter.place(x=370, y=440)
 
     def mainloop(self):
         self.root.mainloop()
