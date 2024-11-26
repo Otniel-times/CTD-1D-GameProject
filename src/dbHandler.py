@@ -4,6 +4,35 @@ connection = sqlite3.connect("index.db")
 
 cursor = connection.cursor()
 
+
+def onInit(items):
+    ## Run on init to initialise both tables
+
+    command = """CREATE TABLE "playerInfo" (
+   "id" INTEGER NOT NULL,
+   "firstName" VARCHAR(255) NOT NULL,
+   "lastName" VARCHAR(255) NOT NULL,
+   "userName" VARCHAR(255) NOT NULL,
+   "score" INTEGER,
+   PRIMARY KEY ("id" AUTOINCREMENT))"""
+    cursor.execute(command)
+    print("Player Info created")
+
+    command = """CREATE TABLE "playerItems" (
+    "id" INTEGER PRIMARY KEY NOT NULL,
+    "Anycubic" INT,
+    "Bambu" INT,
+    "DouinIonThrusters" INT,
+    "November" INT,
+    FOREIGN KEY("id") REFERENCES
+    playerInfo ("id"))"""
+    cursor.execute(command)
+    print("Player items created")
+
+    connection.commit()
+    connection.close()
+
+
 ## create table command
 def createTable():
     cursor.execute("DROP TABLE IF EXISTS playerInfo")
@@ -19,13 +48,17 @@ def createTable():
     print("Table created successfully.")
     connection.commit()
     connection.close()
+
+
 ##########################################
 def getAll():
     try:
         cursor.execute("SELECT * FROM playerInfo")
         results = cursor.fetchall()
         return results
-    except sqlite3.Error as e: print(e)
+    except sqlite3.Error as e:
+        print(e)
+
 
 # def bruteforce():
 #     try:
@@ -36,130 +69,195 @@ def getAll():
 #         connection.close
 #     except sqlite3.Error as e: print(e)
 
+
 def getall_username_n_score():
-   try:
-      command = """SELECT userName, score FROM playerInfo"""
-      cursor.execute(command)
-      results = cursor.fetchall()
-      return results
-   except sqlite3.Error as e: print("Failed to retrieve data from table.", e)
-   finally:
-      if connection:
-         connection.close()
+    try:
+        command = """SELECT userName, score FROM playerInfo"""
+        cursor.execute(command)
+        results = cursor.fetchall()
+        return results
+    except sqlite3.Error as e:
+        print("Failed to retrieve data from table.", e)
+    finally:
+        if connection:
+            connection.close()
+
 
 def getall_username():
-   try:
-      command = """SELECT userName FROM playerInfo"""
-      cursor.execute(command)
-      results = cursor.fetchall()
-      return results
-   except sqlite3.Error as e: print("Failed to retrieve data from table.", e)
-   finally:
-      if connection:
-         connection.close()
-         
+    try:
+        command = """SELECT userName FROM playerInfo"""
+        cursor.execute(command)
+        results = cursor.fetchall()
+        return results
+    except sqlite3.Error as e:
+        print("Failed to retrieve data from table.", e)
+    finally:
+        if connection:
+            connection.close()
+
+
 def getall_score():
-   try:
-      command = """SELECT score FROM playerInfo"""
-      cursor.execute(command)
-      results = cursor.fetchall()
-      return results
-   except sqlite3.Error as e: print("Failed to retrieve data from table.", e)
-   finally:
-      if connection:
-         connection.close()
+    try:
+        command = """SELECT score FROM playerInfo"""
+        cursor.execute(command)
+        results = cursor.fetchall()
+        return results
+    except sqlite3.Error as e:
+        print("Failed to retrieve data from table.", e)
+    finally:
+        if connection:
+            connection.close()
+
 
 def getUSERNAME_by_userName(u):
-    try: 
+    try:
         command = """SELECT userName FROM playerInfo WHERE userName =?"""
         cursor.execute(command, (u,))
-        result = cursor.fetchone() 
+        result = cursor.fetchone()
         if result:
-         return result
-        else: return "User does not exist."
-    except sqlite3.Error as e: return e
+            return result
+        else:
+            return "User does not exist."
+    except sqlite3.Error as e:
+        return e
+
 
 def getUSERNAME_by_id(uid):
-    try: 
+    try:
         command = """SELECT userName FROM playerInfo WHERE id =?"""
         cursor.execute(command, (uid,))
-        result = cursor.fetchone() 
+        result = cursor.fetchone()
         if result:
-         return result
-        else: return "User does not exist."
-    except sqlite3.Error as e: return e
+            return result
+        else:
+            return "User does not exist."
+    except sqlite3.Error as e:
+        return e
 
-def getUSERNAME_by_firstName_plus(firstName): ## Gets all record with identical first names
-    try: 
+
+def getUSERNAME_by_firstName_plus(
+    firstName,
+):  ## Gets all record with identical first names
+    try:
         command = """SELECT userName FROM playerInfo WHERE firstName =?"""
         cursor.execute(command, (firstName,))
-        result = cursor.fetchall() 
+        result = cursor.fetchall()
         if result:
-         return result
-        else: return "User does not exist."
-    except sqlite3.Error as e: return e
+            return result
+        else:
+            return "User does not exist."
+    except sqlite3.Error as e:
+        return e
 
-def getUSERNAME_by_firstName_pro(firstName): ## Gets the first record with specified firstName
-    try: 
+
+def getUSERNAME_by_firstName_pro(
+    firstName,
+):  ## Gets the first record with specified firstName
+    try:
         command = """SELECT userName FROM playerInfo WHERE firstName =?"""
         cursor.execute(command, (firstName,))
-        result = cursor.fetchone() 
+        result = cursor.fetchone()
         if result:
-         return result
-        else: return "User does not exist."
-    except sqlite3.Error as e: return e
+            return result
+        else:
+            return "User does not exist."
+    except sqlite3.Error as e:
+        return e
 
-def getUSERNAME_by_lastName_plus(lastName): ## Gets all record with identical last names
-    try: 
+
+def getUSERNAME_by_lastName_plus(
+    lastName,
+):  ## Gets all record with identical last names
+    try:
         command = """SELECT userName FROM playerInfo WHERE lastName =?"""
         cursor.execute(command, (lastName,))
-        result = cursor.fetchall() 
+        result = cursor.fetchall()
         if result:
-         return result
-        else: return "User does not exist."
-    except sqlite3.Error as e: return e
+            return result
+        else:
+            return "User does not exist."
+    except sqlite3.Error as e:
+        return e
 
-def getUSERNAME_by_lastName_pro(lastName): ## Gets the first record with specified lastName
-    try: 
+
+def getUSERNAME_by_lastName_pro(
+    lastName,
+):  ## Gets the first record with specified lastName
+    try:
         command = """SELECT userName FROM playerInfo WHERE lastName =?"""
         cursor.execute(command, (lastName,))
-        result = cursor.fetchone() 
+        result = cursor.fetchone()
         if result:
-         return result
-        else: return "User does not exist."
-    except sqlite3.Error as e: return e
+            return result
+        else:
+            return "User does not exist."
+    except sqlite3.Error as e:
+        return e
+
 
 def update_userName_by_id(uid, new_u):
     try:
         command = """UPDATE playerInfo SET userName =? WHERE id =?"""
-        cursor.execute(command, (new_u, uid,))
+        cursor.execute(
+            command,
+            (
+                new_u,
+                uid,
+            ),
+        )
         connection.commit()
         connection.close()
-    except sqlite3.Error as e: return e
+    except sqlite3.Error as e:
+        return e
+
 
 def update_firstName_by_id(uid, new_n):
     try:
         command = """UPDATE playerInfo SET firstName =? WHERE id =?"""
-        cursor.execute(command, (new_n, uid,))
+        cursor.execute(
+            command,
+            (
+                new_n,
+                uid,
+            ),
+        )
         connection.commit()
         connection.close()
-    except sqlite3.Error as e: return e
+    except sqlite3.Error as e:
+        return e
+
 
 def update_lastName_by_id(uid, new_n):
     try:
         command = """UPDATE playerInfo SET lastName =? WHERE id =?"""
-        cursor.execute(command, (new_n, uid,))
+        cursor.execute(
+            command,
+            (
+                new_n,
+                uid,
+            ),
+        )
         connection.commit()
         connection.close()
-    except sqlite3.Error as e: return e
+    except sqlite3.Error as e:
+        return e
+
 
 def update_score_by_id(uid, new_s):
     try:
         command = """UPDATE playerInfo SET score =? WHERE id =?"""
-        cursor.execute(command, (new_s, uid,))
+        cursor.execute(
+            command,
+            (
+                new_s,
+                uid,
+            ),
+        )
         connection.commit()
         connection.close()
-    except sqlite3.Error as e: return e
+    except sqlite3.Error as e:
+        return e
+
 
 def delete_record_by_uid(uid):
     try:
@@ -167,4 +265,5 @@ def delete_record_by_uid(uid):
         cursor.execute(command, (uid,))
         connection.commit()
         connection.close()
-    except sqlite3.Error as e: return e
+    except sqlite3.Error as e:
+        return e
