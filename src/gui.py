@@ -10,15 +10,13 @@ class Main_GUI:
         # Setup
         self.root = tk.Tk()
         self.root.geometry("900x600")
-        self.root.title("Jovan Clicker")
+        self.root.title("内内个内个内个内个内个内内")
 
         # Assets
         # All of these are placeholder
         self.GFX_main_clicker = tk.PhotoImage(file=os.path.join(__location__, os.pardir, 'Assets', 'main_clicker.png'))
         self.GFX_printer = tk.PhotoImage(file=os.path.join(__location__, os.pardir, 'Assets', 'printer.png'))
         self.GFX_background = tk.PhotoImage(file=os.path.join(__location__, os.pardir, 'Assets', 'background.png'))
-        
-        self.onclick = lambda: None
 
         # Code
         self.background = tk.Label(image = self.GFX_background)
