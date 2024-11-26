@@ -18,12 +18,14 @@ class Main_GUI:
         self.GFX_printer = tk.PhotoImage(file=os.path.join(__location__, os.pardir, 'Assets', 'pixelPrinter.png'))
         self.GFX_background = tk.PhotoImage(file=os.path.join(__location__, os.pardir, 'Assets', 'background.png'))
 
+
         # Code
-        self.background = tk.Label(image = self.GFX_background)
+        self.background = tk.Canvas(width=900, height=600)
+        self.background.create_image(450, 300, image=self.GFX_background)
+        self.background.create_image(260, 71, image=self.GFX_printer )
+
         self.background.place(x=0, y=0)
 
-        self.printer = tk.Label(image = self.GFX_printer)
-        self.printer.place(x=260, y=71)
 
         self.clicker = tk.Button(width=100, height=100, image = self.GFX_main_clicker)
         self.clicker.place(x=397, y=250)
