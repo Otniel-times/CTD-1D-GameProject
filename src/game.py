@@ -13,24 +13,39 @@ class Powerups(IntEnum):
 
 class GameController:
     def __init__(self) -> None:
+        POWERUP_COUNT = 32
+        ITEM_COUNT = 5
 
         # To store:
         # Click count
         self.score = 0
 
         # array of powerup counts
-        self.powerups = [0] * 32
-        self.items = [0] * 5
+        self.powerups = [0] * POWERUP_COUNT
+
+        # TODO: Write powerup actions
+        # return new per click and per sec
+        self.powerup_actions = [lambda x,y: (0,0)] * POWERUP_COUNT
+
+        self.items = [0] * ITEM_COUNT
 
         # TODO:implement userid
         self.uid = 0
 
         # Setup values
         self.prints_per_click = 1
+        # set at 1 for testing
+        self.prints_per_sec = 1
         
         self.gui = Main_GUI()
         self.gui.clicker.configure(command=self.earn)
+        self.gui.root.after(1000, self.per_sec)
         self.gui.mainloop()
+    
+    def per_sec(self):
+        self.score += self.prints_per_sec
+        self.gui.score.set(self.score)
+        self.gui.root.after(1000, self.per_sec)
 
     def earn(self):
         self.score += self.prints_per_click
@@ -42,6 +57,9 @@ class GameController:
     def use_powerup(self, powerup: Powerups):
         # validation here? or maybe ui
         self.powerups[powerup] -= 1
+        self.prints_per_click, self.prints_per_sec = \
+            self.powerup_actions[powerup](self.prints_per_click, self.prints_per_sec)
+
 
     def save(self):
         dbHandler.update_score_by_id(self.uid, self.score)
