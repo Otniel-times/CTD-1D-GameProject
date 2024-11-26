@@ -33,22 +33,30 @@ class GameController:
         self.uid = 0
 
         # Setup values
-        self.prints_per_click = 1
+        self.prints_per_click = 2
         # set at 1 for testing
         self.prints_per_sec = 1
+        # self.gui.ppc_display.set("Prints per click: {}".format(self.prints_per_click))
         
         self.gui = Main_GUI()
         self.gui.clicker.configure(command=self.earn)
         self.gui.root.after(1000, self.per_sec)
+
+        # GUI setup
+        self.gui.pps_display.set("Auto Prints/sec: {}".format(self.prints_per_sec))
+        self.gui.ppc_display.set("Prints per click: {}".format(self.prints_per_click))
+
         self.gui.mainloop()
     
     def per_sec(self):
         self.score += self.prints_per_sec
         self.gui.score.set(self.score)
+        self.gui.pps_display.set("Auto Prints/sec: {}".format(self.prints_per_sec))
         self.gui.root.after(1000, self.per_sec)
 
     def earn(self):
         self.score += self.prints_per_click
+        self.gui.ppc_display.set("Prints per click: {}".format(self.prints_per_click))
         self.gui.score.set(self.score)
 
     def get_powerup(self, powerup: Powerups):
