@@ -33,10 +33,8 @@ class GameController:
         self.uid = 0
 
         # Setup values
-        self.prints_per_click = 2
-        # set at 1 for testing
-        self.prints_per_sec = 1
-        # self.gui.ppc_display.set("Prints per click: {}".format(self.prints_per_click))
+        self.prints_per_click = 1
+        self.prints_per_sec = 0
         
         self.gui = Main_GUI()
         self.gui.clicker.configure(command=self.earn)
