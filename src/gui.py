@@ -3,6 +3,26 @@ import tkinter as tk
 
 # Assets
 __location__ = os.path.realpath(os.path.dirname(__file__))
+# https://stackoverflow.com/questions/70996098/tkinter-button-over-transparent-background
+#TBD
+class CanvasButton():
+    flash_delay = 100
+    def __init__(self, canvas: tk.Canvas, image: tk.Image, x: int, y: int, **kwargs):
+        self.canvas = canvas
+        self.x = x
+        self.y = y
+        self.image: int = self.canvas.create_image(x, y, image=image)
+    def on_click(self, fn):
+        self.canvas.tag_bind(self.image, "<ButtonRelease-1>",
+            lambda event: (self.flash(), fn()))
+    # Button animation function
+    def flash(self):
+        #self.set_state(tk.HIDDEN)
+        self.canvas.move(self.image, -10, 0)
+        self.canvas.after(self.flash_delay, self.set_state, tk.NORMAL)
+    def set_state(self, state):
+        self.canvas.move(self.image, 10, 0)
+
 
 # The main clicker itself
 class Main_GUI:
@@ -26,9 +46,7 @@ class Main_GUI:
 
         self.background.place(x=0, y=0)
 
-        self.clicker = tk.Button(width=100, height=100, image = self.GFX_main_clicker)
-        self.clicker.place(x=397, y=225)
-        
+        self.clicker = CanvasButton(self.background, self.GFX_main_clicker, 450, 300)
         # Total
         self.score = tk.IntVar()
         self.counter = tk.Label(textvariable=self.score, font=("Arial", 20), background="grey", foreground="white", width=5)

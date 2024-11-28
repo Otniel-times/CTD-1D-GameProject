@@ -30,6 +30,7 @@ class GameController:
         self.crises = {1:"Spaghetti",
                        2:"Broken Head",
                        3:"Stopped Print"}
+        self.crisis = None
 
         self.CRISIS_COUNT = len(self.crises)
         # array of powerup counts
@@ -50,7 +51,7 @@ class GameController:
         self.per_sec_malus_scale = 1
         
         self.gui = Main_GUI()
-        self.gui.clicker.configure(command=self.earn)
+        self.gui.clicker.on_click(self.earn)
         self.gui.root.after(1000, self.per_sec)
 
         # GUI setup
