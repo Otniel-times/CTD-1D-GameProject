@@ -20,6 +20,13 @@ class GameController:
         # Click count
         self.score = 0
 
+        ## 1. Spaghetti print
+        ## 2. Broken Head
+        ## 3. Someone stopped print
+        self.crises = {1:"Spaghetti",
+                       2:"Broken Head",
+                       3:"Stopped Print"}
+
         # array of powerup counts
         self.powerups = [0] * POWERUP_COUNT
 
