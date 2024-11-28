@@ -14,9 +14,9 @@ class Main_GUI:
 
         # Assets
         # All of these are placeholder
-        self.GFX_main_clicker = tk.PhotoImage(file=os.path.join(__location__, os.pardir, 'Assets', 'sutdCoin100.png'))
-        self.GFX_printer = tk.PhotoImage(file=os.path.join(__location__, os.pardir, 'Assets', 'pixelPrinter.png'))
-        self.GFX_background = tk.PhotoImage(file=os.path.join(__location__, os.pardir, 'Assets', 'background.png'))
+        self.GFX_main_clicker = tk.PhotoImage(file=os.path.join(__location__, os.pardir, 'assets', 'sutdCoin100.png'))
+        self.GFX_printer = tk.PhotoImage(file=os.path.join(__location__, os.pardir, 'assets', 'pixelPrinter.png'))
+        self.GFX_background = tk.PhotoImage(file=os.path.join(__location__, os.pardir, 'assets', 'background.png'))
 
 
         # Code
