@@ -35,12 +35,12 @@ class Main_GUI:
         self.counter.place(x=409, y=370)
         
         # Prints per click
-        self.ppc_display = tk.IntVar()
+        self.ppc_display = tk.StringVar()
         self.counter = tk.Label(textvariable=self.ppc_display, font=("Arial", 14), background="grey", foreground="white", width=17)
         self.counter.place(x=354, y=410)
         
         # Prints per click
-        self.pps_display = tk.IntVar()
+        self.pps_display = tk.StringVar()
         self.counter = tk.Label(textvariable=self.pps_display, font=("Arial", 12), background="grey", foreground="white", width=17)
         self.counter.place(x=370, y=440)
 
