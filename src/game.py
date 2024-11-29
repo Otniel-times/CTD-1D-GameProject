@@ -75,6 +75,7 @@ class GameController:
         self.score += self.prints_per_click
         self.gui.ppc_display.set(f"Prints per click: {self.prints_per_click}")
         self.gui.score.set(self.score)
+        # self.gui.animation_check()
 
     def get_powerup(self, powerup: Powerups):
         self.powerups[powerup] += 1
