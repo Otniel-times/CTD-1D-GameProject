@@ -1,10 +1,10 @@
 import sqlite3
-from typing import TypedDict
 
-## Start connection
+## Start connection DO NOT USE THIS
 def connect():
     """
     Starts connection, returns connection and cursor object
+    DO NOT USE THIS IN YOUR PROGRAM
 
     :return val:    (tuple)
     """
@@ -20,7 +20,6 @@ def on_init():
 
     :return val: None
     """
-
     connection, cursor = connect()
     ## Run on init to initialise both tables
 
@@ -49,7 +48,6 @@ def on_init():
     connection.close()
 
 def create_table():
-
     """
     Creates playerInfo table
 
