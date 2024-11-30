@@ -4,7 +4,7 @@ import dbHandler
 import random
 
 # How to use:
-# Powerups.Anycubic for 0
+# Upgrades.Anycubic for 0
 class Upgrades(IntEnum):
     Anycubic = 0
     Bambu = 1
