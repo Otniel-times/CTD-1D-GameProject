@@ -1,5 +1,7 @@
 import os
 import tkinter as tk
+import tkinter.messagebox as messagebox
+from tkinter import ttk
 
 # Assets
 __location__ = os.path.realpath(os.path.dirname(__file__))
@@ -96,6 +98,9 @@ class Main_GUI:
 
         self.animation_offset = 0
         self.animation_ongoing = False
+        
+    def create_crisis(self, crisis_name, crisis_text):
+        messagebox.askquestion(crisis_name, crisis_text, type=messagebox.OK)
 
     def mainloop(self):
         self.root.mainloop()
