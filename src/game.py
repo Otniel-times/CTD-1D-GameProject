@@ -5,8 +5,8 @@ import random
 
 # How to use:
 # Upgrades.Anycubic for 0
-class Upgrades(IntEnum):
-    Anycubic = 0
+class Powerups(IntEnum):
+    Anyquadratic = 0
     Bambu = 1
     DouyinIonThrusters = 2
     November = 7
@@ -14,8 +14,7 @@ class Upgrades(IntEnum):
 
 class GameController:
     def __init__(self) -> None:
-        self.UPGRADE_COUNT = 8
-        self.ITEM_COUNT = 5
+        self.POWERUP_COUNT = 8
         
         self.rng = random.Random()
         self.rng.seed(random.randint(0, 2**16))
@@ -34,16 +33,14 @@ class GameController:
 
         self.CRISIS_COUNT = len(self.crises)
         # array of upgrade counts
-        self.upgrades = [0] * self.UPGRADE_COUNT
+        self.POWERUPS = [0] * self.POWERUP_COUNT
 
         # TODO: Write upgrade actions
         # return new per click and per sec
-        self.upgrade_actions = [
+        self.POWERUP_ACTIONS = [
             lambda x, y: (x+1, y+1), #Anycubic
             lambda x, y: (x+5, y+5), #Bambu
         ]
-
-        self.items = [0] * self.ITEM_COUNT
 
         # TODO:implement userid
         self.uid = 0
@@ -61,6 +58,7 @@ class GameController:
         self.gui.pps_display.set(f"Auto Prints/sec: {self.prints_per_sec}")
         self.gui.ppc_display.set(f"Prints per click: {self.prints_per_click}")
 
+        self.gui.root.after(100, self.gui.create_crisis, "Hello", "World")
         self.gui.mainloop()
     
     def per_sec(self):
@@ -80,14 +78,14 @@ class GameController:
         self.gui.score.set(self.score)
         self.gui.printer_head.animation_check()
 
-    def get_powerup(self, powerup: Upgrades):
-        self.upgrades[powerup] += 1
+    def get_powerup(self, powerup: Powerups):
+        self.POWERUPS[powerup] += 1
 
-    def use_powerup(self, powerup: Upgrades):
+    def use_powerup(self, powerup: Powerups):
         # validation here? or maybe ui
-        self.upgrades[powerup] -= 1
+        self.POWERUPS[powerup] -= 1
         self.prints_per_click, self.prints_per_sec = \
-            self.upgrade_actions[powerup](self.prints_per_click, self.prints_per_sec)
+            self.POWERUP_ACTIONS[powerup](self.prints_per_click, self.prints_per_sec)
 
 
     def save(self):
