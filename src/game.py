@@ -57,6 +57,13 @@ class GameController:
         self.gui.clicker.on_click(self.earn)
         self.gui.root.after(1000, self.per_sec)
 
+        # temporary user name for the purposes of the thing
+        self.test_username = 'Gas'
+        if self.test_username[-1] == 's' or self.test_username[-1] == 'S':
+            self.gui.test_username.set(f"{self.test_username}' 3D Printer")
+        else:
+            self.gui.test_username.set(f"{self.test_username}'s 3D Printer")
+
         # GUI setup
         self.gui.pps_display.set(f"Auto Prints/sec: {self.prints_per_sec}")
         self.gui.ppc_display.set(f"Prints per click: {self.prints_per_click}")
