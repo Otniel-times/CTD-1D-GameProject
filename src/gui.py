@@ -63,9 +63,21 @@ class Main_GUI:
     def __init__(self):
         # Setup
         self.root = tk.Tk()
-        self.root.geometry("900x600")
+        #self.root.geometry("900x600")
+        self.root.minsize(width=400, height=300)
         self.root.title("It's So Joever")
+        
+        # Using TTK for default look - but ttk is not as customizable
+        self.menu_frame = ttk.Frame()
+        self.start_button = ttk.Button(self.menu_frame, text="Start", command=self.create_game_frame)
+        self.menu_frame.pack()
+        self.start_button.pack()
 
+        # switch back to TK as ttk and tk shouldnt be mixed?
+        self.game_frame = tk.Frame()
+
+    def create_game_frame(self):
+        self.menu_frame.pack_forget()
         # Assets
         self.GFX_main_clicker = tk.PhotoImage(file=os.path.join(__location__, os.pardir, 'assets', 'sutdCoin100.png'))
         self.GFX_printer = tk.PhotoImage(file=os.path.join(__location__, os.pardir, 'assets', 'pixelPrinter.png'))
@@ -73,37 +85,38 @@ class Main_GUI:
         self.GFX_background = tk.PhotoImage(file=os.path.join(__location__, os.pardir, 'assets', 'background.png')) # TODO: Replace Placeholder
 
         # Code
-        self.background = tk.Canvas(width=900, height=600)
+        self.background = tk.Canvas(self.game_frame, width=900, height=600)
         self.background.create_image(450, 300, image=self.GFX_background)
         self.background.create_image(450, 300, image=self.GFX_printer )
 
-        self.background.place(x=0, y=0)
+        self.background.pack()
 
         self.printer_head = Print_Head(self.background, self.GFX_printer_head, 340, 300)
         self.clicker = Clicker_Button(self.background, self.GFX_main_clicker, 450, 240)
 
         # Username display
         self.test_username = tk.StringVar()
-        self.username_display = tk.Label(textvariable=self.test_username, font=("Arial", 20), background="grey", foreground="white")
+        self.username_display = tk.Label(self.game_frame, textvariable=self.test_username, font=("Arial", 20), background="grey", foreground="white")
         self.username_display.place(anchor = "nw")
 
         # Total
         self.score = tk.IntVar()
-        self.counter = tk.Label(textvariable=self.score, font=("Arial", 20), background="grey", foreground="white", width=5)
+        self.counter = tk.Label(self.game_frame, textvariable=self.score, font=("Arial", 20), background="grey", foreground="white", width=5)
         self.counter.place(x=409, y=370)
         
         # Prints per click
         self.ppc_display = tk.StringVar()
-        self.counter = tk.Label(textvariable=self.ppc_display, font=("Arial", 14), background="grey", foreground="white", width=17)
+        self.counter = tk.Label(self.game_frame, textvariable=self.ppc_display, font=("Arial", 14), background="grey", foreground="white", width=17)
         self.counter.place(x=354, y=410)
         
         # Prints per second
         self.pps_display = tk.StringVar()
-        self.counter = tk.Label(textvariable=self.pps_display, font=("Arial", 12), background="grey", foreground="white", width=17)
+        self.counter = tk.Label(self.game_frame, textvariable=self.pps_display, font=("Arial", 12), background="grey", foreground="white", width=17)
         self.counter.place(x=370, y=440)
 
         self.animation_offset = 0
         self.animation_ongoing = False
+        self.game_frame.pack()
         
     def create_crisis(self, crisis_name, crisis_text):
         messagebox.askquestion(crisis_name, crisis_text, type=messagebox.OK)
