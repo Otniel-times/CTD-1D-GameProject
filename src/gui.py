@@ -79,8 +79,14 @@ class Main_GUI:
 
         self.background.place(x=0, y=0)
 
-        self.clicker = Clicker_Button(self.background, self.GFX_main_clicker, 450, 240)
         self.printer_head = Print_Head(self.background, self.GFX_printer_head, 340, 300)
+        self.clicker = Clicker_Button(self.background, self.GFX_main_clicker, 450, 240)
+
+        # Username display
+        self.test_username = tk.StringVar()
+        self.username_display = tk.Label(textvariable=self.test_username, font=("Arial", 20), background="grey", foreground="white")
+        self.username_display.place(anchor = "nw")
+
         # Total
         self.score = tk.IntVar()
         self.counter = tk.Label(textvariable=self.score, font=("Arial", 20), background="grey", foreground="white", width=5)
