@@ -69,15 +69,15 @@ class Main_GUI:
         
         # Using TTK for default look - but ttk is not as customizable
         self.menu_frame = ttk.Frame()
-        self.start_button = ttk.Button(self.menu_frame, text="Start", command=self.create_game_frame)
+        self.start_button = ttk.Button(self.menu_frame, text="Start", command=lambda: (self.menu_frame.pack_forget(), self.game_frame.pack()))
         self.menu_frame.pack()
         self.start_button.pack()
 
         # switch back to TK as ttk and tk shouldnt be mixed?
         self.game_frame = tk.Frame()
+        self.create_game_frame()
 
     def create_game_frame(self):
-        self.menu_frame.pack_forget()
         # Assets
         self.GFX_main_clicker = tk.PhotoImage(file=os.path.join(__location__, os.pardir, 'assets', 'sutdCoin100.png'))
         self.GFX_printer = tk.PhotoImage(file=os.path.join(__location__, os.pardir, 'assets', 'pixelPrinter.png'))
@@ -116,7 +116,6 @@ class Main_GUI:
 
         self.animation_offset = 0
         self.animation_ongoing = False
-        self.game_frame.pack()
         
     def create_crisis(self, crisis_name, crisis_text):
         messagebox.askquestion(crisis_name, crisis_text, type=messagebox.OK)
