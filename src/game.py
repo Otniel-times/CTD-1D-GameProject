@@ -4,17 +4,17 @@ import dbHandler
 import random
 
 # How to use:
-# Powerups.Anycubic for 0
+# Upgrades.Anycubic for 0
 class Upgrades(IntEnum):
     Anycubic = 0
     Bambu = 1
     DouyinIonThrusters = 2
-    November = 15
+    November = 7
     
 
 class GameController:
     def __init__(self) -> None:
-        self.UPGRADE_COUNT = 15
+        self.UPGRADE_COUNT = 8
         self.ITEM_COUNT = 5
         
         self.rng = random.Random()
@@ -33,10 +33,10 @@ class GameController:
         self.crisis = None
 
         self.CRISIS_COUNT = len(self.crises)
-        # array of powerup counts
+        # array of upgrade counts
         self.upgrades = [0] * self.UPGRADE_COUNT
 
-        # TODO: Write powerup actions
+        # TODO: Write upgrade actions
         # return new per click and per sec
         self.upgrade_actions = [
             lambda x, y: (x+1, y+1), #Anycubic
