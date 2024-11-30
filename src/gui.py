@@ -32,18 +32,25 @@ class Print_Head():
         self.x = x
         self.y = y
         self.image: int = self.canvas.create_image(x, y, image=image)
+        self.animation_offset = 0
+        self.animation_ongoing = False
+
+    def animation_check(self):
+        if not self.animation_ongoing:
+            self.animation_ongoing = True
+            self.go_right()
 
     def go_right(self):
-        self.canvas.move(self.image, 1, 0)
-        self.animation_offset += 1
-        if self.animation_offset < 10:
+        self.canvas.move(self.image, 10, 0)
+        self.animation_offset += 10
+        if self.animation_offset < 220:
             self.canvas.after(self.print_head_animation_delay, self.go_right)
         else:
-            self.go_left
+            self.go_left()
 
     def go_left(self):
-        self.canvas.move(self.image, -1, 0)
-        self.animation_offset -= 1
+        self.canvas.move(self.image, -10, 0)
+        self.animation_offset -= 10
         if self.animation_offset > 0:
             self.canvas.after(self.print_head_animation_delay, self.go_left)
         else:
@@ -60,7 +67,7 @@ class Main_GUI:
         # Assets
         self.GFX_main_clicker = tk.PhotoImage(file=os.path.join(__location__, os.pardir, 'assets', 'sutdCoin100.png'))
         self.GFX_printer = tk.PhotoImage(file=os.path.join(__location__, os.pardir, 'assets', 'pixelPrinter.png'))
-        # self.GFX_printer_head = tk.PhotoImage(file=os.path.join(__location__, os.pardir, 'assets', 'pixelPrinterHead.png'))
+        self.GFX_printer_head = tk.PhotoImage(file=os.path.join(__location__, os.pardir, 'assets', 'pixelPrinterHead.png'))
         self.GFX_background = tk.PhotoImage(file=os.path.join(__location__, os.pardir, 'assets', 'background.png')) # TODO: Replace Placeholder
 
         # Code
@@ -70,8 +77,8 @@ class Main_GUI:
 
         self.background.place(x=0, y=0)
 
+        self.printer_head = Print_Head(self.background, self.GFX_printer_head, 340, 300)
         self.clicker = Clicker_Button(self.background, self.GFX_main_clicker, 450, 280)
-        # self.printer_head = Print_Head(self.background, self.GFX_printer_head, 450, 280)
         # Total
         self.score = tk.IntVar()
         self.counter = tk.Label(textvariable=self.score, font=("Arial", 20), background="grey", foreground="white", width=5)
