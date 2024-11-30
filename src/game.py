@@ -7,14 +7,14 @@ import random
 # Upgrades.Anycubic for 0
 class Powerups(IntEnum):
     Anyquadratic = 0
-    Bambu = 1
+    Bamboo = 1
     DouyinIonThrusters = 2
-    November = 7
+    November = 3
     
 
 class GameController:
     def __init__(self) -> None:
-        self.POWERUP_COUNT = 8
+        self.POWERUP_COUNT = 4
         
         self.rng = random.Random()
         self.rng.seed(random.randint(0, 2**16))
@@ -35,11 +35,14 @@ class GameController:
         # array of upgrade counts
         self.POWERUPS = [0] * self.POWERUP_COUNT
 
-        # TODO: Write upgrade actions
-        # return new per click and per sec
+        # TODO: Finalize values
+        # parameters for function
+        # perclick bonus, persec bonus, time(ms) until disabled
         self.POWERUP_ACTIONS = [
-            lambda x, y: (x+1, y+1), #Anycubic
-            lambda x, y: (x+5, y+5), #Bambu
+            (0, 1, 2000), #Anyquadratic
+            (1, 4, 5000), #Bamboo
+            (1, 100, 500), #Douyin Ion Thrusters
+            (500, 4, 5000), #November
         ]
 
         # TODO:implement userid
@@ -49,6 +52,8 @@ class GameController:
         self.prints_per_click = 1
         self.prints_per_sec = 0
         self.per_sec_malus_scale = 1
+        # time limit
+        self.time = 200 * 1000
         
         self.gui = Main_GUI()
         self.gui.clicker.on_click(self.earn)
@@ -65,7 +70,8 @@ class GameController:
         self.gui.pps_display.set(f"Auto Prints/sec: {self.prints_per_sec}")
         self.gui.ppc_display.set(f"Prints per click: {self.prints_per_click}")
 
-        self.gui.root.after(100, self.gui.create_crisis, "Hello", "World")
+        # TODO: Schedule crises here
+        #self.gui.root.after(100, self.gui.create_crisis, "Hello", "World")
         self.gui.mainloop()
     
     def per_sec(self):
@@ -75,6 +81,11 @@ class GameController:
             self.score += self.prints_per_sec // self.per_sec_malus_scale
         else:
             self.score += self.prints_per_sec
+        # using <= in case of overrun - even if its not really possible
+        if self.time <= 0:
+            # TODO: score screen and log in
+            self.save()
+        self.time -= 1
         self.gui.score.set(self.score)
         self.gui.pps_display.set(f"Auto Prints/sec: {self.prints_per_sec}")
         self.gui.root.after(1000, self.per_sec)
@@ -85,15 +96,22 @@ class GameController:
         self.gui.score.set(self.score)
         self.gui.printer_head.animation_check()
 
+    def powerup_action(self, moreclick, moresec, time):
+        self.prints_per_click += moreclick
+        self.prints_per_sec += moresec
+        def reverse():
+            self.prints_per_click -= moreclick
+            self.prints_per_sec -= moresec
+        self.gui.root.after(time, reverse)
+
     def get_powerup(self, powerup: Powerups):
         self.POWERUPS[powerup] += 1
 
     def use_powerup(self, powerup: Powerups):
         # validation here? or maybe ui
         self.POWERUPS[powerup] -= 1
-        self.prints_per_click, self.prints_per_sec = \
-            self.POWERUP_ACTIONS[powerup](self.prints_per_click, self.prints_per_sec)
-
+        # unpack tuple into arguments
+        self.powerup_action(*self.POWERUP_ACTIONS[powerup])
 
     def save(self):
         dbHandler.update_score_by_id(self.uid, self.score)
