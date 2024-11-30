@@ -1,7 +1,6 @@
 from enum import IntEnum
 from gui import *
 import dbHandler
-import random
 
 # How to use:
 # Powerups.Anycubic for 0
