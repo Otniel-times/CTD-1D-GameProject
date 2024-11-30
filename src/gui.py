@@ -94,9 +94,6 @@ class Main_GUI:
         self.counter = tk.Label(textvariable=self.pps_display, font=("Arial", 12), background="grey", foreground="white", width=17)
         self.counter.place(x=370, y=440)
 
-        self.animation_offset = 0
-        self.animation_ongoing = False
-
     def mainloop(self):
         self.root.mainloop()
 
