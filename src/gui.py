@@ -62,7 +62,7 @@ class Main_GUI:
         # Setup
         self.root = tk.Tk()
         self.root.geometry("900x600")
-        self.root.title("内内个内个内个内个内个内内")
+        self.root.title("It's So Joever")
 
         # Assets
         self.GFX_main_clicker = tk.PhotoImage(file=os.path.join(__location__, os.pardir, 'assets', 'sutdCoin100.png'))
