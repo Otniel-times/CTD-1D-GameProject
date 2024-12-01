@@ -29,7 +29,7 @@ class Clicker_Button():
 
 class Print_Head():
     print_head_animation_delay = 10
-    def __init__(self, canvas: tk.Canvas, image: tk.Image, x: int, y: int, **kwargs):
+    def __init__(self, canvas: tk.Canvas, image: tk.Image, x: int, y: int):
         self.canvas = canvas
         self.x = x
         self.y = y
@@ -57,6 +57,43 @@ class Print_Head():
             self.canvas.after(self.print_head_animation_delay, self.go_left)
         else:
             self.animation_ongoing = False
+
+# Filament
+class Filament:
+    object_is_moving = False
+    def __init__(self, canvas: tk.Canvas, image: tk.Image, x: int, y:int):
+        self.canvas = canvas
+        self.x = x
+        self.y = y
+        self.image: int = self.canvas.create_image(x, y, image=image)
+    
+    def get_binds(self,fn):
+        self.canvas.tag_bind(self.image, "<ButtonPress-1>", lambda event: (self.move_start(), fn()))
+        self.canvas.tag_bind(self.image, "<ButtonRelease-1>", lambda event: (self.move_stop(), fn()))
+        self.canvas.tag_bind(self.image, "<B1-Motion>", lambda event: (self.move(), fn()))
+
+    def move_start(self, event):
+        self.object_is_moving = True
+
+        self.current_x_position = event.x
+        self.current_y_position = event.y
+
+    def move_stop(self):
+        self.object_is_moving = False
+
+        self.current_x_position = 0
+        self.current_y_position = 0
+
+    def move(self, event):
+        if self.object_is_moving:
+            dx = event.x - self.current_x_position
+            dy = event.y - self.current_y_position
+
+            self.canvas.move(self.image, dx, dy)
+
+            self.current_x_position = event.x
+            self.current_y_position = event.y
+
 
 # The main clicker itself
 class Main_GUI:
@@ -93,6 +130,7 @@ class Main_GUI:
 
         self.printer_head = Print_Head(self.background, self.GFX_printer_head, 340, 300)
         self.clicker = Clicker_Button(self.background, self.GFX_main_clicker, 450, 240)
+        self.filament = Filament(self.background, self.GFX_main_clicker, 450, 100)
 
         # Username display
         self.test_username = tk.StringVar()
