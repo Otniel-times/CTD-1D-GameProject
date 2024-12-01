@@ -16,33 +16,22 @@ def connect():
 ## create table command
 def on_init():
     """
-    Run on init to initialise both tables (playerInfo and playerItems)
+    Run on init to initialise table (playerInfo)
 
     :return val: None
     """
     connection, cursor = connect()
-    ## Run on init to initialise both tables
+    ## Run on init to initialise table
 
     command = """CREATE TABLE "playerInfo" (
     "id" INTEGER NOT NULL,
-    "firstName" VARCHAR(255) NOT NULL,
-    "lastName" VARCHAR(255) NOT NULL,
     "userName" VARCHAR(255) NOT NULL,
     "score" INTEGER,
     PRIMARY KEY ("id" AUTOINCREMENT))"""
     cursor.execute(command)
     print("Player Info created")
 
-    command = """CREATE TABLE "playerItems" (
-    "id" INTEGER PRIMARY KEY NOT NULL,
-    "Anycubic" INT,
-    "Bambu" INT,
-    "DouyinIonThrusters" INT,
-    "November" INT,
-    FOREIGN KEY("id") REFERENCES
-    playerInfo ("id"))"""
     cursor.execute(command)
-    print("Player items created")
 
     connection.commit()
     connection.close()
@@ -57,8 +46,6 @@ def create_table():
     cursor.execute("DROP TABLE IF EXISTS playerInfo")
     command = """CREATE TABLE "playerInfo"(
 	"id"	INTEGER NOT NULL,
-	"firstName"	VARCHAR(255) NOT NULL,
-	"lastName"	VARCHAR(255) NOT NULL,
 	"userName"	VARCHAR(255) NOT NULL,
 	"score"	INTEGER,
 	PRIMARY KEY("id" AUTOINCREMENT)) """
@@ -190,98 +177,6 @@ def get_username_by_id(uid:str):
     except sqlite3.Error as e:
         return e
 
-def get_usernames_by_firstName(firstName:str):  ## Gets all record with identical first names
-    """
-    Fetch all usernames with a matching first name
-
-    :param firstName:   Search for this first name
-    :type firstName:    (str)
-
-    :return val:        (list) if matches exist
-    """
-    connection, cursor = connect()
-    try:
-        command = """SELECT userName FROM playerInfo WHERE firstName =?"""
-        cursor.execute(command, (firstName,))
-        result = cursor.fetchall()
-
-        connection.close()
-        if result:
-            return result
-        else:
-            return "User does not exist."
-
-    except sqlite3.Error as e:
-        connection.close()
-        return e
-
-def get_username_by_firstName(firstName:str):  ## Gets the first record with specified firstName
-    """
-    Fetches the first username with a matching first name
-
-    :param firstName:   Search for this first name
-    :type firstName:    (str)
-
-    :return val:        (str)
-    """
-    connection, cursor = connect()
-    try:
-        command = """SELECT userName FROM playerInfo WHERE firstName =?"""
-        cursor.execute(command, (firstName,))
-        result = cursor.fetchone()
-
-        connection.close()
-        if result:
-            return result
-        else:
-            return "User does not exist."
-
-    except sqlite3.Error as e:
-        connection.close()
-        return e
-
-def get_usernames_by_lastName(lastName:str):  ## Gets all record with identical last names
-    """
-    Fetch all usernames with matching last names
-
-    :param lastName:    Player's last name
-    :type lastName:     (str)
-    """
-    connection, cursor = connect()
-    try:
-        command = """SELECT userName FROM playerInfo WHERE lastName =?"""
-        cursor.execute(command, (lastName,))
-        result = cursor.fetchall()
-
-        connection.close()
-        if result:
-            return result
-        else:
-            return "User does not exist."
-
-    except sqlite3.Error as e:
-        connection.close()
-        return e
-
-def get_username_by_lastName(lastName:str):  ## Gets the first record with specified lastName
-    """
-    Fetch first username with matching last name
-
-    :param lastName:    Player's last Name
-    :type lastName:     (str)
-    """
-    connection, cursor = connect()
-    try:
-        command = """SELECT userName FROM playerInfo WHERE lastName =?"""
-        cursor.execute(command, (lastName,))
-        result = cursor.fetchone()
-        if result:
-            return result
-        else:
-            return "User does not exist."
-
-    except sqlite3.Error as e:
-        return e
 
 
 ## Update general data
@@ -307,51 +202,6 @@ def update_userName_by_id(uid:int, new_u:str):
         connection.close
         return e
 
-def update_firstName_by_id(uid:int, new_n:str):
-    """
-    Update first name of user with associated userID
-
-    :param uid:     User ID associated with first name to be changed
-    :type uid:      (int)
-
-    :param new_n:   New first name to replace original first name
-    :type new_n:    (str)
-    """
-    
-    connection, cursor = connect()
-    try:
-        command = """UPDATE playerInfo SET firstName =? WHERE id =?"""
-        cursor.execute(command,(new_n,uid,),)
-
-        connection.commit()
-        connection.close()
-
-    except sqlite3.Error as e:
-        connection.close()
-        return e
-
-def update_lastName_by_id(uid:int, new_n:str):
-    """
-    Update last name of user with associated userID
-
-    :param uid:     User ID associated with last name to be changed
-    :type uid:      (int)
-
-    :param new_n:   New last name to replace original last name
-    :type new_n:    (str)
-    """
-
-    connection, cursor = connect()
-    try:
-        command = """UPDATE playerInfo SET lastName =? WHERE id =?"""
-        cursor.execute(command,(new_n,uid,),)
-
-        connection.commit()
-        connection.close()
-
-    except sqlite3.Error as e:
-        connection.close()
-        return e
 
 def update_score_by_id(uid:int, new_s:int):
     """
@@ -398,61 +248,61 @@ def delete_record_by_uid(uid:int):
 
 #### Manage items
 ## View item data
-def get_powerups(userID:int):
-    """
-    Get list of all powerups associated with the userID
+# def get_powerups(userID:int):
+#     """
+#     Get list of all powerups associated with the userID
 
-    :param userID:  User id to query
-    :type userID:   (int)
+#     :param userID:  User id to query
+#     :type userID:   (int)
 
-    :return val:    (list)
-    """
-    connection, cursor = connect()
-    try:
-        command = """SELECT * FROM playerItems WHERE id =?"""
-        cursor.execute(command, (userID,))
-        result = cursor.fetchall()
-        if result:
-            return result
-        else:
-            return "User does not exist."
+#     :return val:    (list)
+#     """
+#     connection, cursor = connect()
+#     try:
+#         command = """SELECT * FROM playerItems WHERE id =?"""
+#         cursor.execute(command, (userID,))
+#         result = cursor.fetchall()
+#         if result:
+#             return result
+#         else:
+#             return "User does not exist."
 
-    except sqlite3.Error as e:
-        return e
-
-
-## Update item data
-def update_powerups(userID:int, items: dict[str,int]):
-    """
-    Update number of powerups associated with the userID
-
-    :param userID:  User id assocated with the update
-    :type userID:   (int)
-
-    :param items:   Dictionary of item and count (item:count)
-    :type items:    (dict)
-
-    :return val:    None
-    """
-
-    connection, cursor = connect()
-    try:
-        command = """UPDATE playerItems SET Anycubic =? WHERE id =?"""
-        cursor.execute(command,(items['anycubic'], userID,))
-
-        command = """UPDATE playerItems SET Bambu =? WHERE id =?"""
-        cursor.execute(command,(items['bambu'], userID,))
-
-        command = """UPDATE playerItems SET DouyinIonThrusters =? WHERE id =?"""
-        cursor.execute(command,(items['douyin'], userID,))
-
-        command = """UPDATE playerItems SET November =? WHERE id =?"""
-        cursor.execute(command,(items['november'], userID,))
+#     except sqlite3.Error as e:
+#         return e
 
 
-        connection.commit()
-        connection.close()
+# ## Update item data
+# def update_powerups(userID:int, items: dict[str,int]):
+#     """
+#     Update number of powerups associated with the userID
 
-    except sqlite3.Error as e:
-        connection.close()
-        return e
+#     :param userID:  User id assocated with the update
+#     :type userID:   (int)
+
+#     :param items:   Dictionary of item and count (item:count)
+#     :type items:    (dict)
+
+#     :return val:    None
+#     """
+
+#     connection, cursor = connect()
+#     try:
+#         command = """UPDATE playerItems SET Anycubic =? WHERE id =?"""
+#         cursor.execute(command,(items['anycubic'], userID,))
+
+#         command = """UPDATE playerItems SET Bambu =? WHERE id =?"""
+#         cursor.execute(command,(items['bambu'], userID,))
+
+#         command = """UPDATE playerItems SET DouyinIonThrusters =? WHERE id =?"""
+#         cursor.execute(command,(items['douyin'], userID,))
+
+#         command = """UPDATE playerItems SET November =? WHERE id =?"""
+#         cursor.execute(command,(items['november'], userID,))
+
+
+#         connection.commit()
+#         connection.close()
+
+#     except sqlite3.Error as e:
+#         connection.close()
+#         return e
