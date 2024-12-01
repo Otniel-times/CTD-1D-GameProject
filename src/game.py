@@ -52,12 +52,14 @@ class GameController:
         self.prints_per_click = 1
         self.prints_per_sec = 0
         self.per_sec_malus_scale = 1
-        # time limit
-        self.time = 200 * 1000
+        # time limit - value in seconds
+        self.time = 200
         
         self.gui = Main_GUI()
         self.gui.clicker.on_click(self.earn)
-        self.gui.root.after(1000, self.per_sec)
+        def play():
+            self.gui.root.after(1000, self.per_sec)
+        self.gui.play_callback = play
 
         # temporary user name for the purposes of the thing
         self.test_username = 'Gas'
@@ -83,9 +85,12 @@ class GameController:
             self.score += self.prints_per_sec
         # using <= in case of overrun - even if its not really possible
         if self.time <= 0:
-            # TODO: score screen and log in
             self.save()
+            self.gui.change_frame(self.gui.name_frame)
+            # break the "loop"
+            return
         self.time -= 1
+        print(self.time)
         self.gui.score.set(self.score)
         self.gui.pps_display.set(f"Auto Prints/sec: {self.prints_per_sec}")
         self.gui.root.after(1000, self.per_sec)

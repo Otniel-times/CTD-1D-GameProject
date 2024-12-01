@@ -103,23 +103,58 @@ class Main_GUI:
         #self.root.geometry("900x600")
         self.root.minsize(width=400, height=300)
         self.root.title("It's So Joever")
+        self.root.resizable(False, False)
         
-        # Using TTK for default look - but ttk is not as customizable
         self.menu_frame = ttk.Frame()
-        self.start_button = ttk.Button(self.menu_frame, text="Start", command=lambda: (self.menu_frame.pack_forget(), self.game_frame.pack()))
         self.menu_frame.pack()
-        self.start_button.pack()
+        
+        self.active_frame = self.menu_frame
+        
+        # TODO: Image
+        self.title_image = ttk.Label(
+            self.menu_frame,
+            text="Jo's 3D Printing Adventure",
+            )
+        self.title_image.pack()
+        
+        self.play_callback = lambda: None
 
-        # switch back to TK as ttk and tk shouldnt be mixed?
-        self.game_frame = tk.Frame()
+        self.play_button = ttk.Button(
+            self.menu_frame,
+            text="Play",
+            command=self.on_play,
+            width=32
+            )
+        self.play_button.pack()
+        # TODO: open scoreboard
+        self.scoreboard_button = ttk.Button(
+            self.menu_frame,
+            text="Scoreboard",
+            command=lambda: self.change_frame(self.score_frame),
+            width=32
+            )
+        self.scoreboard_button.pack()
+        self.exit_button = ttk.Button(
+            self.menu_frame,
+            text="Exit",
+            command=self.root.destroy,
+            width=32
+            )
+        self.exit_button.pack()
+
+        self.game_frame = ttk.Frame()
         self.create_game_frame()
+        
+        self.name_frame = ttk.Frame()
+        self.score_frame = ttk.Frame()
 
     def create_game_frame(self):
         # Assets
-        self.GFX_main_clicker = tk.PhotoImage(file=os.path.join(__location__, os.pardir, 'assets', 'sutdCoin100.png'))
-        self.GFX_printer = tk.PhotoImage(file=os.path.join(__location__, os.pardir, 'assets', 'pixelPrinter.png'))
-        self.GFX_printer_head = tk.PhotoImage(file=os.path.join(__location__, os.pardir, 'assets', 'pixelPrinterHead.png'))
-        self.GFX_background = tk.PhotoImage(file=os.path.join(__location__, os.pardir, 'assets', 'background.png')) # TODO: Replace Placeholder
+        asset_folder = os.path.join(__location__, os.pardir, 'assets')
+        self.GFX_main_clicker = tk.PhotoImage(file=os.path.join(asset_folder, 'sutdCoin100.png'))
+        self.GFX_printer = tk.PhotoImage(file=os.path.join(asset_folder, 'pixelPrinter.png'))
+        self.GFX_printer_head = tk.PhotoImage(file=os.path.join(asset_folder, 'pixelPrinterHead.png'))
+        self.GFX_background = tk.PhotoImage(file=os.path.join(asset_folder, 'background.png')) # TODO: Replace Placeholder
 
         # Code
         self.background = tk.Canvas(self.game_frame, width=900, height=600)
@@ -134,22 +169,49 @@ class Main_GUI:
 
         # Username display
         self.test_username = tk.StringVar()
-        self.username_display = tk.Label(self.game_frame, textvariable=self.test_username, font=("Arial", 20), background="grey", foreground="white")
+        self.username_display = tk.Label(
+            self.game_frame,
+            textvariable=self.test_username,
+            font=("Arial", 20),
+            background="grey",
+            foreground="white"
+            )
         self.username_display.place(anchor = "nw")
 
         # Total
         self.score = tk.IntVar()
-        self.counter = tk.Label(self.game_frame, textvariable=self.score, font=("Arial", 20), background="grey", foreground="white", width=5)
+        self.counter = tk.Label(
+            self.game_frame,
+            textvariable=self.score,
+            font=("Arial", 20),
+            background="grey",
+            foreground="white",
+            width=5
+            )
         self.counter.place(x=409, y=370)
         
         # Prints per click
         self.ppc_display = tk.StringVar()
-        self.counter = tk.Label(self.game_frame, textvariable=self.ppc_display, font=("Arial", 14), background="grey", foreground="white", width=17)
+        self.counter = tk.Label(
+            self.game_frame,
+            textvariable=self.ppc_display,
+            font=("Arial", 14),
+            background="grey",
+            foreground="white",
+            width=17
+            )
         self.counter.place(x=354, y=410)
         
         # Prints per second
         self.pps_display = tk.StringVar()
-        self.counter = tk.Label(self.game_frame, textvariable=self.pps_display, font=("Arial", 12), background="grey", foreground="white", width=17)
+        self.counter = tk.Label(
+            self.game_frame,
+            textvariable=self.pps_display,
+            font=("Arial", 12),
+            background="grey",
+            foreground="white",
+            width=17
+            )
         self.counter.place(x=370, y=440)
 
         self.animation_offset = 0
@@ -157,6 +219,15 @@ class Main_GUI:
         
     def create_crisis(self, crisis_name, crisis_text):
         messagebox.askquestion(crisis_name, crisis_text, type=messagebox.OK)
+    
+    def change_frame(self, new_frame: ttk.Frame):
+        self.active_frame.pack_forget()
+        self.active_frame = new_frame
+        self.active_frame.pack()
+    
+    def on_play(self):
+        self.change_frame(self.game_frame)
+        self.play_callback()
 
     def mainloop(self):
         self.root.mainloop()
