@@ -112,10 +112,11 @@ class Main_GUI:
 
     def create_game_frame(self):
         # Assets
-        self.GFX_main_clicker = tk.PhotoImage(file=os.path.join(__location__, os.pardir, 'assets', 'sutdCoin100.png'))
-        self.GFX_printer = tk.PhotoImage(file=os.path.join(__location__, os.pardir, 'assets', 'pixelPrinter.png'))
-        self.GFX_printer_head = tk.PhotoImage(file=os.path.join(__location__, os.pardir, 'assets', 'pixelPrinterHead.png'))
-        self.GFX_background = tk.PhotoImage(file=os.path.join(__location__, os.pardir, 'assets', 'background.png')) # TODO: Replace Placeholder
+        asset_folder = os.path.join(__location__, os.pardir, 'assets')
+        self.GFX_main_clicker = tk.PhotoImage(file=os.path.join(asset_folder, 'sutdCoin100.png'))
+        self.GFX_printer = tk.PhotoImage(file=os.path.join(asset_folder, 'pixelPrinter.png'))
+        self.GFX_printer_head = tk.PhotoImage(file=os.path.join(asset_folder, 'pixelPrinterHead.png'))
+        self.GFX_background = tk.PhotoImage(file=os.path.join(asset_folder, 'background.png')) # TODO: Replace Placeholder
 
         # Code
         self.background = tk.Canvas(self.game_frame, width=900, height=600)
