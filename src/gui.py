@@ -66,11 +66,12 @@ class Filament:
         self.x = x
         self.y = y
         self.image: int = self.canvas.create_image(x, y, image=image)
+        self.get_binds()
     
-    def get_binds(self,fn):
-        self.canvas.tag_bind(self.image, "<ButtonPress-1>", lambda event: (self.move_start(), fn()))
-        self.canvas.tag_bind(self.image, "<ButtonRelease-1>", lambda event: (self.move_stop(), fn()))
-        self.canvas.tag_bind(self.image, "<B1-Motion>", lambda event: (self.move(), fn()))
+    def get_binds(self):
+        self.canvas.tag_bind(self.image, "<ButtonPress-1>", self.move_start)
+        self.canvas.tag_bind(self.image, "<ButtonRelease-1>", self.move_stop)
+        self.canvas.tag_bind(self.image, "<B1-Motion>", self.move)
 
     def move_start(self, event):
         self.object_is_moving = True
@@ -78,11 +79,13 @@ class Filament:
         self.current_x_position = event.x
         self.current_y_position = event.y
 
-    def move_stop(self):
+    def move_stop(self, event):
         self.object_is_moving = False
 
         self.current_x_position = 0
         self.current_y_position = 0
+
+        # TODO: Positional checks
 
     def move(self, event):
         if self.object_is_moving:
@@ -154,7 +157,7 @@ class Main_GUI:
         self.GFX_main_clicker = tk.PhotoImage(file=os.path.join(asset_folder, 'sutdCoin100.png'))
         self.GFX_printer = tk.PhotoImage(file=os.path.join(asset_folder, 'pixelPrinter.png'))
         self.GFX_printer_head = tk.PhotoImage(file=os.path.join(asset_folder, 'pixelPrinterHead.png'))
-        self.GFX_background = tk.PhotoImage(file=os.path.join(asset_folder, 'background.png')) # TODO: Replace Placeholder
+        self.GFX_background = tk.PhotoImage(file=os.path.join(asset_folder, 'background.png'))
 
         # Code
         self.background = tk.Canvas(self.game_frame, width=900, height=600)
@@ -165,7 +168,8 @@ class Main_GUI:
 
         self.printer_head = Print_Head(self.background, self.GFX_printer_head, 340, 300)
         self.clicker = Clicker_Button(self.background, self.GFX_main_clicker, 450, 240)
-        self.filament = Filament(self.background, self.GFX_main_clicker, 450, 100)
+        # This is for testing
+        self.filament = Filament(self.background, self.GFX_main_clicker, 450, 100) # TODO: Replace with actual asset
 
         # Username display
         self.test_username = tk.StringVar()
