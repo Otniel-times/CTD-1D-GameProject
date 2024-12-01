@@ -78,14 +78,22 @@ class Filament:
 
         self.current_x_position = event.x
         self.current_y_position = event.y
+        self.original_x_position = event.x
+        self.original_y_position = event.y
 
     def move_stop(self, event):
         self.object_is_moving = False
 
+        # TODO: Check for correct filament position when the crisis hits
+        if False: # Trigger: The crisis for filaments is happening AND The position is within the bounds
+            pass
+        else:
+            self.x_diff = self.original_x_position - self.current_x_position
+            self.y_diff = self.original_y_position - self.current_y_position
+            self.canvas.move(self.image, self.x_diff, self.y_diff)
+
         self.current_x_position = 0
         self.current_y_position = 0
-
-        # TODO: Positional checks
 
     def move(self, event):
         if self.object_is_moving:
@@ -181,6 +189,17 @@ class Main_GUI:
             foreground="white"
             )
         self.username_display.place(anchor = "nw")
+
+        # Time display
+        self.time_remaining = tk.StringVar()
+        self.username_display = tk.Label(
+            self.game_frame,
+            textvariable=self.time_remaining,
+            font=("Arial", 20),
+            background="grey",
+            foreground="white"
+            )
+        self.username_display.place(x = 0, y = 40)
 
         # Total
         self.score = tk.IntVar()

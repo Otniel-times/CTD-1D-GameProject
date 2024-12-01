@@ -52,14 +52,18 @@ class GameController:
         self.prints_per_click = 1
         self.prints_per_sec = 0
         self.per_sec_malus_scale = 1
-        # time limit - value in seconds
-        self.time = 200
         
         self.gui = Main_GUI()
         self.gui.clicker.on_click(self.earn)
         def play():
             self.gui.root.after(1000, self.per_sec)
         self.gui.play_callback = play
+
+        # time limit - value in seconds
+        self.time = 200
+        self.time_remaining_minutes = self.time // 60
+        self.time_remaining_seconds = self.time % 60
+        self.gui.time_remaining.set(f"{self.time_remaining_minutes :02d}:{self.time_remaining_seconds :02d}")
 
         # temporary user name for the purposes of the thing
         self.test_username = 'Gas'
@@ -90,7 +94,11 @@ class GameController:
             # break the "loop"
             return
         self.time -= 1
-        print(self.time)
+        self.time_remaining_minutes = self.time // 60
+        self.time_remaining_seconds = self.time % 60
+        self.gui.time_remaining.set(f"{self.time_remaining_minutes :02d}:{self.time_remaining_seconds :02d}")
+        
+        print(f"{self.time}, {self.time_remaining_minutes :02d}:{self.time_remaining_seconds :02d}")
         self.gui.score.set(self.score)
         self.gui.pps_display.set(f"Auto Prints/sec: {self.prints_per_sec}")
         self.gui.root.after(1000, self.per_sec)
