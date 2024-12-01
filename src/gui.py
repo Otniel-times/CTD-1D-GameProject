@@ -66,6 +66,7 @@ class Main_GUI:
         #self.root.geometry("900x600")
         self.root.minsize(width=400, height=300)
         self.root.title("It's So Joever")
+        self.root.resizable(False, False)
         
         self.menu_frame = ttk.Frame()
         self.menu_frame.pack()
