@@ -66,8 +66,8 @@ class GameController:
         self.gui.time_remaining.set(f"{self.time_remaining_minutes :02d}:{self.time_remaining_seconds :02d}")
 
         # temporary user name for the purposes of the thing
-        self.test_username = 'Gas'
-        if self.test_username[-1] == 's' or self.test_username[-1] == 'S':
+        self.test_username = 'GaS'
+        if self.test_username[-1].lower() == 's':
             self.gui.test_username.set(f"{self.test_username}' 3D Printer")
         else:
             self.gui.test_username.set(f"{self.test_username}'s 3D Printer")
