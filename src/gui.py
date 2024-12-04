@@ -149,7 +149,9 @@ class Main_GUI:
         # TODO: Image
         self.title_image = ttk.Label(
             self.menu_frame,
-            text="Jo's 3D Printing Adventure",
+            text="Jo's\n3D Printing Adventure",
+            font=font.Font(family="Comic Sans MS", size=18),
+            justify='center'
             )
         self.title_image.pack()
         
