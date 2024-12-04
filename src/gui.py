@@ -117,7 +117,7 @@ class PowerupDisplay:
             y,
             anchor='w',
             fill='white',
-            font=font.Font(size=16, weight=font.BOLD),
+            font=font.Font(size=24, weight=font.BOLD),
         )
         self.hide()
     def appear(self):
@@ -150,7 +150,12 @@ class Main_GUI:
         self.title_image = ttk.Label(
             self.menu_frame,
             text="Jo's\n3D Printing Adventure",
-            font=font.Font(family="Comic Sans MS", size=18),
+            font=font.Font(
+                family="Comic Sans MS",
+                size=18,
+                weight='bold',
+                slant='italic'
+            ),
             justify='center'
             )
         self.title_image.pack()
@@ -193,9 +198,11 @@ class Main_GUI:
         self.GFX_printer = tk.PhotoImage(file=os.path.join(assets, 'pixelPrinter.png'))
         self.GFX_printer_head = tk.PhotoImage(file=os.path.join(assets, 'pixelPrinterHead.png'))
         self.GFX_background = tk.PhotoImage(file=os.path.join(assets, 'background.png'))
-        GFX_november = ImageTk.Image.open(os.path.join(assets, 'jovan eepy.jpg')).resize((64,64))
+        
+        POWERUP_SIZE = (128,128)
+        GFX_november = ImageTk.Image.open(os.path.join(assets, 'jovan eepy.jpg')).resize(POWERUP_SIZE)
         self.GFX_november = ImageTk.PhotoImage(GFX_november)
-        GFX_douyin = ImageTk.Image.open(os.path.join(assets, 'douyinIon.jpg')).resize((64,64))
+        GFX_douyin = ImageTk.Image.open(os.path.join(assets, 'douyinIon.jpg')).resize(POWERUP_SIZE)
         self.GFX_douyin = ImageTk.PhotoImage(GFX_douyin)
 
         # Code
