@@ -17,7 +17,7 @@ class Clicker_Button():
         self.image: int = self.canvas.create_image(x, y, image=image)
 
     def on_click(self, fn):
-        self.canvas.tag_bind(self.image, "<ButtonRelease-1>",
+        self.canvas.tag_bind(self.image, "<ButtonPress-1>",
             lambda event: (self.clicker_flash(), fn()))
         
     # Button animation function
