@@ -1,7 +1,8 @@
 import os
 import tkinter as tk
 import tkinter.messagebox as messagebox
-from tkinter import ttk
+from tkinter import ttk, font
+from PIL import ImageTk
 
 # Assets
 __location__ = os.path.realpath(os.path.dirname(__file__))
@@ -105,13 +106,37 @@ class Filament:
             self.current_x_position = event.x
             self.current_y_position = event.y
 
+class PowerupDisplay:
+    def __init__(self, canvas: tk.Canvas, image: tk.Image | ImageTk.PhotoImage, x: int, y: int):
+        self.canvas = canvas
+        self.x = x
+        self.y = y
+        self.image = self.canvas.create_image(x, y, image=image, anchor='w')
+        self.countdown = self.canvas.create_text(
+            x + 32,
+            y,
+            anchor='w',
+            fill='white',
+            font=font.Font(size=16, weight=font.BOLD),
+        )
+        self.hide()
+    def appear(self):
+        self.canvas.itemconfigure(self.image, state='normal')
+        self.canvas.itemconfigure(self.countdown, state='normal')
+    def hide(self):
+        self.canvas.itemconfigure(self.image, state='hidden')
+        self.canvas.itemconfigure(self.countdown, state='hidden')
+    def change_image(self, image):
+        self.canvas.itemconfigure(self.image, image=image)
+    def update_text(self, text):
+        self.canvas.itemconfigure(self.countdown, text=text)
+
 
 # The main clicker itself
 class Main_GUI:
     def __init__(self):
         # Setup
         self.root = tk.Tk()
-        #self.root.geometry("900x600")
         self.root.minsize(width=400, height=300)
         self.root.title("It's So Joever")
         self.root.resizable(False, False)
@@ -161,11 +186,15 @@ class Main_GUI:
 
     def create_game_frame(self):
         # Assets
-        asset_folder = os.path.join(__location__, os.pardir, 'assets')
-        self.GFX_main_clicker = tk.PhotoImage(file=os.path.join(asset_folder, 'sutdCoin100.png'))
-        self.GFX_printer = tk.PhotoImage(file=os.path.join(asset_folder, 'pixelPrinter.png'))
-        self.GFX_printer_head = tk.PhotoImage(file=os.path.join(asset_folder, 'pixelPrinterHead.png'))
-        self.GFX_background = tk.PhotoImage(file=os.path.join(asset_folder, 'background.png'))
+        assets = os.path.join(__location__, os.pardir, 'assets')
+        self.GFX_main_clicker = tk.PhotoImage(file=os.path.join(assets, 'sutdCoin100.png'))
+        self.GFX_printer = tk.PhotoImage(file=os.path.join(assets, 'pixelPrinter.png'))
+        self.GFX_printer_head = tk.PhotoImage(file=os.path.join(assets, 'pixelPrinterHead.png'))
+        self.GFX_background = tk.PhotoImage(file=os.path.join(assets, 'background.png'))
+        GFX_november = ImageTk.Image.open(os.path.join(assets, 'jovan eepy.jpg')).resize((64,64))
+        self.GFX_november = ImageTk.PhotoImage(GFX_november)
+        GFX_douyin = ImageTk.Image.open(os.path.join(assets, 'douyinIon.jpg')).resize((64,64))
+        self.GFX_douyin = ImageTk.PhotoImage(GFX_douyin)
 
         # Code
         self.background = tk.Canvas(self.game_frame, width=900, height=600)
@@ -187,7 +216,7 @@ class Main_GUI:
             font=("Arial", 20),
             background="grey",
             foreground="white"
-            )
+        )
         self.username_display.place(anchor = "nw")
 
         # Time display
@@ -198,7 +227,7 @@ class Main_GUI:
             font=("Arial", 20),
             background="grey",
             foreground="white"
-            )
+        )
         self.username_display.place(x = 0, y = 40)
 
         # Total
@@ -210,7 +239,7 @@ class Main_GUI:
             background="grey",
             foreground="white",
             width=5
-            )
+        )
         self.counter.place(x=409, y=370)
         
         # Prints per click
@@ -222,7 +251,7 @@ class Main_GUI:
             background="grey",
             foreground="white",
             width=17
-            )
+        )
         self.counter.place(x=354, y=410)
         
         # Prints per second
@@ -234,8 +263,15 @@ class Main_GUI:
             background="grey",
             foreground="white",
             width=17
-            )
+        )
         self.counter.place(x=370, y=440)
+        
+        self.powerup_display = PowerupDisplay(
+            self.background,
+            self.GFX_november,
+            0,
+            200
+        )
 
         self.animation_offset = 0
         self.animation_ongoing = False
