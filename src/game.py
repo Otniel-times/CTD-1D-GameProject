@@ -23,12 +23,11 @@ class GameController:
         # Click count
         self.score = 0
 
-        ## 1. Spaghetti print
-        ## 2. Broken Head
-        ## 3. Someone stopped print
-        self.crises = {1:"Spaghetti",
-                       2:"Broken Head",
-                       3:"Stopped Print"}
+        ## crises dict contains number:tuple(<crisis_name>, <crisis text>)
+        ## Please insert crisis text
+        self.crises = {1:("No filament",""),
+                       2:("No printer bed",""),
+                       3:("Error code FILLTHISIN","")}
         self.crisis = None
 
         self.CRISIS_COUNT = len(self.crises)
@@ -113,12 +112,42 @@ class GameController:
         # unpack tuple into arguments
         self.powerup_action(*self.POWERUP_ACTIONS[powerup])
 
-    def save(self):
+    def save(self) -> None:
         dbHandler.update_score_by_id(self.uid, self.score)
         
-    def generate_crisis(self):
+    def generate_crisis(self) -> None:
+        """
+        This function generates crisis and starts timer, calls self.call_staff() after timer runs out, once timer starts, self.prints_per_click and self.prints_per_sec are set to 0.
+        Original print rates are stored locally.
+
+
+        """
         crisis_index = self.rng.randint(0, self.CRISIS_COUNT)
         self.crisis = self.crises[crisis_index]
+        self.gui.create_crisis(self.crisis[0], self.crisis[1])
+
+        ##Crisis starts
+        resolved = False
+        print_rate_click = self.prints_per_click
+        print_rate_base = self.prints_per_sec
+        self.prints_per_click = 0
+        self.prints_per_sec = 0
+
+        ## Insert 60s timer
+        ## Basic logic, will need help implementing this with timer
+        if resolved:
+            self.prints_per_click = print_rate_click
+            self.prints_per_sec = print_rate_base
+
+        else:
+            self.call_staff()
+            self.prints_per_click = print_rate_click
+            self.prints_per_sec = print_rate_base
+
+    def call_staff(self):
+        ## GUI TO CALL STAFF
+        self.resolve_crisis()
+        
     def resolve_crisis(self):
         self.crisis = None
 
