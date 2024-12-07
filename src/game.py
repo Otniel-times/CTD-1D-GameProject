@@ -122,6 +122,7 @@ class GameController:
         self.gui.powerup_display.update_text(self.powerup_timer)
         self.gui.ppc_display.set(f"Prints per click: {self.prints_per_click}")
         self.gui.pps_display.set(f"Auto Prints/sec: {self.prints_per_sec}")
+
         def reverse():
             self.prints_per_click -= moreclick
             self.prints_per_sec -= moresec
@@ -150,14 +151,11 @@ class GameController:
 
     def save(self) -> None:
         dbHandler.update_score_by_id(self.uid, self.score)
-        
-<<<<<<< HEAD
+
     def generate_crisis(self) -> None:
         """
         This function generates crisis and starts timer, calls self.call_staff() after timer runs out, once timer starts, self.prints_per_click and self.prints_per_sec are set to 0.
         Original print rates are stored locally.
-
-
         """
         crisis_index = self.rng.randint(0, self.CRISIS_COUNT)
         self.crisis = self.crises[crisis_index]
@@ -175,6 +173,7 @@ class GameController:
         if resolved:
             self.prints_per_click = print_rate_click
             self.prints_per_sec = print_rate_base
+            self.resolve_crisis(True)
 
         else:
             self.call_staff()
@@ -183,12 +182,17 @@ class GameController:
 
     def call_staff(self):
         ## GUI TO CALL STAFF
-        self.resolve_crisis()
+        self.resolve_crisis(False)
         
-    def resolve_crisis(self):
+    def resolve_crisis(self, userResolved: bool):
+        """
+        Sets crisis state to None, and determines whether 
+
+        userResolved: True if crisis was resolved by the player, False if crisis was resolved by staff
+        """
         self.crisis = None
         should_reward = random.choice((False, True))
-        if should_reward:
+        if userResolved and should_reward:
             reward = random.choice(list(Powerups))
             self.get_powerup(reward)
             print(f"You got the {reward.name}")
