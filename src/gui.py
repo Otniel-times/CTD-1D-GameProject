@@ -311,20 +311,23 @@ class Main_GUI:
         )
     
     def show_powerup_popup(self, powerup: Powerup, time: int):
-        # special name replacements
         match powerup:
             case Powerup.Anyquadratic:
                 powerup_string = "You got a free\nAnyquadratic printer!"
+                image = self.GFX_anyquadratic
             case Powerup.Bamboo:
                 powerup_string = "You got a free\nBamboo printer!"
             case Powerup.DouyinIonThrusters:
                 powerup_string = "Douyin Ion Thrusters are\npowering your printer"
+                image = self.GFX_douyin
             case Powerup.November:
                 powerup_string = "Jovan is coming to help you"
+                image = self.GFX_november
 
         self.powerup_display.appear()
         self.powerup_string.set(powerup_string)
         self.powerup_notification.place(x=0, y=250, anchor='nw')
+        self.powerup_display.change_image(image=image)
         self.root.after(time, self.powerup_notification.place_forget)
         
     def create_crisis(self, crisis_index):
