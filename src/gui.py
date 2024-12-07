@@ -140,15 +140,40 @@ class Main_GUI:
         self.root.minsize(width=400, height=300)
         self.root.title("It's So Joever")
         self.root.resizable(False, False)
+
+        # Assets
+        assets = os.path.join(__location__, os.pardir, 'assets')
+        self.GFX_main_clicker = tk.PhotoImage(file=os.path.join(assets, 'sutdCoin100.png'))
+        self.GFX_printer = tk.PhotoImage(file=os.path.join(assets, 'pixelPrinter.png'))
+        self.GFX_printer_head = tk.PhotoImage(file=os.path.join(assets, 'pixelPrinterHead.png'))
+        self.GFX_background = tk.PhotoImage(file=os.path.join(assets, 'background.png'))
+        
+        POWERUP_SIZE = (128,128)
+        GFX_november = ImageTk.Image.open(os.path.join(assets, 'jovan eepy.jpg')).resize(POWERUP_SIZE)
+        self.GFX_november = ImageTk.PhotoImage(GFX_november)
+        GFX_douyin = ImageTk.Image.open(os.path.join(assets, 'douyinIon.jpg')).resize(POWERUP_SIZE)
+        self.GFX_douyin = ImageTk.PhotoImage(GFX_douyin)
         
         self.menu_frame = ttk.Frame()
         self.menu_frame.pack()
         
         self.active_frame = self.menu_frame
+        self.create_menu_frame()
         
+
+        self.game_frame = ttk.Frame()
+        self.create_game_frame()
+        
+        self.name_frame = ttk.Frame()
+        self.create_name_frame()
+        self.score_frame = ttk.Frame()
+        self.create_score_frame()
+    
+    def create_menu_frame(self):
+        master = self.menu_frame
         # TODO: Image
         self.title_image = ttk.Label(
-            self.menu_frame,
+            master,
             text="Jo's\n3D Printing Adventure",
             font=font.Font(
                 family="Comic Sans MS",
@@ -163,49 +188,37 @@ class Main_GUI:
         self.play_callback = lambda: None
 
         self.play_button = ttk.Button(
-            self.menu_frame,
+            master,
             text="Play",
             command=self.on_play,
             width=32
             )
         self.play_button.pack()
-        # TODO: open scoreboard
         self.scoreboard_button = ttk.Button(
-            self.menu_frame,
+            master,
             text="Scoreboard",
             command=lambda: self.change_frame(self.score_frame),
             width=32
             )
         self.scoreboard_button.pack()
         self.exit_button = ttk.Button(
-            self.menu_frame,
+            master,
             text="Exit",
             command=self.root.destroy,
             width=32
             )
         self.exit_button.pack()
+    
+    # TODO: Clarence
+    def create_score_frame(self):
+        master = self.score_frame
+    
+    def create_name_frame(self):
+        master = self.name_frame
 
-        self.game_frame = ttk.Frame()
-        self.create_game_frame()
-        
-        self.name_frame = ttk.Frame()
-        self.score_frame = ttk.Frame()
 
     def create_game_frame(self):
-        # Assets
-        assets = os.path.join(__location__, os.pardir, 'assets')
-        self.GFX_main_clicker = tk.PhotoImage(file=os.path.join(assets, 'sutdCoin100.png'))
-        self.GFX_printer = tk.PhotoImage(file=os.path.join(assets, 'pixelPrinter.png'))
-        self.GFX_printer_head = tk.PhotoImage(file=os.path.join(assets, 'pixelPrinterHead.png'))
-        self.GFX_background = tk.PhotoImage(file=os.path.join(assets, 'background.png'))
-        
-        POWERUP_SIZE = (128,128)
-        GFX_november = ImageTk.Image.open(os.path.join(assets, 'jovan eepy.jpg')).resize(POWERUP_SIZE)
-        self.GFX_november = ImageTk.PhotoImage(GFX_november)
-        GFX_douyin = ImageTk.Image.open(os.path.join(assets, 'douyinIon.jpg')).resize(POWERUP_SIZE)
-        self.GFX_douyin = ImageTk.PhotoImage(GFX_douyin)
-
-        # Code
+        master = self.game_frame
         self.background = tk.Canvas(self.game_frame, width=900, height=600)
         self.background.create_image(450, 300, image=self.GFX_background)
         self.background.create_image(450, 300, image=self.GFX_printer )
@@ -219,61 +232,61 @@ class Main_GUI:
 
         # Username display
         self.test_username = tk.StringVar()
-        self.username_display = tk.Label(
-            self.game_frame,
+        display = tk.Label(
+            master,
             textvariable=self.test_username,
             font=("Arial", 20),
             background="grey",
             foreground="white"
         )
-        self.username_display.place(anchor = "nw")
+        display.place(anchor = "nw")
 
         # Time display
         self.time_remaining = tk.StringVar()
-        self.username_display = tk.Label(
-            self.game_frame,
+        display = tk.Label(
+            master,
             textvariable=self.time_remaining,
             font=("Arial", 20),
             background="grey",
             foreground="white"
         )
-        self.username_display.place(x = 0, y = 40)
+        display.place(x = 0, y = 40)
 
         # Total
         self.score = tk.IntVar()
-        self.counter = tk.Label(
-            self.game_frame,
+        counter = tk.Label(
+            master,
             textvariable=self.score,
             font=("Arial", 20),
             background="grey",
             foreground="white",
             width=5
         )
-        self.counter.place(x=409, y=370)
+        counter.place(x=409, y=370)
         
         # Prints per click
         self.ppc_display = tk.StringVar()
-        self.counter = tk.Label(
-            self.game_frame,
+        counter = tk.Label(
+            master,
             textvariable=self.ppc_display,
             font=("Arial", 14),
             background="grey",
             foreground="white",
             width=17
         )
-        self.counter.place(x=354, y=410)
+        counter.place(x=354, y=410)
         
         # Prints per second
         self.pps_display = tk.StringVar()
-        self.counter = tk.Label(
-            self.game_frame,
+        counter = tk.Label(
+            master,
             textvariable=self.pps_display,
             font=("Arial", 12),
             background="grey",
             foreground="white",
             width=17
         )
-        self.counter.place(x=370, y=440)
+        counter.place(x=370, y=440)
         
         self.powerup_display = PowerupDisplay(
             self.background,
@@ -281,9 +294,6 @@ class Main_GUI:
             0,
             200
         )
-
-        self.animation_offset = 0
-        self.animation_ongoing = False
         
     def create_crisis(self, crisis_name, crisis_text):
         messagebox.askquestion(crisis_name, crisis_text, type=messagebox.OK)
