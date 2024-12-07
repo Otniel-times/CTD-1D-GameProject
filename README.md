@@ -1,35 +1,24 @@
-# CTD-1D-GameProject
-Baka mitai kodomo na no ne
-Yume wo otte kizutsuite
-Uso ga heta na kuse ni waraenai egao wo miseta
+# It's Jover
+- [It's Jover](#its-jover)
+  - [Repository structure](#repository-structure)
+    - [Assets](#assets)
+    - [Src](#src)
+      - [1. game.py](#1-gamepy)
+      - [2. gui.py](#2-guipy)
+      - [3. dbHandler.py](#3-dbhandlerpy)
+    - [Disclaimers](#disclaimers)
 
-I love you mo roku ni iwanai
-Kuchibeta de honma ni bukiyou
-Na noni, na noni doushite sayonara wa ieta no
+## Repository structure
 
-Dame da ne dame yo dame na no yo
-Anta ga suki de sukisugite
-Dore dake tsuyoi osake demo
-Yugamanai omoide ga baka mitai
+### Assets
 
-Baka mitai hontou baka ne
-Anta shinjiru bakari de
-Tsuyoi onna no furi setsunasa no yokaze abiru
+### Src
+#### 1. game.py
 
-Hitori ni natte sannen ga sugi
-Machinami sae mo kawarimashita
-Na noni, na noni doushite miren dake okizari
+#### 2. gui.py
+#### 3. dbHandler.py
 
-Honma ni roku na otoko ya nai
-Soroi no yubiwa hazushimasu
-Zamaa miro seisei suru wa
-Ii kagen mattete mo baka mitai
 
-Dame da ne dame yo dame na no yo
-Anta ga sukide sukisugite
-Dore dake tsuyoi osake demo
-Yugamanai omoide ga baka mitai
-Honma ni roku na otoko ya nai
-Soroi no yubiwa hazushimasu
-Zamaa miro seisei suru wa
-Nan nano yo kono namida baka mitai
+
+### Disclaimers
+Any resemblance to any living or non living persons are purely coincidental
