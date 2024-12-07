@@ -36,7 +36,6 @@ class GameController:
         # Setup values
         self.prints_per_click = 1
         self.prints_per_sec = 0
-        self.per_sec_malus_scale = 1
         
         self.gui = Main_GUI()
         self.gui.clicker.on_click(self.earn)
@@ -69,7 +68,7 @@ class GameController:
         if self.crisis is not None:
             # TODO: lookup for crisis scale factors
             # use match?
-            self.score += self.prints_per_sec // self.per_sec_malus_scale
+            self.score += self.prints_per_sec
         else:
             self.score += self.prints_per_sec
         if self.powerup_timer >= 0:
@@ -145,6 +144,8 @@ class GameController:
         print_rate_base = self.prints_per_sec
         self.prints_per_click = 0
         self.prints_per_sec = 0
+
+        self.crisis_timer = 60
 
         ## Insert 60s timer
         ## Basic logic, will need help implementing this with timer
