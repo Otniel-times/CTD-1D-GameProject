@@ -25,8 +25,8 @@ class GameController:
         self.POWERUP_ACTIONS = [
             (1, 1, 5000), #Anyquadratic
             (4, 2, 5000), #Bamboo
-            (4, 500, 2000), #Douyin Ion Thrusters
-            (499, 5, 5000), #November
+            (4, 100, 2000), #Douyin Ion Thrusters
+            (49, 5, 5000), #November
         ]
 
         # TODO:implement userid
@@ -116,11 +116,6 @@ class GameController:
         # prevent activating multiple powerups at the same time
         if self.powerup_timer != -1:
             return
-        # TODO: Select image for active powerup
-        if powerup == Powerup.DouyinIonThrusters:
-            self.gui.powerup_display.change_image(image=self.gui.GFX_douyin)
-        else:
-            self.gui.powerup_display.change_image(image=self.gui.GFX_november)
         # unpack tuple into arguments
         self.powerup_action(*self.POWERUP_ACTIONS[powerup])
         time = self.POWERUP_ACTIONS[powerup][2]
@@ -164,7 +159,8 @@ class GameController:
         userResolved: True if crisis was resolved by the player, False if crisis was resolved by staff
         """
         self.crisis = None
-        #should_reward = random.choice((False, True))
+        # 66% chance of reward
+        #should_reward = random.choice((False, True, True))
         should_reward = True
         if userResolved and should_reward:
             reward = random.choice(list(Powerup))
