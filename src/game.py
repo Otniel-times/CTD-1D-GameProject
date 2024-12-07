@@ -1,7 +1,6 @@
 from gui import *
 import dbHandler
 import random
-from common import *
 
 class GameController:
     def __init__(self) -> None:
@@ -61,6 +60,8 @@ class GameController:
         self.gui.ppc_display.set(f"Prints per click: {self.prints_per_click}")
 
         # TODO: Schedule crises here
+        self.generate_crisis()
+
         #self.gui.root.after(100, self.gui.create_crisis, "Hello", "World")
         self.gui.mainloop()
     
@@ -128,7 +129,7 @@ class GameController:
     def save(self) -> None:
         dbHandler.update_score_by_id(self.uid, self.score)
 
-    def generate_crisis(self) -> None:
+    def generate_crisis(self) -> (int, int): # type: ignore
         """
         This function generates crisis and starts timer, calls self.call_staff() after timer runs out, once timer starts, self.prints_per_click and self.prints_per_sec are set to 0.
         Original print rates are stored locally.
@@ -143,19 +144,14 @@ class GameController:
         self.prints_per_click = 0
         self.prints_per_sec = 0
 
-        self.crisis_timer = 60
+        return print_rate_click, print_rate_base
 
         ## Insert 60s timer
         ## Basic logic, will need help implementing this with timer
-        if resolved:
-            self.prints_per_click = print_rate_click
-            self.prints_per_sec = print_rate_base
-            self.resolve_crisis(True)
 
-        else:
-            self.call_staff()
-            self.prints_per_click = print_rate_click
-            self.prints_per_sec = print_rate_base
+    def check_resolve(self):
+        ## Checking if crisis has been resolved
+        self.gui.callback = thing()
 
     def call_staff(self):
         ## GUI TO CALL STAFF
