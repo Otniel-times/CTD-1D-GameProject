@@ -158,13 +158,16 @@ class Main_GUI:
         self.menu_frame.pack()
         
         self.active_frame = self.menu_frame
+        self.create_menu_frame()
         
 
         self.game_frame = ttk.Frame()
         self.create_game_frame()
         
         self.name_frame = ttk.Frame()
+        self.create_name_frame()
         self.score_frame = ttk.Frame()
+        self.create_score_frame()
     
     def create_menu_frame(self):
         master = self.menu_frame
