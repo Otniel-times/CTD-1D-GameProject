@@ -299,7 +299,7 @@ class Main_GUI:
         self.powerup_notification = tk.Label(
             master,
             textvariable=self.powerup_string,
-            font=("Arial", 12),
+            font=("Arial", 9),
             background="grey",
             foreground="white",
             justify='left'
@@ -309,11 +309,11 @@ class Main_GUI:
         # special name replacements
         match powerup:
             case Powerup.Anyquadratic:
-                powerup_string = "You got a free Anyquadratic printer!"
+                powerup_string = "You got a free\nAnyquadratic printer!"
             case Powerup.Bamboo:
-                powerup_string = "You got a free Bamboo printer!"
+                powerup_string = "You got a free\nBamboo printer!"
             case Powerup.DouyinIonThrusters:
-                powerup_string = "Douyin Ion Thrusters are powering your printer"
+                powerup_string = "Douyin Ion Thrusters are\npowering your printer"
             case Powerup.November:
                 powerup_string = "Jovan is coming to help you"
 
