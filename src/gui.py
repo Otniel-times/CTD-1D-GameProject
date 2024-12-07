@@ -295,8 +295,8 @@ class Main_GUI:
             200
         )
         
-    def create_crisis(self, crisis_name, crisis_text):
-        messagebox.askquestion(crisis_name, crisis_text, type=messagebox.OK)
+    def create_crisis(self, crisis_name):
+        messagebox.askquestion("Crisis!", crisis_name, type=messagebox.OK)
     
     def change_frame(self, new_frame: ttk.Frame):
         self.active_frame.pack_forget()
