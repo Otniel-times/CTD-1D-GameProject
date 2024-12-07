@@ -80,9 +80,7 @@ class GameController:
             self.gui.change_frame(self.gui.name_frame)
             # break the "loop"
             return
-        # TODO: Remove this, only for testing getting powerups
-        if self.time % 20 == 0:
-            self.resolve_crisis(True)
+        
         self.time -= 1
         self.time_remaining_minutes = self.time // 60
         self.time_remaining_seconds = self.time % 60
