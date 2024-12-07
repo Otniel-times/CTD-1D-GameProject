@@ -136,9 +136,8 @@ class GameController:
         This function generates crisis and starts timer, calls self.call_staff() after timer runs out, once timer starts, self.prints_per_click and self.prints_per_sec are set to 0.
         Original print rates are stored locally.
         """
-        crisis_index = self.rng.randint(0, self.CRISIS_COUNT)
-        self.crisis = self.crises[crisis_index]
-        self.gui.create_crisis(self.crisis[0], self.crisis[1])
+        self.crisis_index = self.rng.randint(0, self.CRISIS_COUNT)
+        self.gui.create_crisis(self.crisis_index)
 
         ##Crisis starts
         resolved = False

@@ -60,8 +60,11 @@ class Print_Head():
         else:
             self.animation_ongoing = False
 
-# Filament
-class Filament:
+# Moving object
+class moving_object:
+    '''
+    This class is used for objects that are moveable to resolve crisises
+    '''
     object_is_moving = False
     def __init__(self, canvas: tk.Canvas, image: tk.Image, x: int, y:int):
         self.canvas = canvas
@@ -154,7 +157,9 @@ class Main_GUI:
         self.GFX_november = ImageTk.PhotoImage(GFX_november)
         GFX_douyin = ImageTk.Image.open(os.path.join(assets, 'douyinIon.jpg')).resize(POWERUP_SIZE)
         self.GFX_douyin = ImageTk.PhotoImage(GFX_douyin)
-        
+        GFX_anyquadratic = ImageTk.Image.open(os.path.join(assets, 'anyquadratic.jpg')).resize(POWERUP_SIZE)
+        self.GFX_anyquadratic = ImageTk.PhotoImage(GFX_anyquadratic)
+
         self.menu_frame = ttk.Frame()
         self.menu_frame.pack()
         
@@ -229,7 +234,7 @@ class Main_GUI:
         self.printer_head = Print_Head(self.background, self.GFX_printer_head, 340, 300)
         self.clicker = Clicker_Button(self.background, self.GFX_main_clicker, 450, 240)
         # This is for testing
-        self.filament = Filament(self.background, self.GFX_main_clicker, 450, 100) # TODO: Replace with actual asset
+        self.filament = moving_object(self.background, self.GFX_main_clicker, 450, 100) # TODO: Replace with actual asset
 
         # Username display
         self.test_username = tk.StringVar()
@@ -322,8 +327,16 @@ class Main_GUI:
         self.powerup_notification.place(x=0, y=250, anchor='nw')
         self.root.after(time, self.powerup_notification.place_forget)
         
-    def create_crisis(self, crisis_name):
+    def create_crisis(self, crisis_index):
         messagebox.askquestion("Crisis!", "Printing has stopped", type=messagebox.OK)
+
+        # No Filament
+        if crisis_index == 1:
+            pass
+
+        # No Plate
+        elif crisis_index == 2:
+            pass
     
     def change_frame(self, new_frame: ttk.Frame):
         self.active_frame.pack_forget()
