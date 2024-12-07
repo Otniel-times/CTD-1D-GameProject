@@ -16,13 +16,9 @@ class Powerups(IntEnum):
 
 class GameController:
     def __init__(self) -> None:
-        self.POWERUP_COUNT = 4
-        
         self.rng = random.Random()
         self.rng.seed(random.randint(0, 2**16))
 
-        # To store:
-        # Click count
         self.score = 0
 
         ## crises dict contains number:tuple(<crisis_name>, <crisis text>)
@@ -33,8 +29,6 @@ class GameController:
         self.crisis = None
 
         self.CRISIS_COUNT = len(self.crises)
-        # array of powerup counts
-        self.powerups = [0] * self.POWERUP_COUNT
         self.powerup_timer = -1
 
         # TODO: Finalize values
@@ -100,7 +94,7 @@ class GameController:
             return
         # TODO: Remove this, only for testing getting powerups
         if self.time % 20 == 0:
-            self.resolve_crisis()
+            self.resolve_crisis(True)
         self.time -= 1
         self.time_remaining_minutes = self.time // 60
         self.time_remaining_seconds = self.time % 60
@@ -131,22 +125,17 @@ class GameController:
             self.gui.powerup_display.hide()
         self.gui.root.after(time, reverse)
 
-    def get_powerup(self, powerup: Powerups):
-        self.powerups[powerup] += 1
-        self.gui.powerup_display.appear()
-
     def use_powerup(self, powerup: Powerups):
         # prevent activating multiple powerups at the same time
-        if self.powerup_timer != -1 or self.powerups[powerup] == 0:
+        if self.powerup_timer != -1:
             return
-        self.powerups[powerup] -= 1
         # TODO: Select image for active powerup
-        # OR Decide to show powerups at the same time
         if powerup == Powerups.DouyinIonThrusters:
             self.gui.powerup_display.change_image(image=self.gui.GFX_douyin)
         else:
             self.gui.powerup_display.change_image(image=self.gui.GFX_november)
         # unpack tuple into arguments
+        self.gui.powerup_display.appear()
         self.powerup_action(*self.POWERUP_ACTIONS[powerup])
 
     def save(self) -> None:
@@ -194,7 +183,6 @@ class GameController:
         should_reward = random.choice((False, True))
         if userResolved and should_reward:
             reward = random.choice(list(Powerups))
-            self.get_powerup(reward)
             print(f"You got the {reward.name}")
             self.use_powerup(reward)
 
