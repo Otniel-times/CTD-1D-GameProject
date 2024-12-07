@@ -1,18 +1,7 @@
-from enum import IntEnum
 from gui import *
 import dbHandler
 import random
-
-# Powerups.Anyquadratic for 0
-# list(Powerups) will give you a list of all Powerups
-# access name string by .name
-# int value used by default
-class Powerups(IntEnum):
-    Anyquadratic = 0
-    Bamboo = 1
-    DouyinIonThrusters = 2
-    November = 3
-    
+from common import *
 
 class GameController:
     def __init__(self) -> None:
@@ -125,18 +114,19 @@ class GameController:
             self.gui.powerup_display.hide()
         self.gui.root.after(time, reverse)
 
-    def use_powerup(self, powerup: Powerups):
+    def use_powerup(self, powerup: Powerup):
         # prevent activating multiple powerups at the same time
         if self.powerup_timer != -1:
             return
         # TODO: Select image for active powerup
-        if powerup == Powerups.DouyinIonThrusters:
+        if powerup == Powerup.DouyinIonThrusters:
             self.gui.powerup_display.change_image(image=self.gui.GFX_douyin)
         else:
             self.gui.powerup_display.change_image(image=self.gui.GFX_november)
         # unpack tuple into arguments
-        self.gui.powerup_display.appear()
         self.powerup_action(*self.POWERUP_ACTIONS[powerup])
+        time = self.POWERUP_ACTIONS[powerup][2]
+        self.gui.show_powerup_popup(powerup, time)
 
     def save(self) -> None:
         dbHandler.update_score_by_id(self.uid, self.score)
@@ -180,9 +170,10 @@ class GameController:
         userResolved: True if crisis was resolved by the player, False if crisis was resolved by staff
         """
         self.crisis = None
-        should_reward = random.choice((False, True))
+        #should_reward = random.choice((False, True))
+        should_reward = True
         if userResolved and should_reward:
-            reward = random.choice(list(Powerups))
+            reward = random.choice(list(Powerup))
             print(f"You got the {reward.name}")
             self.use_powerup(reward)
 

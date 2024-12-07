@@ -3,6 +3,7 @@ import tkinter as tk
 import tkinter.messagebox as messagebox
 from tkinter import ttk, font
 from PIL import ImageTk
+from common import *
 
 # Assets
 __location__ = os.path.realpath(os.path.dirname(__file__))
@@ -294,6 +295,32 @@ class Main_GUI:
             0,
             200
         )
+        self.powerup_string = tk.StringVar()
+        self.powerup_notification = tk.Label(
+            master,
+            textvariable=self.powerup_string,
+            font=("Arial", 12),
+            background="grey",
+            foreground="white",
+            justify='left'
+        )
+    
+    def show_powerup_popup(self, powerup: Powerup, time: int):
+        # special name replacements
+        match powerup:
+            case Powerup.Anyquadratic:
+                powerup_string = "You got a free Anyquadratic printer!"
+            case Powerup.Bamboo:
+                powerup_string = "You got a free Bamboo printer!"
+            case Powerup.DouyinIonThrusters:
+                powerup_string = "Douyin Ion Thrusters are powering your printer"
+            case Powerup.November:
+                powerup_string = "Jovan is coming to help you"
+
+        self.powerup_display.appear()
+        self.powerup_string.set(powerup_string)
+        self.powerup_notification.place(x=0, y=250, anchor='nw')
+        self.root.after(time, self.powerup_notification.place_forget)
         
     def create_crisis(self, crisis_name):
         messagebox.askquestion("Crisis!", "Printing has stopped", type=messagebox.OK)
