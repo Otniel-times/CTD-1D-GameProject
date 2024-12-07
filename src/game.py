@@ -64,7 +64,11 @@ class GameController:
 
         #self.gui.root.after(100, self.gui.create_crisis, "Hello", "World")
         self.gui.mainloop()
-    
+
+    """
+    Periodically called function to update score over time
+    Also used for displaying countdown
+    """
     def per_sec(self):
         if self.crisis is not None:
             # TODO: lookup for crisis scale factors
@@ -91,6 +95,9 @@ class GameController:
         self.gui.score.set(self.score)
         self.gui.root.after(1000, self.per_sec)
 
+    """
+    Function for clicker button press
+    """
     def earn(self):
         self.score += self.prints_per_click
         self.gui.score.set(self.score)
