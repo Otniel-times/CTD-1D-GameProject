@@ -1,28 +1,13 @@
-from enum import IntEnum
 from gui import *
 import dbHandler
 import random
-
-# Powerups.Anyquadratic for 0
-# list(Powerups) will give you a list of all Powerups
-# access name string by .name
-# int value used by default
-class Powerups(IntEnum):
-    Anyquadratic = 0
-    Bamboo = 1
-    DouyinIonThrusters = 2
-    November = 3
-    
+from common import *
 
 class GameController:
     def __init__(self) -> None:
-        self.POWERUP_COUNT = 4
-        
         self.rng = random.Random()
         self.rng.seed(random.randint(0, 2**16))
 
-        # To store:
-        # Click count
         self.score = 0
 
         ## crises dict contains number:tuple(<crisis_name>, <crisis text>)
@@ -33,8 +18,6 @@ class GameController:
         self.crisis = None
 
         self.CRISIS_COUNT = len(self.crises)
-        # array of powerup counts
-        self.powerups = [0] * self.POWERUP_COUNT
         self.powerup_timer = -1
 
         # TODO: Finalize values
@@ -100,7 +83,7 @@ class GameController:
             return
         # TODO: Remove this, only for testing getting powerups
         if self.time % 20 == 0:
-            self.resolve_crisis()
+            self.resolve_crisis(True)
         self.time -= 1
         self.time_remaining_minutes = self.time // 60
         self.time_remaining_seconds = self.time % 60
@@ -131,23 +114,19 @@ class GameController:
             self.gui.powerup_display.hide()
         self.gui.root.after(time, reverse)
 
-    def get_powerup(self, powerup: Powerups):
-        self.powerups[powerup] += 1
-        self.gui.powerup_display.appear()
-
-    def use_powerup(self, powerup: Powerups):
+    def use_powerup(self, powerup: Powerup):
         # prevent activating multiple powerups at the same time
-        if self.powerup_timer != -1 or self.powerups[powerup] == 0:
+        if self.powerup_timer != -1:
             return
-        self.powerups[powerup] -= 1
         # TODO: Select image for active powerup
-        # OR Decide to show powerups at the same time
-        if powerup == Powerups.DouyinIonThrusters:
+        if powerup == Powerup.DouyinIonThrusters:
             self.gui.powerup_display.change_image(image=self.gui.GFX_douyin)
         else:
             self.gui.powerup_display.change_image(image=self.gui.GFX_november)
         # unpack tuple into arguments
         self.powerup_action(*self.POWERUP_ACTIONS[powerup])
+        time = self.POWERUP_ACTIONS[powerup][2]
+        self.gui.show_powerup_popup(powerup, time)
 
     def save(self) -> None:
         dbHandler.update_score_by_id(self.uid, self.score)
@@ -157,9 +136,8 @@ class GameController:
         This function generates crisis and starts timer, calls self.call_staff() after timer runs out, once timer starts, self.prints_per_click and self.prints_per_sec are set to 0.
         Original print rates are stored locally.
         """
-        crisis_index = self.rng.randint(0, self.CRISIS_COUNT)
-        self.crisis = self.crises[crisis_index]
-        self.gui.create_crisis(self.crisis[0], self.crisis[1])
+        self.crisis_index = self.rng.randint(0, self.CRISIS_COUNT)
+        self.gui.create_crisis(self.crisis_index)
 
         ##Crisis starts
         resolved = False
@@ -191,10 +169,10 @@ class GameController:
         userResolved: True if crisis was resolved by the player, False if crisis was resolved by staff
         """
         self.crisis = None
-        should_reward = random.choice((False, True))
+        #should_reward = random.choice((False, True))
+        should_reward = True
         if userResolved and should_reward:
-            reward = random.choice(list(Powerups))
-            self.get_powerup(reward)
+            reward = random.choice(list(Powerup))
             print(f"You got the {reward.name}")
             self.use_powerup(reward)
 

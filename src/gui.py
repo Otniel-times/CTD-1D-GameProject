@@ -3,6 +3,7 @@ import tkinter as tk
 import tkinter.messagebox as messagebox
 from tkinter import ttk, font
 from PIL import ImageTk
+from common import *
 
 # Assets
 __location__ = os.path.realpath(os.path.dirname(__file__))
@@ -59,8 +60,11 @@ class Print_Head():
         else:
             self.animation_ongoing = False
 
-# Filament
-class Filament:
+# Moving object
+class moving_object:
+    '''
+    This class is used for objects that are moveable to resolve crisises
+    '''
     object_is_moving = False
     def __init__(self, canvas: tk.Canvas, image: tk.Image, x: int, y:int):
         self.canvas = canvas
@@ -153,7 +157,9 @@ class Main_GUI:
         self.GFX_november = ImageTk.PhotoImage(GFX_november)
         GFX_douyin = ImageTk.Image.open(os.path.join(assets, 'douyinIon.jpg')).resize(POWERUP_SIZE)
         self.GFX_douyin = ImageTk.PhotoImage(GFX_douyin)
-        
+        GFX_anyquadratic = ImageTk.Image.open(os.path.join(assets, 'anyquadratic.jpg')).resize(POWERUP_SIZE)
+        self.GFX_anyquadratic = ImageTk.PhotoImage(GFX_anyquadratic)
+
         self.menu_frame = ttk.Frame()
         self.menu_frame.pack()
         
@@ -228,7 +234,7 @@ class Main_GUI:
         self.printer_head = Print_Head(self.background, self.GFX_printer_head, 340, 300)
         self.clicker = Clicker_Button(self.background, self.GFX_main_clicker, 450, 240)
         # This is for testing
-        self.filament = Filament(self.background, self.GFX_main_clicker, 450, 100) # TODO: Replace with actual asset
+        self.filament = moving_object(self.background, self.GFX_main_clicker, 450, 100) # TODO: Replace with actual asset
 
         # Username display
         self.test_username = tk.StringVar()
@@ -294,9 +300,43 @@ class Main_GUI:
             0,
             200
         )
+        self.powerup_string = tk.StringVar()
+        self.powerup_notification = tk.Label(
+            master,
+            textvariable=self.powerup_string,
+            font=("Arial", 9),
+            background="grey",
+            foreground="white",
+            justify='left'
+        )
+    
+    def show_powerup_popup(self, powerup: Powerup, time: int):
+        # special name replacements
+        match powerup:
+            case Powerup.Anyquadratic:
+                powerup_string = "You got a free\nAnyquadratic printer!"
+            case Powerup.Bamboo:
+                powerup_string = "You got a free\nBamboo printer!"
+            case Powerup.DouyinIonThrusters:
+                powerup_string = "Douyin Ion Thrusters are\npowering your printer"
+            case Powerup.November:
+                powerup_string = "Jovan is coming to help you"
+
+        self.powerup_display.appear()
+        self.powerup_string.set(powerup_string)
+        self.powerup_notification.place(x=0, y=250, anchor='nw')
+        self.root.after(time, self.powerup_notification.place_forget)
         
-    def create_crisis(self, crisis_name):
-        messagebox.askquestion("Crisis!", crisis_name, type=messagebox.OK)
+    def create_crisis(self, crisis_index):
+        messagebox.askquestion("Crisis!", "Printing has stopped", type=messagebox.OK)
+
+        # No Filament
+        if crisis_index == 1:
+            pass
+
+        # No Plate
+        elif crisis_index == 2:
+            pass
     
     def change_frame(self, new_frame: ttk.Frame):
         self.active_frame.pack_forget()
