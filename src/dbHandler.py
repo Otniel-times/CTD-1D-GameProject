@@ -1,6 +1,6 @@
 import sqlite3
 
-## Start connection DO NOT USE THIS
+## Start connection, for use within this file
 def connect():
     """
     Starts connection, returns connection and cursor object
@@ -20,20 +20,9 @@ def on_init():
 
     :return val: None
     """
-    connection, cursor = connect()
     ## Run on init to initialise table
-
-    command = """CREATE TABLE "playerInfo" (
-    "id" INTEGER NOT NULL,
-    "userName" VARCHAR(255) NOT NULL,
-    "score" INTEGER,
-    PRIMARY KEY ("id" AUTOINCREMENT))"""
-    cursor.execute(command)
-    print("Player Info created")
-
-    cursor.execute(command)
-
-    connection.commit()
+    connection, cursor = connect()
+    create_table()
     connection.close()
 
 def create_table():
@@ -75,7 +64,7 @@ def get_all():
     finally:
         connection.close()
 
-def getall_username_n_score():
+def getall_username_and_score():
     """
     Get all usernames and scores
 
@@ -180,7 +169,7 @@ def get_username_by_id(uid:str):
 
 
 ## Update general data
-def update_userName_by_id(uid:int, new_u:str):
+def update_username_by_id(uid:int, new_u:str):
     """
     Update username with the associated userID
 
@@ -245,64 +234,3 @@ def delete_record_by_uid(uid:int):
         connection.close()
         return e
 
-
-#### Manage items
-## View item data
-# def get_powerups(userID:int):
-#     """
-#     Get list of all powerups associated with the userID
-
-#     :param userID:  User id to query
-#     :type userID:   (int)
-
-#     :return val:    (list)
-#     """
-#     connection, cursor = connect()
-#     try:
-#         command = """SELECT * FROM playerItems WHERE id =?"""
-#         cursor.execute(command, (userID,))
-#         result = cursor.fetchall()
-#         if result:
-#             return result
-#         else:
-#             return "User does not exist."
-
-#     except sqlite3.Error as e:
-#         return e
-
-
-# ## Update item data
-# def update_powerups(userID:int, items: dict[str,int]):
-#     """
-#     Update number of powerups associated with the userID
-
-#     :param userID:  User id assocated with the update
-#     :type userID:   (int)
-
-#     :param items:   Dictionary of item and count (item:count)
-#     :type items:    (dict)
-
-#     :return val:    None
-#     """
-
-#     connection, cursor = connect()
-#     try:
-#         command = """UPDATE playerItems SET Anycubic =? WHERE id =?"""
-#         cursor.execute(command,(items['anycubic'], userID,))
-
-#         command = """UPDATE playerItems SET Bambu =? WHERE id =?"""
-#         cursor.execute(command,(items['bambu'], userID,))
-
-#         command = """UPDATE playerItems SET DouyinIonThrusters =? WHERE id =?"""
-#         cursor.execute(command,(items['douyin'], userID,))
-
-#         command = """UPDATE playerItems SET November =? WHERE id =?"""
-#         cursor.execute(command,(items['november'], userID,))
-
-
-#         connection.commit()
-#         connection.close()
-
-#     except sqlite3.Error as e:
-#         connection.close()
-#         return e
