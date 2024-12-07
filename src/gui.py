@@ -296,7 +296,7 @@ class Main_GUI:
         )
         
     def create_crisis(self, crisis_name):
-        messagebox.askquestion("Crisis!", crisis_name, type=messagebox.OK)
+        messagebox.askquestion("Crisis!", "Printing has stopped", type=messagebox.OK)
     
     def change_frame(self, new_frame: ttk.Frame):
         self.active_frame.pack_forget()
