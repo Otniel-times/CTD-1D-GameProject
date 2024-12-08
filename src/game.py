@@ -41,8 +41,11 @@ class GameController:
         # Function to initialize game logic after button pressed
         def play():
             self.gui.root.after(1000, self.per_sec)
-            # TODO: Schedule crises here
-            #self.gui.root.after(2000, self.generate_crisis)
+            #Schedule crises here
+            self.gui.root.after(2000, self.generate_crisis)
+            self.gui.root.after(6000, self.generate_crisis)
+            self.gui.root.after(6000, self.generate_crisis)
+            
         self.gui.play_callback = play
         def name_callback():
             self.username = self.gui.loginobject.name.get()
