@@ -18,7 +18,10 @@
 #### 2. gui.py
 #### 3. dbHandler.py
 
+## Gameplay
+### Main mechanics
+### Powerup mechanics
+### Crises
 
-
-### Disclaimers
+## Disclaimers
 Any resemblance to any living or non living persons are purely coincidental
