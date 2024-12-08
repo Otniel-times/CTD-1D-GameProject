@@ -154,7 +154,7 @@ class GameController:
             self.prints_per_sec = print_rate_base
             self.gui.ppc_display.set(f"Prints per click: {self.prints_per_click}")
             self.gui.pps_display.set(f"Auto Prints/sec: {self.prints_per_sec}")
-            self.resolve_crisis(False)
+            self.call_staff()
         
         self.gui.root.after(60_000, reverse)
 
@@ -167,6 +167,7 @@ class GameController:
     def call_staff(self):
         ## GUI TO CALL STAFF
         self.resolve_crisis(False)
+        self.gui.popup_fablab()
         
     def resolve_crisis(self, userResolved: bool):
         """

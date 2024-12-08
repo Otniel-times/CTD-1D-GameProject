@@ -350,6 +350,9 @@ class Main_GUI:
         elif crisis_index == 2:
             pass
     
+    def popup_fablab(self):
+        messagebox.askquestion("Crisis Resolved", "Fablab staff have come to fix your problems", type=messagebox.OK)
+    
     def change_frame(self, new_frame: ttk.Frame | tk.Frame):
         self.active_frame.pack_forget()
         self.active_frame = new_frame
