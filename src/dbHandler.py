@@ -1,4 +1,5 @@
 import sqlite3
+from winreg import ConnectRegistry
 
 ## Start connection, for use within this file
 def connect():
@@ -233,4 +234,32 @@ def delete_record_by_uid(uid:int):
     except sqlite3.Error as e:
         connection.close()
         return e
+
+def new_entry(username:str, uid:int, score:int):
+    """
+    Adds a new entry to the database (new username, uid)
+
+    :param username:New username
+    :type username: (str)
+
+    :param uid:     new user ID to be added
+    :type uid:      (int)
+
+    :param score:   Score of the new user
+    :type score:    (int)
+    """
+    connection, cursor = connect()
+
+    try:
+        command = f"""INSERT INTO "playerInfo" ("id", "userName", "score")
+        VALUES ({uid}, {username}, {score})"""
+        cursor.execute(command)
+        print(f"{username} sent to db")
+        connection.commit()
+        connection.close()
+
+    except sqlite3.Error as e:
+        connection.close()
+        return e
+
 
