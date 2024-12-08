@@ -83,6 +83,28 @@ def getall_username_and_score():
     finally:
         connection.close()
 
+def getall_username_and_score_sorted():
+    """
+    Get all usernames and scores, sorted by score
+
+    :return val:    (list)
+    """
+
+    connection, cursor = connect()
+    try:
+        command = """SELECT userName, score FROM playerInfo
+        ORDER BY score DESC"""
+
+        cursor.execute(command)
+        results = cursor.fetchall()
+        return results
+
+    except sqlite3.Error as e:
+        print("Failed to retrieve data from table.", e)
+
+    finally:
+        connection.close()
+
 def getall_username():
     """
     Get all usernames

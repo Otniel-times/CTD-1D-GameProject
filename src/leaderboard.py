@@ -9,7 +9,8 @@ class Leaderboard:
 
     def show_table(self):
         ## display leaderboard table
-        data = dbHandler.getall_username_and_score()
+        ## Data is already sorted by score, descending
+        data = dbHandler.getall_username_and_score_sorted()
         pass
 
 
