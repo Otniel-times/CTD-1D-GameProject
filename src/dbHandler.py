@@ -1,5 +1,4 @@
 import sqlite3
-from winreg import ConnectRegistry
 
 ## Start connection, for use within this file
 def connect():
