@@ -4,6 +4,7 @@ import tkinter.messagebox as messagebox
 from tkinter import ttk, font
 from PIL import ImageTk
 from common import *
+from login import *
 
 # Assets
 __location__ = os.path.realpath(os.path.dirname(__file__))
@@ -165,7 +166,6 @@ class Main_GUI:
         
         self.active_frame = self.menu_frame
         self.create_menu_frame()
-        
 
         self.game_frame = ttk.Frame()
         self.create_game_frame()
@@ -193,10 +193,11 @@ class Main_GUI:
         
         self.play_callback = lambda: None
 
+        # using lambdas to pass function with pre-filled arguments
         self.play_button = ttk.Button(
             master,
             text="Play",
-            command=self.on_play,
+            command=lambda: self.change_frame(self.name_frame),
             width=32
             )
         self.play_button.pack()
@@ -215,12 +216,17 @@ class Main_GUI:
             )
         self.exit_button.pack()
     
-    # TODO: Clarence
+    # TODO: Nicholas
     def create_score_frame(self):
         master = self.score_frame
     
     def create_name_frame(self):
-        master = self.name_frame
+        self.loginobject = Login(self.root)
+        self.name_frame = self.loginobject.root
+        def play_callback():
+            self.change_frame(self.game_frame)
+            self.on_play()
+        self.loginobject.play_callback = play_callback
 
 
     def create_game_frame(self):
@@ -341,7 +347,7 @@ class Main_GUI:
         elif crisis_index == 2:
             pass
     
-    def change_frame(self, new_frame: ttk.Frame):
+    def change_frame(self, new_frame: ttk.Frame | tk.Frame):
         self.active_frame.pack_forget()
         self.active_frame = new_frame
         self.active_frame.pack()

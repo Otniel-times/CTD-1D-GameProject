@@ -1,53 +1,51 @@
 import tkinter as tk
+from tkinter import ttk
 from tkinter import messagebox
 
-class MyGUI:
+class Login:
 
-    def __init__(self):
-        self.win = tk.Tk()
+    def __init__(self, master):
+        self.root = ttk.Frame(master)
 
-        self.root = tk.Frame()
-        self.root.pack()
-
-        self.label = tk.Label(self.root, text = "Enter your username", font =('Arial', 18))
+        self.label = ttk.Label(self.root, text = "Enter your username", font =('Arial', 18))
         self.label.pack(padx=10, pady=10)
 
-        self.textbox = tk.Text(self.root, height=5, font=('Arial', 16))
+        self.name = tk.StringVar()
+        self.textbox = ttk.Entry(self.root, font=('Arial', 16), textvariable=self.name)
         self.textbox.bind("<KeyPress>", self.shortcut)
         self.textbox.pack(padx=10, pady=10)
 
         self.check_state = tk.IntVar()
 
-        self.check = tk.Checkbutton(self.root, text = "Show Messagebox", font=('Arial', 16), variable=self.check_state)
+        self.check = ttk.Checkbutton(self.root, text = "Show Messagebox", variable=self.check_state)
         self.check.pack(padx=10, pady=10)
 
-        self.button = tk.Button(self.root, text ="Show Username", font=('Arial', 18), command = self.show_message)
+        self.button = ttk.Button(self.root, text ="Show Username", command = self.show_message)
         self.button.pack(padx = 10, pady=10)
 
-        self.clearbtn = tk.Button(self.root, text="Clear", font=('Arial', 18), command=self.clear)
+        self.clearbtn = ttk.Button(self.root, text="Clear", command=self.clear)
         self.clearbtn.pack(padx=10, pady=10)
-
-
-        self.win.protocol("WM_DELETE_WINDOW", self.on_closing)
-        self.win.mainloop()
+        
+        self.play_callback = lambda: None
+        self.name_callback = lambda: None
 
     def show_message(self):
         if self.check_state.get() == 0:
-            #print(self.textbox.get('1.0', tk.END))
-            name = self.textbox.get('1.0', tk.END)
-            print(name)
+            print(self.name.get())
         else:
-            messagebox.showinfo(title = "Message", message=self.textbox.get('1.0', tk.END))
+            messagebox.showinfo(title = "Message", message=self.name.get())
+        self.play_callback()
+        self.name_callback()
 
     def shortcut(self, event):
         if event.state ==12 and event.keysym == "Return":
             self.show_message()
 
-    def on_closing(self):
-        if messagebox.askyesno(title="Quit?", message="Do you really want to quit?"):
-            self.root.destroy()
-
     def clear(self):
-        self.textbox.delete('1.0', tk.END)
+        self.name.set("")
 
-MyGUI()
+if __name__ == "__main__":
+    root = tk.Tk()
+    menu = Login(root)
+    menu.root.pack()
+    root.mainloop()

@@ -29,7 +29,7 @@ class GameController:
             (49, 5, 5000), #November
         ]
 
-        # TODO:implement userid
+        self.username = ""
         self.uid = 0
 
         # Setup values
@@ -38,9 +38,19 @@ class GameController:
         
         self.gui = Main_GUI()
         self.gui.clicker.on_click(self.earn)
+        # Function to initialize game logic after button pressed
         def play():
             self.gui.root.after(1000, self.per_sec)
+            # TODO: Schedule crises here
+            self.gui.root.after(2000, self.generate_crisis)
         self.gui.play_callback = play
+        def name_callback():
+            self.username = self.gui.loginobject.name.get()
+            if self.username[-1].lower() == 's':
+                self.gui.test_username.set(f"{self.username}' 3D Printer")
+            else:
+                self.gui.test_username.set(f"{self.username}'s 3D Printer")
+        self.gui.loginobject.name_callback = name_callback
 
         # time limit - value in seconds
         self.time = 200
@@ -48,21 +58,11 @@ class GameController:
         self.time_remaining_seconds = self.time % 60
         self.gui.time_remaining.set(f"{self.time_remaining_minutes :02d}:{self.time_remaining_seconds :02d}")
 
-        # temporary user name for the purposes of the thing
-        self.test_username = 'GaS'
-        if self.test_username[-1].lower() == 's':
-            self.gui.test_username.set(f"{self.test_username}' 3D Printer")
-        else:
-            self.gui.test_username.set(f"{self.test_username}'s 3D Printer")
 
         # GUI setup
         self.gui.pps_display.set(f"Auto Prints/sec: {self.prints_per_sec}")
         self.gui.ppc_display.set(f"Prints per click: {self.prints_per_click}")
 
-        # TODO: Schedule crises here
-        self.generate_crisis()
-
-        #self.gui.root.after(100, self.gui.create_crisis, "Hello", "World")
         self.gui.mainloop()
 
     """
@@ -82,7 +82,7 @@ class GameController:
         # using <= in case of overrun - even if its not really possible
         if self.time <= 0:
             self.save()
-            self.gui.change_frame(self.gui.name_frame)
+            self.gui.change_frame(self.gui.score_frame)
             # break the "loop"
             return
         
