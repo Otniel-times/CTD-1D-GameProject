@@ -349,6 +349,12 @@ class Main_GUI:
         # No Plate
         elif crisis_index == 2:
             pass
+
+        # Error code
+        elif crisis_index == 3:
+            pass
+
+
     
     def popup_fablab(self):
         messagebox.askquestion("Crisis Resolved", "Fablab staff have come to fix your problems", type=messagebox.OK)
