@@ -2,6 +2,7 @@ import dbHandler
 import tkinter as tk
 from tkinter import ttk
 
+## TODO: nicholas
 class Leaderboard:
     def __init__(self, master) -> None:
         self.root = ttk.Frame(master)

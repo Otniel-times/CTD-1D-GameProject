@@ -1,3 +1,4 @@
+from re import L, U
 from gui import *
 import dbHandler
 import random
@@ -9,11 +10,10 @@ class GameController:
 
         self.score = 0
 
-        ## crises dict contains number:tuple(<crisis_name>, <crisis text>)
-        ## Please insert crisis text
-        self.crises = {1:("No filament",""),
-                       2:("No printer bed",""),
-                       3:("Error code FILLTHISIN","")}
+        ## crises dict contains {<number>:<crisis name>}
+        self.crises = {1:"No filament",
+                       2:"No printer bed",
+                       3:"Error code FILLTHISIN"}
         self.crisis = None
 
         self.CRISIS_COUNT = len(self.crises)
@@ -135,6 +135,7 @@ class GameController:
         Original print rates are stored locally.
         """
         self.crisis_index = self.rng.randint(0, self.CRISIS_COUNT)
+        self.crisis = self.crises[self.crisis_index]
         self.gui.create_crisis(self.crisis_index)
 
         ##Crisis starts
@@ -160,9 +161,47 @@ class GameController:
 
         return print_rate_click, print_rate_base
 
-    def check_resolve(self):
-        ## Checking if crisis has been resolved
-        self.gui.callback = thing()
+    def resolve_no_filament(self, userResolved:bool):
+        """
+        Checks if "no filament" crisis and resolves if it is
+        
+        userResolved: Boolean value, True if crisis was resolved by user
+
+        Returns None if resolved, returns "Wrong resolution" if crisis does not match
+        """
+        if self.crisis == "No filament":
+            self.resolve_crisis(userResolved)
+
+        else:
+            return "Wrong resolution"
+
+    def resolve_no_plate(self, userResolved:bool):
+        """
+        Checks if "no plate" crisis and resolves if it is
+
+        userResolved: Boolean value, True if crisis was resolved by user
+
+        Returns None if resolved, returns "Wrong resolution" if crisis does not match
+        """
+        if self.crisis == "No printer bed":
+            self.resolve_crisis(userResolved)
+
+        else:
+            return "Wrong resolution"
+
+    def resolve_print_error(self, userResolved:bool):
+        """
+        Checks if "print error" crisis and resolves if it is
+
+        userResolved: Boolean value, True if crisis was resolved by user
+
+        Returns None if resolved, returns "Wrong resolution" if crisis does not match
+        """
+        if self.crisis == 'Error code FILLTHISIN':
+            self.resolve_crisis(userResolved)
+
+        else:
+            return "Wrong resolution"
 
     def call_staff(self):
         ## GUI TO CALL STAFF
