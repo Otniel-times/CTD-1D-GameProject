@@ -42,7 +42,7 @@ class GameController:
         def play():
             self.gui.root.after(1000, self.per_sec)
             # TODO: Schedule crises here
-            self.gui.root.after(2000, self.generate_crisis)
+            #self.gui.root.after(2000, self.generate_crisis)
         self.gui.play_callback = play
         def name_callback():
             self.username = self.gui.loginobject.name.get()
@@ -70,12 +70,7 @@ class GameController:
     Also used for displaying countdown
     """
     def per_sec(self):
-        if self.crisis is not None:
-            # TODO: lookup for crisis scale factors
-            # use match?
-            self.score += self.prints_per_sec
-        else:
-            self.score += self.prints_per_sec
+        self.score += self.prints_per_sec
         if self.powerup_timer >= 0:
             self.powerup_timer -= 1
             self.gui.powerup_display.update_text(self.powerup_timer)
@@ -85,6 +80,9 @@ class GameController:
             self.gui.change_frame(self.gui.score_frame)
             # break the "loop"
             return
+        
+        #if self.time % 10 == 0:
+        #    self.resolve_crisis(True)
         
         self.time -= 1
         self.time_remaining_minutes = self.time // 60
@@ -145,11 +143,22 @@ class GameController:
         print_rate_base = self.prints_per_sec
         self.prints_per_click = 0
         self.prints_per_sec = 0
+        self.gui.ppc_display.set(f"Prints per click: {self.prints_per_click}")
+        self.gui.pps_display.set(f"Auto Prints/sec: {self.prints_per_sec}")
+        
+        def reverse():
+            # prevent previous crisis timeout from rolling into the next
+            if self.crisis is None:
+                return
+            self.prints_per_click = print_rate_click
+            self.prints_per_sec = print_rate_base
+            self.gui.ppc_display.set(f"Prints per click: {self.prints_per_click}")
+            self.gui.pps_display.set(f"Auto Prints/sec: {self.prints_per_sec}")
+            self.resolve_crisis(False)
+        
+        self.gui.root.after(60_000, reverse)
 
         return print_rate_click, print_rate_base
-
-        ## Insert 60s timer
-        ## Basic logic, will need help implementing this with timer
 
     def check_resolve(self):
         ## Checking if crisis has been resolved

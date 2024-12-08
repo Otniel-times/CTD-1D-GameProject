@@ -112,7 +112,7 @@ class moving_object:
             self.current_y_position = event.y
 
 class PowerupDisplay:
-    def __init__(self, canvas: tk.Canvas, image: tk.Image | ImageTk.PhotoImage, x: int, y: int):
+    def __init__(self, canvas: tk.Canvas, image: tk.Image | ImageTk.PhotoImage, textvariable, x: int, y: int):
         self.canvas = canvas
         self.x = x
         self.y = y
@@ -124,13 +124,24 @@ class PowerupDisplay:
             fill='white',
             font=font.Font(size=24, weight=font.BOLD),
         )
+        self.powerup_description = tk.Label(
+            self.canvas,
+            textvariable=textvariable,
+            font=("Arial", 9),
+            background="grey",
+            foreground="white",
+            justify='left'
+        )
+
         self.hide()
     def appear(self):
         self.canvas.itemconfigure(self.image, state='normal')
         self.canvas.itemconfigure(self.countdown, state='normal')
+        self.powerup_description.place(x=0, y=250, anchor='nw')
     def hide(self):
         self.canvas.itemconfigure(self.image, state='hidden')
         self.canvas.itemconfigure(self.countdown, state='hidden')
+        self.powerup_description.place_forget()
     def change_image(self, image):
         self.canvas.itemconfigure(self.image, image=image)
     def update_text(self, text):
@@ -154,12 +165,12 @@ class Main_GUI:
         self.GFX_background = tk.PhotoImage(file=os.path.join(assets, 'background.png'))
         
         POWERUP_SIZE = (128,128)
-        GFX_november = ImageTk.Image.open(os.path.join(assets, 'jovan eepy.jpg')).resize(POWERUP_SIZE)
-        self.GFX_november = ImageTk.PhotoImage(GFX_november)
-        GFX_douyin = ImageTk.Image.open(os.path.join(assets, 'douyinIon.jpg')).resize(POWERUP_SIZE)
-        self.GFX_douyin = ImageTk.PhotoImage(GFX_douyin)
-        GFX_anyquadratic = ImageTk.Image.open(os.path.join(assets, 'anyquadratic.jpg')).resize(POWERUP_SIZE)
-        self.GFX_anyquadratic = ImageTk.PhotoImage(GFX_anyquadratic)
+        image = ImageTk.Image.open(os.path.join(assets, 'jovan eepy.jpg')).resize(POWERUP_SIZE)
+        self.GFX_november = ImageTk.PhotoImage(image)
+        image = ImageTk.Image.open(os.path.join(assets, 'douyinIon.jpg')).resize(POWERUP_SIZE)
+        self.GFX_douyin = ImageTk.PhotoImage(image)
+        image = ImageTk.Image.open(os.path.join(assets, 'anyquadratic.jpg')).resize(POWERUP_SIZE)
+        self.GFX_anyquadratic = ImageTk.PhotoImage(image)
 
         self.menu_frame = ttk.Frame()
         self.menu_frame.pack()
@@ -231,7 +242,7 @@ class Main_GUI:
 
     def create_game_frame(self):
         master = self.game_frame
-        self.background = tk.Canvas(self.game_frame, width=900, height=600)
+        self.background = tk.Canvas(master, width=900, height=600)
         self.background.create_image(450, 300, image=self.GFX_background)
         self.background.create_image(450, 300, image=self.GFX_printer )
 
@@ -300,20 +311,13 @@ class Main_GUI:
         )
         counter.place(x=370, y=440)
         
+        self.powerup_string = tk.StringVar()
         self.powerup_display = PowerupDisplay(
             self.background,
             self.GFX_november,
+            self.powerup_string,
             0,
             200
-        )
-        self.powerup_string = tk.StringVar()
-        self.powerup_notification = tk.Label(
-            master,
-            textvariable=self.powerup_string,
-            font=("Arial", 9),
-            background="grey",
-            foreground="white",
-            justify='left'
         )
     
     def show_powerup_popup(self, powerup: Powerup, time: int):
@@ -323,6 +327,7 @@ class Main_GUI:
                 image = self.GFX_anyquadratic
             case Powerup.Bamboo:
                 powerup_string = "You got a free\nBamboo printer!"
+                image = self.GFX_anyquadratic
             case Powerup.DouyinIonThrusters:
                 powerup_string = "Douyin Ion Thrusters are\npowering your printer"
                 image = self.GFX_douyin
@@ -332,9 +337,7 @@ class Main_GUI:
 
         self.powerup_display.appear()
         self.powerup_string.set(powerup_string)
-        self.powerup_notification.place(x=0, y=250, anchor='nw')
         self.powerup_display.change_image(image=image)
-        self.root.after(time, self.powerup_notification.place_forget)
         
     def create_crisis(self, crisis_index):
         messagebox.askquestion("Crisis!", "Printing has stopped", type=messagebox.OK)
