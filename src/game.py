@@ -112,8 +112,8 @@ class GameController:
         self.gui.printer_head.animation_check()
         # printing too much causes crises
         self.clicks_since_last_crisis += 1
-        # 5 clicks per second
-        if self.clicks_since_last_crisis > 5 * 15:
+        # 4 clicks per second
+        if self.clicks_since_last_crisis > 4 * 15:
             self.generate_crisis()
 
     def powerup_action(self, moreclick, moresec, time):
