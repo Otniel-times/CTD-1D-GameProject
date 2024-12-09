@@ -379,7 +379,7 @@ class Main_GUI:
             400
         )
     
-    def register_callbacks(self, play, name, clicker, resolve_filament, resolve_bed, resolve_error, call_fablab):
+    def register_callbacks(self, play, name, clicker, resolve_filament, resolve_bed, call_fablab):
         self.play_callback = play
         self.loginobject.name_callback = name
         self.clicker.on_click(clicker)

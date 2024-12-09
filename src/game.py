@@ -65,7 +65,6 @@ class GameController:
             self.earn,
             self.resolve_no_filament,
             self.resolve_no_plate,
-            self.resolve_print_error,
             self.call_staff
         )
 
@@ -199,23 +198,14 @@ class GameController:
         else:
             print("Wrong resolution")
 
-    def resolve_print_error(self):
-        """
-        Checks if "print error" crisis and resolves if it is
-        """
-        if self.crisis == 'Error code FILLTHISIN':
-            self.resolve_crisis(True)
-
-        else:
-            print("Wrong resolution")
-
     def call_staff(self):
-        if self.crisis is not None:
+        if self.crisis is None:
             return
         ## GUI TO CALL STAFF
         self.resolve_crisis(False)
         self.gui.show_filament()
         self.gui.show_plate()
+        self.gui.hide_error()
         self.gui.popup_fablab()
         
     def resolve_crisis(self, userResolved: bool):
