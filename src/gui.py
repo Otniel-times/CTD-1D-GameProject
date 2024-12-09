@@ -428,6 +428,7 @@ class Main_GUI:
                 image = self.GFX_november
 
         self.powerup_display.appear()
+        self.powerup_display.update_text("")
         self.powerup_string.set(powerup_string)
         self.powerup_display.change_image(image=image)
         
