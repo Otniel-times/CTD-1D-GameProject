@@ -17,9 +17,6 @@ class Login:
 
         self.check_state = tk.IntVar()
 
-        self.check = ttk.Checkbutton(self.root, text = "Show Messagebox", variable=self.check_state)
-        self.check.pack(padx=10, pady=10)
-
         self.button = ttk.Button(self.root, text ="Play", command = self.show_message)
         self.button.pack(padx = 10, pady=10)
 
