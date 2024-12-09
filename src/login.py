@@ -7,7 +7,7 @@ class Login:
     def __init__(self, master):
         self.root = ttk.Frame(master)
 
-        self.label = ttk.Label(self.root, text = "Enter your username", font =('Arial', 18))
+        self.label = ttk.Label(self.root, text = "Play", font =('Arial', 18))
         self.label.pack(padx=10, pady=10)
 
         self.name = tk.StringVar()
