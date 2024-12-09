@@ -5,6 +5,7 @@ from tkinter import ttk, font
 from PIL import ImageTk
 from common import *
 from login import *
+from leaderboard import *
 
 # Assets
 __location__ = os.path.realpath(os.path.dirname(__file__))
@@ -242,9 +243,16 @@ class Main_GUI:
         self.exit_button.pack()
     
     # TODO: Nicholas
-    def create_score_frame(self):
-        master = self.score_frame
     
+    def create_score_frame(self):
+        self.scoreobject = Leaderboard(self.root)
+        self.score_frame = self.scoreobject.root
+        def play_callback():
+            self.change_frame(self.game_frame)
+            self.on_play()
+        self.loginobject.play_callback = play_callback
+    
+
     def create_name_frame(self):
         self.loginobject = Login(self.root)
         self.name_frame = self.loginobject.root

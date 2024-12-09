@@ -12,13 +12,13 @@ class GameController:
         ## crises dict contains {<number>:<crisis name>}
         self.crises = {1:"No filament",
                        2:"No printer bed",
-                       3:"Error code FILLTHISIN"}
+                       3:"Error code HMS_0500-0100-0003-0005"}
         self.crisis = None
 
         self.CRISIS_COUNT = len(self.crises)
         self.powerup_timer = -1
 
-        # TODO: Finalize values
+        # TODO: Finalize valuesf
         # parameters for function
         # perclick bonus, persec bonus, time(ms) until disabled
         self.POWERUP_ACTIONS = [
