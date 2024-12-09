@@ -23,8 +23,8 @@ class GameController:
         # perclick bonus, persec bonus, time(ms) until disabled
         self.POWERUP_ACTIONS = [
             (1, 1, 10000), #Anyquadratic
-            (4, 2, 10000), #Bamboo
-            (4, 25, 3000), #Douyin Ion Thrusters
+            (5, 2, 10000), #Bamboo
+            (5, 25, 3000), #Douyin Ion Thrusters
             (20, 5, 15000), #November
         ]
 
@@ -117,15 +117,15 @@ class GameController:
             self.generate_crisis()
 
     def powerup_action(self, moreclick, moresec, time):
-        self.prints_per_click += moreclick
-        self.prints_per_sec += moresec
+        self.prints_per_click = moreclick
+        self.prints_per_sec = moresec
         self.powerup_timer = time // 1000
         self.gui.powerup_display.update_text(self.powerup_timer)
         self.gui.update_print_display(self.prints_per_click, self.prints_per_sec)
 
         def reverse():
-            self.prints_per_click -= moreclick
-            self.prints_per_sec -= moresec
+            self.prints_per_click = 1
+            self.prints_per_sec = 0
             self.gui.update_print_display(self.prints_per_click, self.prints_per_sec)
             self.gui.powerup_display.hide()
         self.gui.root.after(time, reverse)
@@ -197,6 +197,7 @@ class GameController:
     def call_staff(self):
         ## GUI TO CALL STAFF
         self.resolve_crisis(False)
+        self.gui.show_filament()
         self.gui.popup_fablab()
         
     def resolve_crisis(self, userResolved: bool):
