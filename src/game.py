@@ -109,7 +109,7 @@ class GameController:
         # printing too much causes crises
         self.clicks_since_last_crisis += 1
         # 5 clicks per second
-        if self.clicks_since_last_crisis > 5 * 15:
+        if self.clicks_since_last_crisis > 3 * 15:
             self.generate_crisis()
 
     def powerup_action(self, moreclick, moresec, time):
@@ -173,6 +173,7 @@ class GameController:
         Checks if "no filament" crisis and resolves if it is
         """
         if self.crisis == "No filament":
+            self.gui.show_filament()
             self.resolve_crisis(True)
 
         else:
