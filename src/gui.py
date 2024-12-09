@@ -72,6 +72,7 @@ class moving_object:
         self.x = x
         self.y = y
         self.image: int = self.canvas.create_image(x, y, image=image)
+        self.callback = lambda: None
         self.get_binds()
     
     def get_binds(self):
@@ -92,7 +93,7 @@ class moving_object:
 
         # TODO: Check for correct filament position when the crisis hits
         if False: # Trigger: The crisis for filaments is happening AND The position is within the bounds
-            pass
+            self.callback()
         else:
             self.x_diff = self.original_x_position - self.current_x_position
             self.y_diff = self.original_y_position - self.current_y_position
