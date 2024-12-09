@@ -12,13 +12,13 @@ class GameController:
         ## crises dict contains {<number>:<crisis name>}
         self.crises = {1:"No filament",
                        2:"No printer bed",
-                       3:"Error code FILLTHISIN"}
+                       3:"Error code HMS_0500-0100-0003-0005"}
         self.crisis = None
 
         self.CRISIS_COUNT = len(self.crises)
         self.powerup_timer = -1
 
-        # TODO: Finalize values
+        # TODO: Finalize valuesf
         # parameters for function
         # perclick bonus, persec bonus, time(ms) until disabled
         self.POWERUP_ACTIONS = [
@@ -112,8 +112,8 @@ class GameController:
         self.gui.printer_head.animation_check()
         # printing too much causes crises
         self.clicks_since_last_crisis += 1
-        # 5 clicks per second
-        if self.clicks_since_last_crisis > 5 * 15:
+        # 4 clicks per second
+        if self.clicks_since_last_crisis > 4 * 15:
             self.generate_crisis()
 
     def powerup_action(self, moreclick, moresec, time):
@@ -154,7 +154,7 @@ class GameController:
         if self.crisis != None:
             return
         #crisis_index, crisis_name = self.rng.choice(list(self.crises.items()))
-        crisis_index, crisis_name = list(self.crises.items())[0]
+        crisis_index, crisis_name = list(self.crises.items())[1]
         self.gui.create_crisis(crisis_index)
         self.crisis = crisis_name
 
@@ -182,6 +182,7 @@ class GameController:
         Checks if "no plate" crisis and resolves if it is
         """
         if self.crisis == "No printer bed":
+            self.gui.show_plate()
             self.resolve_crisis(True)
 
         else:
@@ -201,6 +202,7 @@ class GameController:
         ## GUI TO CALL STAFF
         self.resolve_crisis(False)
         self.gui.show_filament()
+        self.gui.show_plate()
         self.gui.popup_fablab()
         
     def resolve_crisis(self, userResolved: bool):
