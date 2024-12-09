@@ -7,7 +7,7 @@ class Login:
     def __init__(self, master):
         self.root = ttk.Frame(master)
 
-        self.label = ttk.Label(self.root, text = "Play", font =('Arial', 18))
+        self.label = ttk.Label(self.root, text = "Type your username", font =('Arial', 18))
         self.label.pack(padx=10, pady=10)
 
         self.name = tk.StringVar()
@@ -20,12 +20,11 @@ class Login:
         self.check = ttk.Checkbutton(self.root, text = "Show Messagebox", variable=self.check_state)
         self.check.pack(padx=10, pady=10)
 
-        self.button = ttk.Button(self.root, text ="Show Username", command = self.show_message)
+        self.button = ttk.Button(self.root, text ="Play", command = self.show_message)
         self.button.pack(padx = 10, pady=10)
 
         self.clearbtn = ttk.Button(self.root, text="Clear", command=self.clear)
         self.clearbtn.pack(padx=10, pady=10)
-        
         self.play_callback = lambda: None
         self.name_callback = lambda: None
 
