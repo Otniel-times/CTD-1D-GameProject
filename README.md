@@ -57,7 +57,7 @@ The intended demographic is SUTDents in general however not limited to. Given th
 
 Having played our game, players can be reassured that they have the basic capability to tinker with 3D printers.
 ## References
-Ian Bogost (2010). Cow Clicker [Facebook]
+Ian Bogost. (2010). Cow Clicker [Facebook]
 
 Julien Theinnot. (2021). Cookie Clicker [Steam]. Playsaurus.
 
