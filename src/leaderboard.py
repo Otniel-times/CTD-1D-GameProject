@@ -14,8 +14,11 @@ class Leaderboard:
         self.label = ttk.Label(self.root, text = "High Scores", font =('Arial', 18))
         self.label.pack(padx=10, pady=10)
 
+        
+        data_len = len(data)
+        
         # to display data
-        for i in range(10):
+        for i in range(1):
             self.label = ttk.Label(self.root, text = data[i], font =('Arial', 18))
             self.label.pack(padx=10, pady=10)
 
