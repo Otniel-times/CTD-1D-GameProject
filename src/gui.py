@@ -352,7 +352,7 @@ class Main_GUI:
         self.time_remaining.set(time_string)
         print(time_string)
 
-        time_till_intervention = 60 - time_crisis_start + time
+        time_till_intervention = FABLAB_TIMEOUT - time_crisis_start + time
         if time_till_intervention <= 0 or time_crisis_start <= 0:
             self.time_intervention.set("")
         else:

@@ -137,6 +137,7 @@ class GameController:
 
     def save(self) -> None:
         dbHandler.update_score_by_id(self.uid, self.score)
+        dbHandler.new_entry(self.username, self.uid, self.score)
 
     def generate_crisis(self):
         """
@@ -165,7 +166,7 @@ class GameController:
                 return
             self.call_staff()
         
-        self.gui.root.after(30_000, reverse)
+        self.gui.root.after(FABLAB_TIMEOUT * 1000, reverse)
 
     def resolve_no_filament(self):
         """

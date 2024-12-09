@@ -8,3 +8,5 @@ class Powerup(IntEnum):
     Bamboo = 1
     DouyinIonThrusters = 2
     November = 3
+
+FABLAB_TIMEOUT = 40
