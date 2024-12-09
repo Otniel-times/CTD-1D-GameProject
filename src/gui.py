@@ -262,12 +262,14 @@ class Main_GUI:
         self.background.create_image(450, 300, image=self.GFX_background)
         self.background.create_image(450, 300, image=self.GFX_printer )
         self.filament_static = self.background.create_image(350, 18, image=self.GFX_filament_static)
+        self.printer_bed_static = self.background.create_image(447, 486, image=self.GFX_printer_bed)
 
         self.background.pack()
 
         self.printer_head = Print_Head(self.background, self.GFX_printer_head, 340, 430)
         self.clicker = Clicker_Button(self.background, self.GFX_main_clicker, 450, 325)
         self.filament = Moving_Object(self.background, self.GFX_filament, 800, 500, 295, 408, 2, 115, 1)
+        self.printer_bed = Moving_Object(self.background, self.GFX_printer_bed, 800, 600, 321, 566, 458, 514, 2)
 
         # Username display
         self.test_username = tk.StringVar()
@@ -406,14 +408,18 @@ class Main_GUI:
 
         # No Plate
         elif crisis_index == 2:
-            pass
+            self.background.itemconfigure(self.printer_bed_static, state='hidden')
 
         # Error code
         elif crisis_index == 3:
             pass
     
+    # Used to re-show elements that have been hidden by crisises
     def show_filament(self):
         self.background.itemconfigure(self.filament_static, state='normal')
+
+    def show_plate(self):
+        self.background.itemconfigure(self.printer_bed_static, state='normal')
 
     def user_resolved(self):
         self.printer_head.enabled = True
