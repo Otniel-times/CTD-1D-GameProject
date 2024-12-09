@@ -22,10 +22,10 @@ class GameController:
         # parameters for function
         # perclick bonus, persec bonus, time(ms) until disabled
         self.POWERUP_ACTIONS = [
-            (1, 1, 5000), #Anyquadratic
-            (4, 2, 5000), #Bamboo
-            (4, 100, 2000), #Douyin Ion Thrusters
-            (49, 5, 5000), #November
+            (1, 1, 10000), #Anyquadratic
+            (5, 2, 10000), #Bamboo
+            (5, 25, 3000), #Douyin Ion Thrusters
+            (20, 5, 15000), #November
         ]
 
         self.username = ""
@@ -91,6 +91,10 @@ class GameController:
             self.clicks_since_last_crisis = 0
         #if self.time % 10 == 0:
         #    self.resolve_crisis(True)
+        if self.time_crisis_start - self.time >= FABLAB_TIMEOUT and \
+            self.crisis is not None:
+            self.crisis = None
+            self.call_staff()
         
         self.time -= 1
         self.gui.update_time_display(self.time, self.time_crisis_start)
@@ -113,15 +117,18 @@ class GameController:
             self.generate_crisis()
 
     def powerup_action(self, moreclick, moresec, time):
-        self.prints_per_click += moreclick
-        self.prints_per_sec += moresec
+        self.prints_per_click = moreclick
+        self.prints_per_sec = moresec
         self.powerup_timer = time // 1000
         self.gui.powerup_display.update_text(self.powerup_timer)
         self.gui.update_print_display(self.prints_per_click, self.prints_per_sec)
 
         def reverse():
-            self.prints_per_click -= moreclick
-            self.prints_per_sec -= moresec
+            if self.crisis is not None:
+                self.prints_per_click = 0
+            else:
+                self.prints_per_click = 1
+            self.prints_per_sec = 0
             self.gui.update_print_display(self.prints_per_click, self.prints_per_sec)
             self.gui.powerup_display.hide()
         self.gui.root.after(time, reverse)
@@ -136,7 +143,6 @@ class GameController:
         self.gui.show_powerup_popup(powerup, time)
 
     def save(self) -> None:
-        dbHandler.update_score_by_id(self.uid, self.score)
         dbHandler.new_entry(self.username, self.uid, self.score)
 
     def generate_crisis(self):
@@ -159,20 +165,13 @@ class GameController:
         self.prints_per_sec = 0
         self.gui.update_print_display(self.prints_per_click, self.prints_per_sec)
         self.time_crisis_start = self.time
-        
-        def reverse():
-            # prevent previous crisis timeout from rolling into the next
-            if self.crisis is None:
-                return
-            self.call_staff()
-        
-        self.gui.root.after(FABLAB_TIMEOUT * 1000, reverse)
 
     def resolve_no_filament(self):
         """
         Checks if "no filament" crisis and resolves if it is
         """
         if self.crisis == "No filament":
+            self.gui.show_filament()
             self.resolve_crisis(True)
 
         else:
@@ -201,6 +200,7 @@ class GameController:
     def call_staff(self):
         ## GUI TO CALL STAFF
         self.resolve_crisis(False)
+        self.gui.show_filament()
         self.gui.popup_fablab()
         
     def resolve_crisis(self, userResolved: bool):
@@ -210,6 +210,7 @@ class GameController:
         userResolved: True if crisis was resolved by the player, False if crisis was resolved by staff
         """
         self.crisis = None
+        self.time_crisis_start = 0
         self.prints_per_click = self.original_click
         self.prints_per_sec = self.original_sec
         self.gui.update_print_display(self.prints_per_click, self.prints_per_sec)
@@ -220,5 +221,7 @@ class GameController:
             reward = random.choice(list(Powerup))
             print(f"You got the {reward.name}")
             self.use_powerup(reward)
+        if userResolved:
+            self.gui.user_resolved()
 
 GameController()

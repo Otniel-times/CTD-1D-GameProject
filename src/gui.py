@@ -63,16 +63,22 @@ class Print_Head():
             self.animation_ongoing = False
 
 # Moving object
-class moving_object:
+class Moving_Object:
     '''
     This class is used for objects that are moveable to resolve crisises
+    (x/y)_(lower/upper) is for the bounds of the final dragging position.
     '''
-    def __init__(self, canvas: tk.Canvas, image: tk.Image, x: int, y:int):
+    def __init__(self, canvas: tk.Canvas, image: tk.Image, x: int, y:int, x_lower: int, x_upper: int, y_lower: int, y_upper: int, crisis_id: int):
         self.canvas = canvas
         self.x = x
         self.y = y
         self.image: int = self.canvas.create_image(x, y, image=image)
         self.object_is_moving = False
+        self.x_lower = x_lower
+        self.x_upper = x_upper
+        self.y_lower = y_lower
+        self.y_upper = y_upper
+        self.crisis_id = crisis_id
         
         self.get_binds()
 
@@ -94,13 +100,12 @@ class moving_object:
     def move_stop(self, event):
         self.object_is_moving = False
 
-        # TODO: Check for correct filament position when the crisis hits
-        if False: # Trigger: The crisis for filaments is happening AND The position is within the bounds
+        # The position is within the bounds, x_lower < (current x) < x_upper and y_lower < (current y) < y_upper
+        if self.current_x_position > self.x_lower and self.current_x_position < self.x_upper and self.current_y_position > self.y_lower and self.current_y_position < self.y_upper:
             self.callback()
-        else:
-            self.x_diff = self.original_x_position - self.current_x_position
-            self.y_diff = self.original_y_position - self.current_y_position
-            self.canvas.move(self.image, self.x_diff, self.y_diff)
+        self.x_diff = self.original_x_position - self.current_x_position
+        self.y_diff = self.original_y_position - self.current_y_position
+        self.canvas.move(self.image, self.x_diff, self.y_diff)
 
         self.current_x_position = 0
         self.current_y_position = 0
@@ -151,29 +156,38 @@ class PowerupDisplay:
     def update_text(self, text):
         self.canvas.itemconfigure(self.countdown, text=text)
 
-
-# The main clicker itself
+# The main game GUI
 class Main_GUI:
     def __init__(self):
         # Setup
         self.root = tk.Tk()
-        self.root.minsize(width=400, height=300)
-        self.root.title("It's So Joever")
+        self.root.minsize(width=900, height=600)
+        self.root.title("Jo's 3D Printing Adventure")
         self.root.resizable(False, False)
 
         # Assets
         assets = os.path.join(__location__, os.pardir, 'assets')
         self.GFX_main_clicker = tk.PhotoImage(file=os.path.join(assets, 'sutdCoin100.png'))
-        self.GFX_printer = tk.PhotoImage(file=os.path.join(assets, 'pixelPrinter.png'))
-        self.GFX_printer_head = tk.PhotoImage(file=os.path.join(assets, 'pixelPrinterHead.png'))
+        self.GFX_printer = tk.PhotoImage(file=os.path.join(assets, 'Printer.png'))
+        self.GFX_printer_head = tk.PhotoImage(file=os.path.join(assets, 'Printer Head.png'))
         self.GFX_background = tk.PhotoImage(file=os.path.join(assets, 'background.png'))
+        self.GFX_background_title = tk.PhotoImage(file=os.path.join(assets, 'backgroundTitle.png'))
+        self.GFX_filament_static = tk.PhotoImage(file=os.path.join(assets, 'Filament (In AMS).png'))
+
+        # Moving asset
+        self.GFX_filament = tk.PhotoImage(file=os.path.join(assets, 'Filament.png'))
+        self.GFX_printer_bed = tk.PhotoImage(file=os.path.join(assets, 'Print Bed.png'))
+
+        # Title
+        self.GFX_title = tk.PhotoImage(file=os.path.join(assets, 'Title.png'))
         
-        POWERUP_SIZE = (128,128)
+        # Powerups
+        POWERUP_SIZE = (260,260)
         image = ImageTk.Image.open(os.path.join(assets, 'jovan eepy.jpg')).resize(POWERUP_SIZE)
         self.GFX_november = ImageTk.PhotoImage(image)
         image = ImageTk.Image.open(os.path.join(assets, 'douyinIon.jpg')).resize(POWERUP_SIZE)
         self.GFX_douyin = ImageTk.PhotoImage(image)
-        image = ImageTk.Image.open(os.path.join(assets, 'anyquadratic.jpg')).resize(POWERUP_SIZE)
+        image = ImageTk.Image.open(os.path.join(assets, 'anyquadratic.png')).resize(POWERUP_SIZE)
         self.GFX_anyquadratic = ImageTk.PhotoImage(image)
 
         self.menu_frame = ttk.Frame()
@@ -192,44 +206,42 @@ class Main_GUI:
     
     def create_menu_frame(self):
         master = self.menu_frame
-        # TODO: Image
-        self.title_image = ttk.Label(
+        self.title_image = tk.Label(
             master,
-            text="Jo's\n3D Printing Adventure",
-            font=font.Font(
-                family="Comic Sans MS",
-                size=18,
-                weight='bold',
-                slant='italic'
-            ),
-            justify='center'
+            image=self.GFX_background_title
             )
         self.title_image.pack()
-        
         self.play_callback = lambda: None
+
+        s = ttk.Style()
 
         # using lambdas to pass function with pre-filled arguments
         self.play_button = ttk.Button(
             master,
             text="Play",
             command=lambda: self.change_frame(self.name_frame),
-            width=32
+            width=32,
+            style='my.TButton'
             )
-        self.play_button.pack()
+        self.play_button.place(x=239,y=300)
         self.scoreboard_button = ttk.Button(
             master,
             text="Scoreboard",
             command=lambda: self.change_frame(self.score_frame),
-            width=32
+            width=32,
+            style='my.TButton'
             )
-        self.scoreboard_button.pack()
+        self.scoreboard_button.place(x=239,y=350)
         self.exit_button = ttk.Button(
             master,
             text="Exit",
             command=self.root.destroy,
-            width=32
+            width=32,
+            style='my.TButton'
             )
-        self.exit_button.pack()
+        
+        s.configure('my.TButton', font=('Helvetica', 18))
+        self.exit_button.place(x=239,y=400)
     
     # TODO: Nicholas
     def create_score_frame(self):
@@ -249,13 +261,13 @@ class Main_GUI:
         self.background = tk.Canvas(master, width=900, height=600)
         self.background.create_image(450, 300, image=self.GFX_background)
         self.background.create_image(450, 300, image=self.GFX_printer )
+        self.filament_static = self.background.create_image(350, 18, image=self.GFX_filament_static)
 
         self.background.pack()
 
-        self.printer_head = Print_Head(self.background, self.GFX_printer_head, 340, 300)
-        self.clicker = Clicker_Button(self.background, self.GFX_main_clicker, 450, 240)
-        # This is for testing
-        self.filament = moving_object(self.background, self.GFX_main_clicker, 450, 100) # TODO: Replace with actual asset
+        self.printer_head = Print_Head(self.background, self.GFX_printer_head, 340, 430)
+        self.clicker = Clicker_Button(self.background, self.GFX_main_clicker, 450, 325)
+        self.filament = Moving_Object(self.background, self.GFX_filament, 800, 500, 295, 408, 2, 115, 1)
 
         # Username display
         self.test_username = tk.StringVar()
@@ -285,9 +297,10 @@ class Main_GUI:
             textvariable=self.time_intervention,
             font=("Arial", 20),
             background="grey",
-            foreground="white"
+            foreground="white",
+            justify='left'
         )
-        display.place(x = 0, y = 72)
+        display.place(x = 0, y = 80)
 
         # Total
         self.score = tk.IntVar()
@@ -299,7 +312,7 @@ class Main_GUI:
             foreground="white",
             width=5
         )
-        counter.place(x=409, y=370)
+        counter.place(x=407, y=230)
         
         # Prints per click
         self.ppc_display = tk.StringVar()
@@ -311,7 +324,7 @@ class Main_GUI:
             foreground="white",
             width=17
         )
-        counter.place(x=354, y=410)
+        counter.place(x=354, y=520)
         
         # Prints per second
         self.pps_display = tk.StringVar()
@@ -323,7 +336,7 @@ class Main_GUI:
             foreground="white",
             width=17
         )
-        counter.place(x=370, y=440)
+        counter.place(x=370, y=550)
         
         self.powerup_string = tk.StringVar()
         self.powerup_display = PowerupDisplay(
@@ -331,7 +344,7 @@ class Main_GUI:
             self.GFX_november,
             self.powerup_string,
             0,
-            200
+            400
         )
     
     def register_callbacks(self, play, name, clicker, resolve_filament, resolve_bed, resolve_error):
@@ -356,7 +369,7 @@ class Main_GUI:
         if time_till_intervention <= 0 or time_crisis_start <= 0:
             self.time_intervention.set("")
         else:
-            self.time_intervention.set(f"{time_till_intervention :02d} s")
+            self.time_intervention.set(f"{time_till_intervention :02d}s\nUntil Intervention\nby Lab Staff")
     
     def show_powerup_popup(self, powerup: Powerup, time: int):
         match powerup:
@@ -385,10 +398,11 @@ class Main_GUI:
             icon=messagebox.ERROR
         )
         self.printer_head.enabled = False
+        self.current_crisis_index = crisis_index
 
         # No Filament
         if crisis_index == 1:
-            pass
+            self.background.itemconfigure(self.filament_static, state='hidden')
 
         # No Plate
         elif crisis_index == 2:
@@ -397,11 +411,13 @@ class Main_GUI:
         # Error code
         elif crisis_index == 3:
             pass
+    
+    def show_filament(self):
+        self.background.itemconfigure(self.filament_static, state='normal')
 
     def user_resolved(self):
         self.printer_head.enabled = True
 
-    
     def popup_fablab(self):
         messagebox.askquestion(
             "Crisis Resolved",
