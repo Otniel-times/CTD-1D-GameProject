@@ -131,6 +131,11 @@ class Moving_Object:
             self.current_y_position = event.y
 
 class Fablab_Phone:
+    '''
+    The phone to call the fablab staff
+    Resolves all crisis in the game controller file
+    '''
+
     def __init__(self, canvas: tk.Canvas, image: tk.Image | ImageTk.PhotoImage, x: int, y: int):
         self.canvas = canvas
         self.x = x
@@ -142,6 +147,9 @@ class Fablab_Phone:
 
 
 class PowerupDisplay:
+    '''
+    Logic for powerups that show in the left corner
+    '''
     def __init__(self, canvas: tk.Canvas, image: tk.Image | ImageTk.PhotoImage, textvariable, x: int, y: int):
         self.canvas = canvas
         self.x = x
