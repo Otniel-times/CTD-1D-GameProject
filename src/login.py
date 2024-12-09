@@ -15,8 +15,6 @@ class Login:
         self.textbox.bind("<KeyPress>", self.shortcut)
         self.textbox.pack(padx=10, pady=10)
 
-        self.check_state = tk.IntVar()
-
         self.button = ttk.Button(self.root, text ="Play", command = self.show_message)
         self.button.pack(padx = 10, pady=10)
 
@@ -26,12 +24,10 @@ class Login:
         self.name_callback = lambda: None
 
     def show_message(self):
-        if self.check_state.get() == 0:
-            print(self.name.get())
-        else:
-            messagebox.showinfo(title = "Message", message=self.name.get())
-        self.play_callback()
-        self.name_callback()
+        print(self.name.get())
+        if self.name.get() != "":
+            self.play_callback()
+            self.name_callback()
 
     def shortcut(self, event):
         if event.state ==12 and event.keysym == "Return":
