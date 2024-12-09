@@ -407,10 +407,10 @@ class Main_GUI:
     def show_powerup_popup(self, powerup: Powerup, time: int):
         match powerup:
             case Powerup.Anyquadratic:
-                powerup_string = "You got a free\nAnyquadratic printer!"
+                powerup_string = "You got a free\nAnyQuadratic printer!"
                 image = self.GFX_anyquadratic
             case Powerup.Bamboo:
-                powerup_string = "You got a free\nBamboo printer!"
+                powerup_string = "You got a free\nB4MBOO printer!"
                 image = self.GFX_bamboo
             case Powerup.DouyinIonThrusters:
                 powerup_string = "Douyin Ion Thrusters are\npowering your printer"
