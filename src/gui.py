@@ -12,6 +12,9 @@ __location__ = os.path.realpath(os.path.dirname(__file__))
 # https://stackoverflow.com/questions/70996098/tkinter-button-over-transparent-background
 #TBD
 class Clicker_Button():
+    '''
+    The SUTD Coin button
+    '''
     def __init__(self, canvas: tk.Canvas, image: tk.Image, x: int, y: int, **kwargs):
         self.canvas = canvas
         self.x = x
@@ -32,6 +35,9 @@ class Clicker_Button():
         self.canvas.move(self.image, 0, 5)
 
 class Print_Head():
+    '''
+    The moving printer head with animation checks etc.
+    '''
     print_head_animation_delay = 10
     def __init__(self, canvas: tk.Canvas, image: tk.Image, x: int, y: int):
         self.canvas = canvas
@@ -100,6 +106,9 @@ class Moving_Object:
 
     def move_stop(self, event):
         self.object_is_moving = False
+
+        # print(f"self.current_x_position: {self.current_x_position:}, self.x_lower: {self.x_lower}, self.x_upper: {self.x_upper}")
+        # print(f"self.current_y_position: {self.current_y_position:}, self.y_lower: {self.y_lower}, self.y_upper: {self.y_upper}")
 
         # The position is within the bounds, x_lower < (current x) < x_upper and y_lower < (current y) < y_upper
         if self.current_x_position > self.x_lower and self.current_x_position < self.x_upper and self.current_y_position > self.y_lower and self.current_y_position < self.y_upper:
@@ -354,7 +363,7 @@ class Main_GUI:
         self.loginobject.name_callback = name
         self.clicker.on_click(clicker)
         self.filament.callback = resolve_filament
-        # TODO: Other objects
+        self.printer_bed.callback = resolve_bed
 
     def update_print_display(self, prints_per_click, prints_per_sec):
         self.ppc_display.set(f"Prints per click: {prints_per_click}")
