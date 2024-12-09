@@ -187,6 +187,7 @@ class Main_GUI:
         # Moving asset
         self.GFX_filament = tk.PhotoImage(file=os.path.join(assets, 'Filament.png'))
         self.GFX_printer_bed = tk.PhotoImage(file=os.path.join(assets, 'Print Bed.png'))
+        self.GFX_fablab_phone = tk.PhotoImage(file=os.path.join(assets, 'FabLab Hotline.png'))
 
         # Title
         self.GFX_title = tk.PhotoImage(file=os.path.join(assets, 'Title.png'))
@@ -201,6 +202,8 @@ class Main_GUI:
         self.GFX_anyquadratic = ImageTk.PhotoImage(image)
         image = ImageTk.Image.open(os.path.join(assets, 'bamboo.png')).resize(POWERUP_SIZE)
         self.GFX_bamboo = ImageTk.PhotoImage(image)
+        image = ImageTk.Image.open(os.path.join(assets, 'Fablab Staff.png')).resize(POWERUP_SIZE)
+        self.GFX_fablab_staff = ImageTk.PhotoImage(image)
 
         self.menu_frame = ttk.Frame()
         self.menu_frame.pack()

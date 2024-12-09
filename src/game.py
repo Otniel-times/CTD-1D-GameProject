@@ -25,7 +25,7 @@ class GameController:
         # parameters for function
         # perclick bonus, persec bonus, time(ms) until disabled
         self.POWERUP_ACTIONS = [
-            (1, 1, 10000), #Anyquadratic
+            (2, 1, 10000), #Anyquadratic
             (5, 2, 10000), #Bamboo
             (5, 25, 3000), #Douyin Ion Thrusters
             (20, 5, 15000), #November
