@@ -9,4 +9,4 @@ class Powerup(IntEnum):
     DouyinIonThrusters = 2
     November = 3
 
-FABLAB_TIMEOUT = 40
+FABLAB_TIMEOUT = 20
