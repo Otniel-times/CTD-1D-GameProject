@@ -22,10 +22,10 @@ class GameController:
         # parameters for function
         # perclick bonus, persec bonus, time(ms) until disabled
         self.POWERUP_ACTIONS = [
-            (1, 1, 5000), #Anyquadratic
-            (4, 2, 5000), #Bamboo
-            (4, 100, 2000), #Douyin Ion Thrusters
-            (49, 5, 5000), #November
+            (1, 1, 10000), #Anyquadratic
+            (4, 2, 10000), #Bamboo
+            (4, 25, 3000), #Douyin Ion Thrusters
+            (20, 5, 15000), #November
         ]
 
         self.username = ""
@@ -109,7 +109,7 @@ class GameController:
         # printing too much causes crises
         self.clicks_since_last_crisis += 1
         # 5 clicks per second
-        if self.clicks_since_last_crisis > 3 * 15:
+        if self.clicks_since_last_crisis > 5 * 15:
             self.generate_crisis()
 
     def powerup_action(self, moreclick, moresec, time):
