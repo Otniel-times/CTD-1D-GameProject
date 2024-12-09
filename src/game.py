@@ -136,7 +136,6 @@ class GameController:
         self.gui.show_powerup_popup(powerup, time)
 
     def save(self) -> None:
-        dbHandler.update_score_by_id(self.uid, self.score)
         dbHandler.new_entry(self.username, self.uid, self.score)
 
     def generate_crisis(self):
@@ -211,6 +210,7 @@ class GameController:
         userResolved: True if crisis was resolved by the player, False if crisis was resolved by staff
         """
         self.crisis = None
+        self.time_crisis_start = 0
         self.prints_per_click = self.original_click
         self.prints_per_sec = self.original_sec
         self.gui.update_print_display(self.prints_per_click, self.prints_per_sec)
@@ -221,5 +221,7 @@ class GameController:
             reward = random.choice(list(Powerup))
             print(f"You got the {reward.name}")
             self.use_powerup(reward)
+        if userResolved:
+            self.gui.user_resolved()
 
 GameController()
