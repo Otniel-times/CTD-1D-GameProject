@@ -1,5 +1,8 @@
 import dbHandler
 
-print(dbHandler.new_entry("hello",1, 100))
+#dbHandler.new_entry("hello3", 150)
 data = dbHandler.getall_username_and_score_sorted()
 print(data)
+
+everything = dbHandler.get_all()
+print(everything)

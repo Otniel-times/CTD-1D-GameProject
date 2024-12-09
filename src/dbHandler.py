@@ -263,7 +263,7 @@ def delete_record_by_uid(uid:int) -> None:
         connection.close()
         return e
 
-def new_entry(username:str, uid:int, score:int) -> None:
+def new_entry(username:str, score:int) -> None:
     """
     Adds a new entry to the database (new username, uid)
 
@@ -281,8 +281,8 @@ def new_entry(username:str, uid:int, score:int) -> None:
     connection, cursor = connect()
 
     try:
-        command = f"""INSERT INTO "playerInfo" ("id", "userName", "score")
-        VALUES ({uid}, {username}, {score})"""
+        command = f"""INSERT INTO "playerInfo" ("userName", "score")
+        VALUES ("{username}", {score})"""
         cursor.execute(command)
         print(f"{username} sent to db")
         connection.commit()
