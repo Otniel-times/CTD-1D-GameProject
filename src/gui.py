@@ -199,6 +199,8 @@ class Main_GUI:
         self.GFX_douyin = ImageTk.PhotoImage(image)
         image = ImageTk.Image.open(os.path.join(assets, 'anyquadratic.png')).resize(POWERUP_SIZE)
         self.GFX_anyquadratic = ImageTk.PhotoImage(image)
+        image = ImageTk.Image.open(os.path.join(assets, 'bamboo.png')).resize(POWERUP_SIZE)
+        self.GFX_bamboo = ImageTk.PhotoImage(image)
 
         self.menu_frame = ttk.Frame()
         self.menu_frame.pack()
@@ -389,7 +391,7 @@ class Main_GUI:
                 image = self.GFX_anyquadratic
             case Powerup.Bamboo:
                 powerup_string = "You got a free\nBamboo printer!"
-                image = self.GFX_anyquadratic
+                image = self.GFX_bamboo
             case Powerup.DouyinIonThrusters:
                 powerup_string = "Douyin Ion Thrusters are\npowering your printer"
                 image = self.GFX_douyin
