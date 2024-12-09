@@ -1,4 +1,3 @@
-from re import L, U
 from gui import *
 import dbHandler
 import random
@@ -38,7 +37,6 @@ class GameController:
         self.clicks_since_last_crisis = 0
         
         self.gui = Main_GUI()
-        self.gui.clicker.on_click(self.earn)
         # Function to initialize game logic after button pressed
         def play():
             self.gui.root.after(1000, self.per_sec)
@@ -46,17 +44,21 @@ class GameController:
             #self.gui.root.after(2000, self.generate_crisis)
             #self.gui.root.after(6000, self.generate_crisis)
             #self.gui.root.after(6000, self.generate_crisis)
-            
-        self.gui.play_callback = play
         def name_callback():
             self.username = self.gui.loginobject.name.get()
             if self.username[-1].lower() == 's':
                 self.gui.test_username.set(f"{self.username}' 3D Printer")
             else:
                 self.gui.test_username.set(f"{self.username}'s 3D Printer")
-        self.gui.loginobject.name_callback = name_callback
         
-        self.gui.filament.callback = self.resolve_no_filament
+        self.gui.register_callbacks(
+            play,
+            name_callback,
+            self.earn,
+            self.resolve_no_filament,
+            self.resolve_no_plate,
+            self.resolve_print_error
+        )
 
         # time limit - value in seconds
         self.time = 200
@@ -84,8 +86,8 @@ class GameController:
             # break the "loop"
             return
         
-        # reset click count every 30s
-        if self.time % 30 == 0:
+        # reset click count every 15s
+        if self.time % 15 == 0:
             self.clicks_since_last_crisis = 0
         #if self.time % 10 == 0:
         #    self.resolve_crisis(True)
@@ -107,7 +109,7 @@ class GameController:
         # printing too much causes crises
         self.clicks_since_last_crisis += 1
         # 5 clicks per second
-        if self.clicks_since_last_crisis > 2:
+        if self.clicks_since_last_crisis > 5 * 15:
             self.generate_crisis()
 
     def powerup_action(self, moreclick, moresec, time):
@@ -150,7 +152,6 @@ class GameController:
         self.crisis = crisis_name
 
         ##Crisis starts
-        resolved = False
         self.original_click = self.prints_per_click
         self.original_sec = self.prints_per_sec
         self.prints_per_click = 0
@@ -164,7 +165,7 @@ class GameController:
                 return
             self.call_staff()
         
-        self.gui.root.after(20_000, reverse)
+        self.gui.root.after(30_000, reverse)
 
     def resolve_no_filament(self):
         """

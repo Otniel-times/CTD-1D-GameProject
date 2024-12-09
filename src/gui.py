@@ -333,6 +333,14 @@ class Main_GUI:
             0,
             200
         )
+    
+    def register_callbacks(self, play, name, clicker, resolve_filament, resolve_bed, resolve_error):
+        self.play_callback = play
+        self.loginobject.name_callback = name
+        self.clicker.on_click(clicker)
+        self.filament.callback = resolve_filament
+        # TODO: Other objects
+
     def update_print_display(self, prints_per_click, prints_per_sec):
         self.ppc_display.set(f"Prints per click: {prints_per_click}")
         self.pps_display.set(f"Auto Prints/sec: {prints_per_sec}")
@@ -340,7 +348,9 @@ class Main_GUI:
     def update_time_display(self, time, time_crisis_start):
         time_remaining_minutes = time // 60
         time_remaining_seconds = time % 60
-        self.time_remaining.set(f"{time_remaining_minutes :02d}:{time_remaining_seconds :02d}")
+        time_string = f"{time_remaining_minutes :02d}:{time_remaining_seconds :02d}"
+        self.time_remaining.set(time_string)
+        print(time_string)
 
         time_till_intervention = 60 - time_crisis_start + time
         if time_till_intervention <= 0 or time_crisis_start <= 0:
