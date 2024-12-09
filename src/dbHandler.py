@@ -1,20 +1,20 @@
 import sqlite3
 
 ## Start connection, for use within this file
-def connect():
+def connect(filepath = "../index.db"):
     """
     Starts connection, returns connection and cursor object
     DO NOT USE THIS IN YOUR PROGRAM
 
     :return val:    (tuple)
     """
-    connection = sqlite3.connect("../index.db")
+    connection = sqlite3.connect(filepath)
     cursor = connection.cursor()
     return connection, cursor
 
 
 ## create table command
-def on_init():
+def on_init() -> None:
     """
     Run on init to initialise table (playerInfo)
 
@@ -25,7 +25,7 @@ def on_init():
     create_table()
     connection.close()
 
-def create_table():
+def create_table() -> None:
     """
     Creates playerInfo table
 
@@ -46,7 +46,7 @@ def create_table():
 
 ## Manage players
 ## View player data
-def get_all():
+def get_all() -> list:
     """
     Get all data from playerInfo
 
@@ -64,7 +64,7 @@ def get_all():
     finally:
         connection.close()
 
-def getall_username_and_score():
+def getall_username_and_score() -> list:
     """
     Get all usernames and scores
 
@@ -83,7 +83,7 @@ def getall_username_and_score():
     finally:
         connection.close()
 
-def getall_username_and_score_sorted():
+def getall_username_and_score_sorted() -> list:
     """
     Get all usernames and scores, sorted by score
 
@@ -105,7 +105,7 @@ def getall_username_and_score_sorted():
     finally:
         connection.close()
 
-def getall_username():
+def getall_username() -> list:
     """
     Get all usernames
 
@@ -122,7 +122,7 @@ def getall_username():
     finally:
         connection.close()
 
-def getall_score():
+def getall_score() -> list:
     """
     Get the scores of all users
 
@@ -140,7 +140,7 @@ def getall_score():
         if connection:
             connection.close()
 
-def username_exists(username:str):
+def username_exists(username:str) -> bool:
     """
     Check if username provided exists
 
@@ -163,7 +163,7 @@ def username_exists(username:str):
     except sqlite3.Error as e:
         return e
 
-def get_username_by_id(uid:str):
+def get_username_by_id(uid:str) -> str:
     """
     Return username with associated ID
 
@@ -191,7 +191,7 @@ def get_username_by_id(uid:str):
 
 
 ## Update general data
-def update_username_by_id(uid:int, new_u:str):
+def update_username_by_id(uid:int, new_u:str) -> None:
     """
     Update username with the associated userID
 
@@ -200,6 +200,8 @@ def update_username_by_id(uid:int, new_u:str):
 
     :param new_u:   New username to replace original username
     :type new_u:    (str)
+
+    :return val:    (None)
     """
     connection, cursor = connect()
     try:
@@ -214,7 +216,7 @@ def update_username_by_id(uid:int, new_u:str):
         return e
 
 
-def update_score_by_id(uid:int, new_s:int):
+def update_score_by_id(uid:int, new_s:int) -> None:
     """
     Update score of the user with associated userID
 
@@ -223,6 +225,8 @@ def update_score_by_id(uid:int, new_s:int):
 
     :param new_s:   New score to update
     :type new_s:    (int)
+
+    :return val:    (None)
     """
 
     connection, cursor = connect()
@@ -237,12 +241,14 @@ def update_score_by_id(uid:int, new_s:int):
         connection.close()
         return e
 
-def delete_record_by_uid(uid:int):
+def delete_record_by_uid(uid:int) -> None:
     """
     Delete the records of a userID
 
     :param uid: User ID of the user to be deleted
     :type uid:  (int)
+
+    :return val:    (None)
     """
 
     connection, cursor = connect()
@@ -252,11 +258,12 @@ def delete_record_by_uid(uid:int):
 
         connection.commit()
         connection.close()
+
     except sqlite3.Error as e:
         connection.close()
         return e
 
-def new_entry(username:str, uid:int, score:int):
+def new_entry(username:str, uid:int, score:int) -> None:
     """
     Adds a new entry to the database (new username, uid)
 
@@ -268,6 +275,8 @@ def new_entry(username:str, uid:int, score:int):
 
     :param score:   Score of the new user
     :type score:    (int)
+
+    :return val:    (None)
     """
     connection, cursor = connect()
 
