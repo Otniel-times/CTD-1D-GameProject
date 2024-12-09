@@ -444,7 +444,6 @@ class Main_GUI:
                 image = self.GFX_november
 
         self.powerup_display.appear()
-        self.powerup_display.update_text("")
         self.powerup_string.set(powerup_string)
         self.powerup_display.change_image(image=image)
         
@@ -499,6 +498,7 @@ class Main_GUI:
         self.printer_head.enabled = True
         self.powerup_display.appear()
         self.powerup_string.set("Fablab staff")
+        self.powerup_display.update_text("")
         self.powerup_display.change_image(image=self.GFX_fablab_staff)
         self.root.after(5000, self.powerup_display.hide)
 
