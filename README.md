@@ -38,11 +38,13 @@ Environment setup: in your desired environment, enter
 `pip install -r requirements.txt`
 into the terminal
 
-To start the game on windows (in your desired environment): `py <path>/<to>/<game>/game.py`
+To start the game on Windows (in your desired environment): `py <path>/<to>/<game>/game.py`
 
 ## Gameplay
 ### Main mechanics
 Click the coin to print more coins!!
+
+The game's concept is inspired by Cookie Clicker. The main point of the game is to print as many SUTD coins as possible by clicking, all within a fixed duration. However, several "crises" may emerge, causing printing to halt unless they are addressed appropriately.
 
 ### Powerup mechanics
 1. Anyquadratic Printer
@@ -54,20 +56,21 @@ Click the coin to print more coins!!
 ## Problem Statement
 The maintenance of 3D printers poses significant challenges due to the complexities of mechanical and electrical components, the lack of standardization across models, and the need for regular calibration. As a student at the Singapore University of Technology and Design (SUTD), we often encounter issues in troubleshooting. Additionally, besides the technical situations, we also face interruptions from 3rd parties. As a result, there is a reduction in print quality, downtime, and frustration at times. 
 
-As SUTD students well-versed in maneuvering such intricate challenges, we are on a mission to better the world with our knowledge.
+As SUTD students well-versed in manoeuvring such intricate challenges, we are on a mission to better the world with our knowledge.
 ## Background Story
-This game was created for SUTDents in general, who use the school’s Fabrication Lab (Fab Lab) frequently for projects. To prevent the student body from having potential meltdowns, the team, which some members have more experience with 3D printers, felt the urge to educate the student body so that no one would have the luxury of experiencing the devastation of having failed prints.
-
-A game with occasional curveballs will equip SUTDents with the fundamental know-how to better navigate such a piece of complex machinery. 
+This game was created for SUTDents in general, especially for students who have little to no experience with 3D printing. Due to the importance of 3D printing in our curriculum, students need to know the potential problems they may encounter when printing. As such, in our game, we have incorporated these problems that may arise and the appropriate solutions to remedy them. A game with occasional curveballs will equip SUTDents with the fundamental know-how to better navigate such a piece of complex machinery.
 ## Scenario
-The intended demographic is SUTDents in general, but it is not limited to them. Given the universal nature of the knowledge, anyone worldwide with access to 3D printers can play our fun and addictive game.
-
-Having played our game, players can be reassured that they can tinker with 3D printers.
+The intended demographic is SUTDents in general however it is not necessarily limited to SUTD. Given the popularity of 3D printing nowadays, anyone worldwide with some knowledge of 3D printing and access to 3D printers can engage in our game. Having played our game, players can have a rough idea of the potential problems they may encounter and they will be equipped with the basic capability to tinker with 3D printers in the future.
+## Python Concepts
+1. Tkinter
+2. SQLite
+3. Classes
+4. Functions
+5. If/ Else statements
+6. Try, Except and Finally statements
 ## References
 Ian Bogost. (2010). Cow Clicker [Facebook].
 
 Julien Theinnot. (2021). Cookie Clicker [Steam]. Playsaurus.
-
-
 ## Disclaimers
 Any resemblance to any living or non-living persons is purely coincidental
