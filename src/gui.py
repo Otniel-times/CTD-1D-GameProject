@@ -136,9 +136,10 @@ class Fablab_Phone:
         self.x = x
         self.y = y
         self.image: int = self.canvas.create_image(x, y, image=image)
-    
-    def on_click(self):
-        pass
+        self.on_click = lambda: None
+        self.canvas.tag_bind(self.image, "<ButtonPress-1>",
+            lambda event: (self.on_click()))
+
 
 class PowerupDisplay:
     def __init__(self, canvas: tk.Canvas, image: tk.Image | ImageTk.PhotoImage, textvariable, x: int, y: int):
@@ -378,12 +379,13 @@ class Main_GUI:
             400
         )
     
-    def register_callbacks(self, play, name, clicker, resolve_filament, resolve_bed, resolve_error):
+    def register_callbacks(self, play, name, clicker, resolve_filament, resolve_bed, resolve_error, call_fablab):
         self.play_callback = play
         self.loginobject.name_callback = name
         self.clicker.on_click(clicker)
         self.filament.callback = resolve_filament
         self.printer_bed.callback = resolve_bed
+        self.fablab_phone.on_click = call_fablab
 
     def update_print_display(self, prints_per_click, prints_per_sec):
         self.ppc_display.set(f"Prints per click: {prints_per_click}")

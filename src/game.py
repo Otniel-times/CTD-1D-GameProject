@@ -65,7 +65,8 @@ class GameController:
             self.earn,
             self.resolve_no_filament,
             self.resolve_no_plate,
-            self.resolve_print_error
+            self.resolve_print_error,
+            self.call_staff
         )
 
         # time limit - value in seconds
@@ -140,6 +141,7 @@ class GameController:
             self.prints_per_sec = 0
             self.gui.update_print_display(self.prints_per_click, self.prints_per_sec)
             self.gui.powerup_display.hide()
+            self.powerup_timer = -1
         self.gui.root.after(time, reverse)
 
     def use_powerup(self, powerup: Powerup):
@@ -208,6 +210,8 @@ class GameController:
             print("Wrong resolution")
 
     def call_staff(self):
+        if self.crisis is not None:
+            return
         ## GUI TO CALL STAFF
         self.resolve_crisis(False)
         self.gui.show_filament()
