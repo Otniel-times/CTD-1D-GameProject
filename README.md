@@ -6,9 +6,9 @@
       - [1. game.py](#1-gamepy)
       - [2. gui.py](#2-guipy)
       - [3. dbHandler.py](#3-dbhandlerpy)
-      - [4. common.py](#4-commonpy)
+      - [4. login.py](#4-loginpy)
       - [5. leaderboard.py](#5-leaderboardpy)
-      - [6. login.py](#6-loginpy)
+      - [6. common.py](#6-commonpy)
   - [Setup and start](#setup-and-start)
   - [Gameplay](#gameplay)
     - [Main mechanics](#main-mechanics)
@@ -28,9 +28,9 @@
 #### 1. game.py
 #### 2. gui.py
 #### 3. dbHandler.py
-#### 4. common.py
+#### 4. login.py
 #### 5. leaderboard.py
-#### 6. login.py
+#### 6. common.py
 
 
 ## Setup and start
@@ -42,7 +42,14 @@ To start the game on windows (in your desired environment): `py <path>/<to>/<gam
 
 ## Gameplay
 ### Main mechanics
+Click the coin to print more coins!!
+
 ### Powerup mechanics
+1. Anyquadratic Printer
+2. Bamboo printer
+3. Douyin Ion Thrusters
+4. November
+
 ### Crises
 ## Problem Statement
 The maintenance of 3D printers poses significant challenges due to the complexities of mechanical and electrical components, the lack of standardization across models, and the need for regular calibration. As a student at the Singapore University of Technology and Design (SUTD), we often encounter issues in troubleshooting. Additionally, besides the technical situations, we also face interruptions from 3rd parties. As a result, there is a reduction in print quality, downtime, and frustration at times. 
