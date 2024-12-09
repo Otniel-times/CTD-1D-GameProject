@@ -124,7 +124,10 @@ class GameController:
         self.gui.update_print_display(self.prints_per_click, self.prints_per_sec)
 
         def reverse():
-            self.prints_per_click = 1
+            if self.crisis is not None:
+                self.prints_per_click = 0
+            else:
+                self.prints_per_click = 1
             self.prints_per_sec = 0
             self.gui.update_print_display(self.prints_per_click, self.prints_per_sec)
             self.gui.powerup_display.hide()
