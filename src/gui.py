@@ -71,11 +71,8 @@ class moving_object:
         self.x = x
         self.y = y
         self.image: int = self.canvas.create_image(x, y, image=image)
-<<<<<<< Updated upstream
-        self.callback = lambda: None
-=======
         self.object_is_moving = False
->>>>>>> Stashed changes
+        
         self.get_binds()
 
         self.callback = lambda: None
