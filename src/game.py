@@ -101,7 +101,6 @@ class GameController:
         #    self.resolve_crisis(True)
         if self.time_crisis_start - self.time >= FABLAB_TIMEOUT and \
             self.crisis is not None:
-            self.crisis = None
             self.call_staff()
         
         self.time -= 1
