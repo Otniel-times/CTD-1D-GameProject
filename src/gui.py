@@ -188,6 +188,9 @@ class PowerupDisplay:
 # The main game GUI
 class Main_GUI:
     def __init__(self):
+        """
+        Initializes window, assets, and all frames
+        """
         # Setup
         self.root = tk.Tk()
         self.root.minsize(width=900, height=600)
@@ -241,6 +244,10 @@ class Main_GUI:
         #self.create_score_frame()
     
     def create_menu_frame(self):
+        """
+        Main Menu initialiser
+        Split out from __init__ for code organisation purposes
+        """
         master = self.menu_frame
         self.title_image = tk.Label(
             master,
@@ -291,6 +298,10 @@ class Main_GUI:
         self.loginobject.play_callback = self.on_play
 
     def create_game_frame(self):
+        """
+        Create game elements
+        Most elements depending on canvas to enable transparency support
+        """
         master = self.game_frame
         self.background = tk.Canvas(master, width=900, height=600)
         self.background.create_image(450, 300, image=self.GFX_background)
@@ -389,6 +400,10 @@ class Main_GUI:
         )
     
     def register_callbacks(self, play, name, clicker, resolve_filament, resolve_bed, call_fablab):
+        """
+        Setter function for game.py to pass all callbacks without navigating
+        children of this class
+        """
         self.play_callback = play
         self.loginobject.name_callback = name
         self.clicker.on_click(clicker)
@@ -434,6 +449,9 @@ class Main_GUI:
         self.powerup_display.change_image(image=image)
         
     def create_crisis(self, crisis_index):
+        """
+        Code to display and notify user that a crisis has occurred
+        """
         messagebox.askquestion(
             "Crisis!",
             "Printing has stopped",
@@ -469,6 +487,9 @@ class Main_GUI:
         self.printer_head.enabled = True
 
     def popup_fablab(self):
+        """
+        Code to display fablab intervention
+        """
         messagebox.askquestion(
             "Crisis Resolved",
             "Fablab staff have come to fix your problems",
@@ -482,6 +503,9 @@ class Main_GUI:
         self.root.after(5000, self.powerup_display.hide)
 
     def change_frame(self, new_frame: ttk.Frame | tk.Frame):
+        """
+        Change all elements in window
+        """
         if new_frame is self.game_frame:
             self.loginobject.button.configure(state=tk.DISABLED)
         else:

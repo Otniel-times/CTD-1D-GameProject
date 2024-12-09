@@ -78,11 +78,11 @@ class GameController:
 
         self.gui.mainloop()
 
-    """
-    Periodically called function to update score over time
-    Also used for displaying countdown
-    """
     def per_sec(self):
+        """
+        Periodically called function to update score over time
+        Also used for displaying countdown
+        """
         self.score += self.prints_per_sec
         if self.powerup_timer >= 0:
             self.powerup_timer -= 1
@@ -111,10 +111,10 @@ class GameController:
         self.gui.score.set(self.score)
         self.gui.root.after(1000, self.per_sec)
 
-    """
-    Function for clicker button press
-    """
     def earn(self):
+        """
+        Function for clicker button press
+        """
         self.score += self.prints_per_click
         self.gui.score.set(self.score)
         self.gui.printer_head.animation_check()
@@ -126,6 +126,10 @@ class GameController:
             self.clicks_since_last_crisis = 0
 
     def powerup_action(self, moreclick, moresec, time):
+        """
+        Overrides current print per click and print per sec values
+        Schedules a function to restore values to default
+        """
         self.prints_per_click = moreclick
         self.prints_per_sec = moresec
         self.powerup_timer = time // 1000
@@ -144,6 +148,9 @@ class GameController:
         self.gui.root.after(time, reverse)
 
     def use_powerup(self, powerup: Powerup):
+        """
+        Activate powerup
+        """
         # prevent activating multiple powerups at the same time
         if self.powerup_timer != -1:
             return
@@ -199,6 +206,10 @@ class GameController:
             print("Wrong resolution")
 
     def call_staff(self):
+        """
+        Resolve all possible crises
+        Do not reward the player
+        """
         if self.crisis is None:
             return
         ## GUI TO CALL STAFF
