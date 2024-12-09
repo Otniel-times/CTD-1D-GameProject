@@ -118,6 +118,7 @@ class GameController:
         # 4 clicks per second
         if self.clicks_since_last_crisis > 4 * 15:
             self.generate_crisis()
+            self.clicks_since_last_crisis = 0
 
     def powerup_action(self, moreclick, moresec, time):
         self.prints_per_click = moreclick
