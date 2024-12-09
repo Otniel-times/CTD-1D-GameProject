@@ -17,6 +17,7 @@
   - [Problem Statement](#problem-statement)
   - [Background Story](#background-story)
   - [Scenario](#scenario)
+  - [Python Concepts](#python-concepts)
   - [References](#references)
   - [Disclaimers](#disclaimers)
 
@@ -39,6 +40,8 @@ Environment setup: in your desired environment, enter
 into the terminal
 
 To start the game on Windows (in your desired environment): `py <path>/<to>/<game>/game.py`
+
+To start the game on anything else (Mac/Linux): `python3 <path>/<to>/<game>/game.py`
 
 ## Gameplay
 ### Main mechanics
@@ -68,16 +71,19 @@ This game was created for SUTDents in general, especially for students who have 
 The intended demographic is SUTDents in general however it is not necessarily limited to SUTD. Given the popularity of 3D printing nowadays, anyone worldwide with some knowledge of 3D printing and access to 3D printers can engage in our game. Having played our game, players can have a rough idea of the potential problems they may encounter and they will be equipped with the basic capability to tinker with 3D printers in the future.
 
 ## Python Concepts
-1. Tkinter
-2. SQLite
-3. Classes
+1. Tkinter ([gui.py](#2-guipy))
+2. SQLite ([dbHandler.py](#3-dbhandlerpy))
+3. Classes, OOP ([game.py](#1-gamepy))
 4. Functions
 5. If/ Else statements
-6. Try, Except and Finally statements
+6. Exception handling
+7. Callback functions 
+8. Procedural programming ([dbHandler.py](#3-dbhandlerpy))
 
 ## References
 Ian Bogost. (2010). Cow Clicker [Facebook].
 
 Julien Theinnot. (2021). Cookie Clicker [Steam]. Playsaurus.
+
 ## Disclaimers
 Any resemblance to any living or non-living persons is purely coincidental
