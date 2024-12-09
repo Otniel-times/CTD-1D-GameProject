@@ -43,9 +43,9 @@ class GameController:
         def play():
             self.gui.root.after(1000, self.per_sec)
             #Schedule crises here
-            self.gui.root.after(2000, self.generate_crisis)
-            self.gui.root.after(6000, self.generate_crisis)
-            self.gui.root.after(6000, self.generate_crisis)
+            #self.gui.root.after(2000, self.generate_crisis)
+            #self.gui.root.after(6000, self.generate_crisis)
+            #self.gui.root.after(6000, self.generate_crisis)
             
         self.gui.play_callback = play
         def name_callback():
@@ -60,14 +60,11 @@ class GameController:
 
         # time limit - value in seconds
         self.time = 200
-        self.time_remaining_minutes = self.time // 60
-        self.time_remaining_seconds = self.time % 60
-        self.gui.time_remaining.set(f"{self.time_remaining_minutes :02d}:{self.time_remaining_seconds :02d}")
-
+        self.time_crisis_start = 0
+        self.gui.update_time_display(self.time, self.time_crisis_start)
 
         # GUI setup
-        self.gui.pps_display.set(f"Auto Prints/sec: {self.prints_per_sec}")
-        self.gui.ppc_display.set(f"Prints per click: {self.prints_per_click}")
+        self.gui.update_print_display(self.prints_per_click, self.prints_per_sec)
 
         self.gui.mainloop()
 
@@ -94,11 +91,9 @@ class GameController:
         #    self.resolve_crisis(True)
         
         self.time -= 1
-        self.time_remaining_minutes = self.time // 60
-        self.time_remaining_seconds = self.time % 60
-        self.gui.time_remaining.set(f"{self.time_remaining_minutes :02d}:{self.time_remaining_seconds :02d}")
+        self.gui.update_time_display(self.time, self.time_crisis_start)
         
-        print(f"{self.time}, {self.time_remaining_minutes :02d}:{self.time_remaining_seconds :02d}")
+        
         self.gui.score.set(self.score)
         self.gui.root.after(1000, self.per_sec)
 
@@ -111,7 +106,8 @@ class GameController:
         self.gui.printer_head.animation_check()
         # printing too much causes crises
         self.clicks_since_last_crisis += 1
-        if self.clicks_since_last_crisis > 5 * 30:
+        # 5 clicks per second
+        if self.clicks_since_last_crisis > 2:
             self.generate_crisis()
 
     def powerup_action(self, moreclick, moresec, time):
@@ -119,14 +115,12 @@ class GameController:
         self.prints_per_sec += moresec
         self.powerup_timer = time // 1000
         self.gui.powerup_display.update_text(self.powerup_timer)
-        self.gui.ppc_display.set(f"Prints per click: {self.prints_per_click}")
-        self.gui.pps_display.set(f"Auto Prints/sec: {self.prints_per_sec}")
+        self.gui.update_print_display(self.prints_per_click, self.prints_per_sec)
 
         def reverse():
             self.prints_per_click -= moreclick
             self.prints_per_sec -= moresec
-            self.gui.ppc_display.set(f"Prints per click: {self.prints_per_click}")
-            self.gui.pps_display.set(f"Auto Prints/sec: {self.prints_per_sec}")
+            self.gui.update_print_display(self.prints_per_click, self.prints_per_sec)
             self.gui.powerup_display.hide()
         self.gui.root.after(time, reverse)
 
@@ -161,8 +155,8 @@ class GameController:
         self.original_sec = self.prints_per_sec
         self.prints_per_click = 0
         self.prints_per_sec = 0
-        self.gui.ppc_display.set(f"Prints per click: {self.prints_per_click}")
-        self.gui.pps_display.set(f"Auto Prints/sec: {self.prints_per_sec}")
+        self.gui.update_print_display(self.prints_per_click, self.prints_per_sec)
+        self.time_crisis_start = self.time
         
         def reverse():
             # prevent previous crisis timeout from rolling into the next
@@ -170,7 +164,7 @@ class GameController:
                 return
             self.call_staff()
         
-        self.gui.root.after(60_000, reverse)
+        self.gui.root.after(20_000, reverse)
 
     def resolve_no_filament(self):
         """
@@ -216,8 +210,7 @@ class GameController:
         self.crisis = None
         self.prints_per_click = self.original_click
         self.prints_per_sec = self.original_sec
-        self.gui.ppc_display.set(f"Prints per click: {self.prints_per_click}")
-        self.gui.pps_display.set(f"Auto Prints/sec: {self.prints_per_sec}")
+        self.gui.update_print_display(self.prints_per_click, self.prints_per_sec)
         # 66% chance of reward
         #should_reward = random.choice((False, True, True))
         should_reward = True

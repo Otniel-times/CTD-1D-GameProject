@@ -39,9 +39,10 @@ class Print_Head():
         self.image: int = self.canvas.create_image(x, y, image=image)
         self.animation_offset = 0
         self.animation_ongoing = False
+        self.enabled = True
 
     def animation_check(self):
-        if not self.animation_ongoing:
+        if not self.animation_ongoing and self.enabled:
             self.animation_ongoing = True
             self.go_right()
 
@@ -277,6 +278,16 @@ class Main_GUI:
             foreground="white"
         )
         display.place(x = 0, y = 40)
+        # Time till fablab staff intervenes
+        self.time_intervention = tk.StringVar()
+        display = tk.Label(
+            master,
+            textvariable=self.time_intervention,
+            font=("Arial", 20),
+            background="grey",
+            foreground="white"
+        )
+        display.place(x = 0, y = 72)
 
         # Total
         self.score = tk.IntVar()
@@ -322,6 +333,20 @@ class Main_GUI:
             0,
             200
         )
+    def update_print_display(self, prints_per_click, prints_per_sec):
+        self.ppc_display.set(f"Prints per click: {prints_per_click}")
+        self.pps_display.set(f"Auto Prints/sec: {prints_per_sec}")
+    
+    def update_time_display(self, time, time_crisis_start):
+        time_remaining_minutes = time // 60
+        time_remaining_seconds = time % 60
+        self.time_remaining.set(f"{time_remaining_minutes :02d}:{time_remaining_seconds :02d}")
+
+        time_till_intervention = 60 - time_crisis_start + time
+        if time_till_intervention <= 0 or time_crisis_start <= 0:
+            self.time_intervention.set("")
+        else:
+            self.time_intervention.set(f"{time_till_intervention :02d} s")
     
     def show_powerup_popup(self, powerup: Powerup, time: int):
         match powerup:
@@ -343,7 +368,13 @@ class Main_GUI:
         self.powerup_display.change_image(image=image)
         
     def create_crisis(self, crisis_index):
-        messagebox.askquestion("Crisis!", "Printing has stopped", type=messagebox.OK)
+        messagebox.askquestion(
+            "Crisis!",
+            "Printing has stopped",
+            type=messagebox.OK,
+            icon=messagebox.ERROR
+        )
+        self.printer_head.enabled = False
 
         # No Filament
         if crisis_index == 1:
@@ -357,10 +388,18 @@ class Main_GUI:
         elif crisis_index == 3:
             pass
 
+    def user_resolved(self):
+        self.printer_head.enabled = True
 
     
     def popup_fablab(self):
-        messagebox.askquestion("Crisis Resolved", "Fablab staff have come to fix your problems", type=messagebox.OK)
+        messagebox.askquestion(
+            "Crisis Resolved",
+            "Fablab staff have come to fix your problems",
+            type=messagebox.OK,
+            icon=messagebox.WARNING
+        )
+        self.printer_head.enabled = True
     
     def change_frame(self, new_frame: ttk.Frame | tk.Frame):
         self.active_frame.pack_forget()
