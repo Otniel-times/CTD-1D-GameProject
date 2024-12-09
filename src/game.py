@@ -116,7 +116,7 @@ class GameController:
         # printing too much causes crises
         self.clicks_since_last_crisis += 1
         # 4 clicks per second
-        if self.clicks_since_last_crisis > 4 * 15:
+        if self.clicks_since_last_crisis > 3 * 15:
             self.generate_crisis()
             self.clicks_since_last_crisis = 0
 

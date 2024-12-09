@@ -446,7 +446,11 @@ class Main_GUI:
             icon=messagebox.WARNING
         )
         self.printer_head.enabled = True
-    
+        self.powerup_display.appear()
+        self.powerup_string.set("Fablab staff")
+        self.powerup_display.change_image(image=self.GFX_fablab_staff)
+        self.root.after(5000, self.powerup_display.hide)
+
     def change_frame(self, new_frame: ttk.Frame | tk.Frame):
         if new_frame is self.game_frame:
             self.loginobject.button.configure(state=tk.DISABLED)
