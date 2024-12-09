@@ -38,12 +38,12 @@ class Print_Head():
     '''
     The moving printer head with animation checks etc.
     '''
-    print_head_animation_delay = 10
     def __init__(self, canvas: tk.Canvas, image: tk.Image, x: int, y: int):
         self.canvas = canvas
         self.x = x
         self.y = y
         self.image: int = self.canvas.create_image(x, y, image=image)
+        self.print_head_animation_delay = 10
         self.animation_offset = 0
         self.animation_ongoing = False
         self.enabled = True
@@ -129,6 +129,16 @@ class Moving_Object:
 
             self.current_x_position = event.x
             self.current_y_position = event.y
+
+class Fablab_Phone:
+    def __init__(self, canvas: tk.Canvas, image: tk.Image | ImageTk.PhotoImage, x: int, y: int):
+        self.canvas = canvas
+        self.x = x
+        self.y = y
+        self.image: int = self.canvas.create_image(x, y, image=image)
+    
+    def on_click(self):
+        pass
 
 class PowerupDisplay:
     def __init__(self, canvas: tk.Canvas, image: tk.Image | ImageTk.PhotoImage, textvariable, x: int, y: int):
@@ -284,6 +294,7 @@ class Main_GUI:
         self.clicker = Clicker_Button(self.background, self.GFX_main_clicker, 450, 325)
         self.filament = Moving_Object(self.background, self.GFX_filament, 800, 500, 295, 408, 2, 115, 1)
         self.printer_bed = Moving_Object(self.background, self.GFX_printer_bed, 800, 600, 321, 566, 458, 514, 2)
+        self.fablab_phone = Fablab_Phone(self.background, self.GFX_fablab_phone, 841, 250)
 
         # Username display
         self.test_username = tk.StringVar()
