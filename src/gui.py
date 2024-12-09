@@ -198,6 +198,7 @@ class Main_GUI:
         self.GFX_filament = tk.PhotoImage(file=os.path.join(assets, 'Filament.png'))
         self.GFX_printer_bed = tk.PhotoImage(file=os.path.join(assets, 'Print Bed.png'))
         self.GFX_fablab_phone = tk.PhotoImage(file=os.path.join(assets, 'FabLab Hotline.png'))
+        self.GFX_printer_screen_error = tk.PhotoImage(file=os.path.join(assets, 'Printer Screen (Error).png'))
 
         # Title
         self.GFX_title = tk.PhotoImage(file=os.path.join(assets, 'Title.png'))
@@ -279,7 +280,6 @@ class Main_GUI:
         self.name_frame = self.loginobject.root
         self.loginobject.play_callback = self.on_play
 
-
     def create_game_frame(self):
         master = self.game_frame
         self.background = tk.Canvas(master, width=900, height=600)
@@ -287,6 +287,10 @@ class Main_GUI:
         self.background.create_image(450, 300, image=self.GFX_printer )
         self.filament_static = self.background.create_image(350, 18, image=self.GFX_filament_static)
         self.printer_bed_static = self.background.create_image(447, 486, image=self.GFX_printer_bed)
+
+        # Error alert is hidden at game start
+        self.error_alert = self.background.create_image(344, 189, image=self.GFX_printer_screen_error)
+        self.background.itemconfigure(self.error_alert, state='hidden')
 
         self.background.pack()
 
@@ -437,7 +441,7 @@ class Main_GUI:
 
         # Error code
         elif crisis_index == 3:
-            pass
+            self.background.itemconfigure(self.error_alert, state='normal')
     
     # Used to re-show elements that have been hidden by crisises
     def show_filament(self):
@@ -445,6 +449,9 @@ class Main_GUI:
 
     def show_plate(self):
         self.background.itemconfigure(self.printer_bed_static, state='normal')
+
+    def hide_error(self):
+        self.background.itemconfigure(self.error_alert, state='hidden')
 
     def user_resolved(self):
         self.printer_head.enabled = True

@@ -163,7 +163,7 @@ class GameController:
         if self.crisis != None:
             return
         #crisis_index, crisis_name = self.rng.choice(list(self.crises.items()))
-        crisis_index, crisis_name = list(self.crises.items())[1]
+        crisis_index, crisis_name = list(self.crises.items())[2]
         self.gui.create_crisis(crisis_index)
         self.crisis = crisis_name
 
