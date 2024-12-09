@@ -203,7 +203,7 @@ class Main_GUI:
         self.name_frame = ttk.Frame()
         self.create_name_frame()
         self.score_frame = ttk.Frame()
-        self.create_score_frame()
+        #self.create_score_frame()
     
     def create_menu_frame(self):
         master = self.menu_frame
@@ -249,19 +249,11 @@ class Main_GUI:
     def create_score_frame(self):
         self.scoreobject = Leaderboard(self.root)
         self.score_frame = self.scoreobject.root
-        def play_callback():
-            self.change_frame(self.game_frame)
-            self.on_play()
-        self.loginobject.play_callback = play_callback
-    
 
     def create_name_frame(self):
         self.loginobject = Login(self.root)
         self.name_frame = self.loginobject.root
-        def play_callback():
-            self.change_frame(self.game_frame)
-            self.on_play()
-        self.loginobject.play_callback = play_callback
+        self.loginobject.play_callback = self.on_play
 
 
     def create_game_frame(self):
@@ -442,11 +434,17 @@ class Main_GUI:
         self.printer_head.enabled = True
     
     def change_frame(self, new_frame: ttk.Frame | tk.Frame):
+        if new_frame is self.game_frame:
+            self.loginobject.button.configure(state=tk.DISABLED)
+        else:
+            self.loginobject.button.configure(state=tk.NORMAL)
         self.active_frame.pack_forget()
         self.active_frame = new_frame
         self.active_frame.pack()
     
     def on_play(self):
+        if self.active_frame is self.game_frame:
+            return
         self.change_frame(self.game_frame)
         self.play_callback()
 
