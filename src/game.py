@@ -4,6 +4,9 @@ import random
 
 class GameController:
     def __init__(self) -> None:
+        ## Initialise local db for leaderboard
+        dbHandler.on_init()
+
         self.rng = random.Random()
         self.rng.seed(random.randint(0, 2**16))
 
@@ -143,7 +146,7 @@ class GameController:
         self.gui.show_powerup_popup(powerup, time)
 
     def save(self) -> None:
-        dbHandler.new_entry(self.username, self.uid, self.score)
+        dbHandler.new_entry(self.username, self.score)
 
     def generate_crisis(self):
         """
