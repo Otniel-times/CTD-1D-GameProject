@@ -35,6 +35,7 @@ class GameController:
         # Setup values
         self.prints_per_click = 1
         self.prints_per_sec = 0
+        self.clicks_since_last_crisis = 0
         
         self.gui = Main_GUI()
         self.gui.clicker.on_click(self.earn)
@@ -54,6 +55,8 @@ class GameController:
             else:
                 self.gui.test_username.set(f"{self.username}'s 3D Printer")
         self.gui.loginobject.name_callback = name_callback
+        
+        self.gui.filament.callback = self.resolve_no_filament
 
         # time limit - value in seconds
         self.time = 200
@@ -84,6 +87,9 @@ class GameController:
             # break the "loop"
             return
         
+        # reset click count every 30s
+        if self.time % 30 == 0:
+            self.clicks_since_last_crisis = 0
         #if self.time % 10 == 0:
         #    self.resolve_crisis(True)
         
@@ -103,6 +109,10 @@ class GameController:
         self.score += self.prints_per_click
         self.gui.score.set(self.score)
         self.gui.printer_head.animation_check()
+        # printing too much causes crises
+        self.clicks_since_last_crisis += 1
+        if self.clicks_since_last_crisis > 5 * 30:
+            self.generate_crisis()
 
     def powerup_action(self, moreclick, moresec, time):
         self.prints_per_click += moreclick
@@ -132,19 +142,23 @@ class GameController:
     def save(self) -> None:
         dbHandler.update_score_by_id(self.uid, self.score)
 
-    def generate_crisis(self) -> (int, int): # type: ignore
+    def generate_crisis(self):
         """
-        This function generates crisis and starts timer, calls self.call_staff() after timer runs out, once timer starts, self.prints_per_click and self.prints_per_sec are set to 0.
-        Original print rates are stored locally.
+        This function generates crisis and starts timer, calls self.call_staff()
+        after timer runs out, once timer starts, self.prints_per_click and self.prints_per_sec are set to 0.
         """
-        self.crisis_index = self.rng.randint(0, self.CRISIS_COUNT)
-        self.crisis = self.crises[self.crisis_index]
-        self.gui.create_crisis(self.crisis_index)
+        # Do not generate multiple crises at the same time
+        if self.crisis != None:
+            return
+        #crisis_index, crisis_name = self.rng.choice(list(self.crises.items()))
+        crisis_index, crisis_name = list(self.crises.items())[0]
+        self.gui.create_crisis(crisis_index)
+        self.crisis = crisis_name
 
         ##Crisis starts
         resolved = False
-        print_rate_click = self.prints_per_click
-        print_rate_base = self.prints_per_sec
+        self.original_click = self.prints_per_click
+        self.original_sec = self.prints_per_sec
         self.prints_per_click = 0
         self.prints_per_sec = 0
         self.gui.ppc_display.set(f"Prints per click: {self.prints_per_click}")
@@ -154,57 +168,39 @@ class GameController:
             # prevent previous crisis timeout from rolling into the next
             if self.crisis is None:
                 return
-            self.prints_per_click = print_rate_click
-            self.prints_per_sec = print_rate_base
-            self.gui.ppc_display.set(f"Prints per click: {self.prints_per_click}")
-            self.gui.pps_display.set(f"Auto Prints/sec: {self.prints_per_sec}")
             self.call_staff()
         
         self.gui.root.after(60_000, reverse)
 
-        return print_rate_click, print_rate_base
-
-    def resolve_no_filament(self, userResolved:bool):
+    def resolve_no_filament(self):
         """
         Checks if "no filament" crisis and resolves if it is
-        
-        userResolved: Boolean value, True if crisis was resolved by user
-
-        Returns None if resolved, returns "Wrong resolution" if crisis does not match
         """
         if self.crisis == "No filament":
-            self.resolve_crisis(userResolved)
+            self.resolve_crisis(True)
 
         else:
-            return "Wrong resolution"
+            print("Wrong resolution")
 
-    def resolve_no_plate(self, userResolved:bool):
+    def resolve_no_plate(self):
         """
         Checks if "no plate" crisis and resolves if it is
-
-        userResolved: Boolean value, True if crisis was resolved by user
-
-        Returns None if resolved, returns "Wrong resolution" if crisis does not match
         """
         if self.crisis == "No printer bed":
-            self.resolve_crisis(userResolved)
+            self.resolve_crisis(True)
 
         else:
-            return "Wrong resolution"
+            print("Wrong resolution")
 
-    def resolve_print_error(self, userResolved:bool):
+    def resolve_print_error(self):
         """
         Checks if "print error" crisis and resolves if it is
-
-        userResolved: Boolean value, True if crisis was resolved by user
-
-        Returns None if resolved, returns "Wrong resolution" if crisis does not match
         """
         if self.crisis == 'Error code FILLTHISIN':
-            self.resolve_crisis(userResolved)
+            self.resolve_crisis(True)
 
         else:
-            return "Wrong resolution"
+            print("Wrong resolution")
 
     def call_staff(self):
         ## GUI TO CALL STAFF
@@ -218,6 +214,10 @@ class GameController:
         userResolved: True if crisis was resolved by the player, False if crisis was resolved by staff
         """
         self.crisis = None
+        self.prints_per_click = self.original_click
+        self.prints_per_sec = self.original_sec
+        self.gui.ppc_display.set(f"Prints per click: {self.prints_per_click}")
+        self.gui.pps_display.set(f"Auto Prints/sec: {self.prints_per_sec}")
         # 66% chance of reward
         #should_reward = random.choice((False, True, True))
         should_reward = True
