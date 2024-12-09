@@ -192,6 +192,7 @@ class Main_GUI:
         self.root = tk.Tk()
         self.root.minsize(width=900, height=600)
         self.root.title("Jo's 3D Printing Adventure")
+        self.root.iconbitmap("bamboo.ico")
         self.root.resizable(False, False)
 
         # Assets
