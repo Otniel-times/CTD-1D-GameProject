@@ -11,12 +11,12 @@ __location__ = os.path.realpath(os.path.dirname(__file__))
 # https://stackoverflow.com/questions/70996098/tkinter-button-over-transparent-background
 #TBD
 class Clicker_Button():
-    clicker_animation_delay = 100
     def __init__(self, canvas: tk.Canvas, image: tk.Image, x: int, y: int, **kwargs):
         self.canvas = canvas
         self.x = x
         self.y = y
         self.image: int = self.canvas.create_image(x, y, image=image)
+        self.clicker_animation_delay = 100
 
     def on_click(self, fn):
         self.canvas.tag_bind(self.image, "<ButtonPress-1>",
@@ -66,14 +66,19 @@ class moving_object:
     '''
     This class is used for objects that are moveable to resolve crisises
     '''
-    object_is_moving = False
     def __init__(self, canvas: tk.Canvas, image: tk.Image, x: int, y:int):
         self.canvas = canvas
         self.x = x
         self.y = y
         self.image: int = self.canvas.create_image(x, y, image=image)
+<<<<<<< Updated upstream
         self.callback = lambda: None
+=======
+        self.object_is_moving = False
+>>>>>>> Stashed changes
         self.get_binds()
+
+        self.callback = lambda: None
     
     def get_binds(self):
         self.canvas.tag_bind(self.image, "<ButtonPress-1>", self.move_start)
