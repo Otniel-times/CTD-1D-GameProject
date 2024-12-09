@@ -163,8 +163,8 @@ class GameController:
         # Do not generate multiple crises at the same time
         if self.crisis != None:
             return
-        #crisis_index, crisis_name = self.rng.choice(list(self.crises.items()))
-        crisis_index, crisis_name = list(self.crises.items())[2]
+        crisis_index, crisis_name = self.rng.choice(list(self.crises.items()))
+        #crisis_index, crisis_name = list(self.crises.items())[2]
         self.gui.create_crisis(crisis_index)
         self.crisis = crisis_name
 
@@ -220,8 +220,8 @@ class GameController:
         self.prints_per_sec = self.original_sec
         self.gui.update_print_display(self.prints_per_click, self.prints_per_sec)
         # 66% chance of reward
-        #should_reward = random.choice((False, True, True))
-        should_reward = True
+        should_reward = random.choice((False, True, True))
+        #should_reward = True
         if userResolved and should_reward:
             reward = random.choice(list(Powerup))
             print(f"You got the {reward.name}")

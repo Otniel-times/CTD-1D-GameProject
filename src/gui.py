@@ -157,7 +157,7 @@ class PowerupDisplay:
         self.powerup_description = tk.Label(
             self.canvas,
             textvariable=textvariable,
-            font=("Arial", 9),
+            font=("Arial", 12),
             background="grey",
             foreground="white",
             justify='left'
