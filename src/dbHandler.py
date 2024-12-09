@@ -1,7 +1,7 @@
 import sqlite3
 
 ## Start connection, for use within this file
-def connect(filepath = "../index.db"):
+def connect(filepath = "index.db"):
     """
     Starts connection, returns connection and cursor object
     DO NOT USE THIS IN YOUR PROGRAM
@@ -21,9 +21,7 @@ def on_init() -> None:
     :return val: None
     """
     ## Run on init to initialise table
-    connection, cursor = connect()
     create_table()
-    connection.close()
 
 def create_table() -> None:
     """
