@@ -14,7 +14,7 @@
     - [Main mechanics](#main-mechanics)
     - [Powerup mechanics](#powerup-mechanics)
     - [Crises](#crises)
-- [H1 Problem Statement::](#h1-problem-statement)
+  - [Problem Statement](#problem-statement)
   - [Disclaimers](#disclaimers)
 
 ## Repository structure
@@ -41,7 +41,7 @@ To start the game on windows (in your desired environment): `py <path>/<to>/<gam
 ### Main mechanics
 ### Powerup mechanics
 ### Crises
-# H1 Problem Statement::
+## Problem Statement
 The maintenance of 3D printers poses significant challenges due to the complexities of mechanical and electrical components, the lack of standardization across models, and the need for regular calibration. As a student at the Singapore University of Technology and Design (SUTD), we often encounter issues in troubleshooting. Additionally, besides the technical situations, we also face interruptions from 3rd parties. As a result, there is a reduction in print quality, downtime, and frustration at times. 
 
 As a SUTD student who is well-versed in maneuvering such intricate challenges, the onus is on us to better the world with our knowledge.
