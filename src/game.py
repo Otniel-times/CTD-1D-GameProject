@@ -182,6 +182,7 @@ class GameController:
         Checks if "no plate" crisis and resolves if it is
         """
         if self.crisis == "No printer bed":
+            self.gui.show_plate()
             self.resolve_crisis(True)
 
         else:
@@ -201,6 +202,7 @@ class GameController:
         ## GUI TO CALL STAFF
         self.resolve_crisis(False)
         self.gui.show_filament()
+        self.gui.show_plate()
         self.gui.popup_fablab()
         
     def resolve_crisis(self, userResolved: bool):
