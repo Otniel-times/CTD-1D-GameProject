@@ -91,6 +91,10 @@ class GameController:
             self.clicks_since_last_crisis = 0
         #if self.time % 10 == 0:
         #    self.resolve_crisis(True)
+        if self.time_crisis_start - self.time >= FABLAB_TIMEOUT and \
+            self.crisis is not None:
+            self.crisis = None
+            self.call_staff()
         
         self.time -= 1
         self.gui.update_time_display(self.time, self.time_crisis_start)
@@ -158,14 +162,6 @@ class GameController:
         self.prints_per_sec = 0
         self.gui.update_print_display(self.prints_per_click, self.prints_per_sec)
         self.time_crisis_start = self.time
-        
-        def reverse():
-            # prevent previous crisis timeout from rolling into the next
-            if self.crisis is None:
-                return
-            self.call_staff()
-        
-        self.gui.root.after(FABLAB_TIMEOUT * 1000, reverse)
 
     def resolve_no_filament(self):
         """
