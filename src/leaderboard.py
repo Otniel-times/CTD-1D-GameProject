@@ -5,7 +5,7 @@ import dbHandler
 import tkinter as tk
 from tkinter import ttk
 
-## TODO: nicholas
+## TODO: Nicholas
 class Leaderboard:
     def __init__(self, master) -> None:
         # initialises frame, font, and gomenu callback

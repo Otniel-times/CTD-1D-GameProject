@@ -212,9 +212,6 @@ class Main_GUI:
         self.GFX_printer_bed = tk.PhotoImage(file=os.path.join(assets, 'Print Bed.png'))
         self.GFX_fablab_phone = tk.PhotoImage(file=os.path.join(assets, 'FabLab Hotline.png'))
         self.GFX_printer_screen_error = tk.PhotoImage(file=os.path.join(assets, 'Printer Screen (Error).png'))
-
-        # Title
-        self.GFX_title = tk.PhotoImage(file=os.path.join(assets, 'Title.png'))
         
         # Powerups
         POWERUP_SIZE = (260,260)
