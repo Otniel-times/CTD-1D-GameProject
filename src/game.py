@@ -12,6 +12,7 @@ class GameController:
         except FileNotFoundError:
             dbHandler.on_init() # creates file if it does not exist
 
+        # create random number to be used in crisis events and powerup generation
         self.rng = random.Random()
 
         ## crises dict contains {<number>:<crisis name>}
@@ -19,8 +20,8 @@ class GameController:
                        2:"No printer bed",
                        3:"Error code HMS_0500-0100-0003-0005"}
 
-        # parameters for function
-        # perclick bonus, persec bonus, time(ms) until disabled
+        # powerup_actions declares parameters to be attributed to each powerup
+        # in order: perclick bonus, persec bonus, time(ms) until disabled
         self.POWERUP_ACTIONS = [
             (2, 1, 10000), #Anyquadratic
             (5, 2, 10000), #Bamboo
@@ -28,7 +29,7 @@ class GameController:
             (20, 5, 15000), #November
         ]
 
-        # Setup values to prevent undefined
+        # Initialised setup values to prevent undefined
         self.username = ""
         self.score = 0
         self.crisis = None
@@ -42,6 +43,8 @@ class GameController:
 
         
         self.gui = Main_GUI()
+
+        # function to allow for playing of game
         def play():
             """
             Setup values for initialization of game
@@ -55,21 +58,25 @@ class GameController:
             self.time = 200
             self.time_crisis_start = 0
 
-            # GUI setup
+            # Assigns value to gui.py objects
             self.gui.update_print_display(self.prints_per_click, self.prints_per_sec)
             self.gui.update_time_display(self.time, self.time_crisis_start)
             
-            #Begin gameloop
+            # Begin gameloop
             self.gui.root.after(1000, self.gameloop)
-            #Schedule crises here
+            # Schedule crises here
             self.gui.root.after(6000, self.generate_crisis)
+
+        # callback function to display name on top left of game
         def name_callback():
             self.username = self.gui.loginobject.name.get()
+            # if else statement assign correct apostrophe to displayed name text
             if self.username[-1].lower() == 's':
                 self.gui.test_username.set(f"{self.username}' 3D Printer")
             else:
                 self.gui.test_username.set(f"{self.username}'s 3D Printer")
         
+        # callback functions to be assigned to gui.py objects
         self.gui.register_callbacks(
             play,
             name_callback,
@@ -82,6 +89,7 @@ class GameController:
 
         self.gui.mainloop()
 
+    # main game function
     def gameloop(self):
         """
         Periodically called function to update score over time
@@ -165,6 +173,7 @@ class GameController:
         time = self.POWERUP_ACTIONS[powerup][2]
         self.gui.show_powerup_popup(powerup, time)
 
+    # saves username and score to db through DBHander function
     def save(self) -> None:
         dbHandler.new_entry(self.username, self.score)
 
