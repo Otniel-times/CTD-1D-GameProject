@@ -267,7 +267,7 @@ class Main_GUI:
             width=32,
             style='my.TButton'
             )
-        self.play_button.place(x=239,y=300)
+        self.play_button.place(x=450,y=300, anchor='center')
         self.scoreboard_button = ttk.Button(
             master,
             text="Scoreboard",
@@ -275,7 +275,7 @@ class Main_GUI:
             width=32,
             style='my.TButton'
             )
-        self.scoreboard_button.place(x=239,y=350)
+        self.scoreboard_button.place(x=450,y=350, anchor='center')
         self.exit_button = ttk.Button(
             master,
             text="Exit",
@@ -283,9 +283,9 @@ class Main_GUI:
             width=32,
             style='my.TButton'
             )
+        self.exit_button.place(x=450,y=400, anchor='center')
         
         s.configure('my.TButton', font=('Comic Sans MS', 18))
-        self.exit_button.place(x=239,y=400)
     
     def create_score_frame(self):
         self.scoreobject = Leaderboard(self.root)
