@@ -28,7 +28,7 @@ class GameController:
             (20, 5, 15000), #November
         ]
 
-        # Setup values
+        # Setup values to prevent undefined
         self.username = ""
         self.score = 0
         self.crisis = None
@@ -42,23 +42,27 @@ class GameController:
 
         
         self.gui = Main_GUI()
-        # Function to initialize game logic after button pressed
         def play():
+            """
+            Setup values for initialization of game
+            """
             self.score = 0
             self.crisis = None
             self.powerup_timer = -1
-            # Setup values
             self.prints_per_click = 1
             self.prints_per_sec = 0
             self.clicks_since_last_crisis = 0
             self.time = 200
             self.time_crisis_start = 0
+
+            # GUI setup
+            self.gui.update_print_display(self.prints_per_click, self.prints_per_sec)
+            self.gui.update_time_display(self.time, self.time_crisis_start)
             
-            self.gui.root.after(1000, self.per_sec)
+            #Begin gameloop
+            self.gui.root.after(1000, self.gameloop)
             #Schedule crises here
-            #self.gui.root.after(2000, self.generate_crisis)
-            #self.gui.root.after(6000, self.generate_crisis)
-            #self.gui.root.after(6000, self.generate_crisis)
+            self.gui.root.after(6000, self.generate_crisis)
         def name_callback():
             self.username = self.gui.loginobject.name.get()
             if self.username[-1].lower() == 's':
@@ -75,13 +79,10 @@ class GameController:
             self.call_staff
         )
 
-        # GUI setup
-        self.gui.update_time_display(self.time, self.time_crisis_start)
-        self.gui.update_print_display(self.prints_per_click, self.prints_per_sec)
 
         self.gui.mainloop()
 
-    def per_sec(self):
+    def gameloop(self):
         """
         Periodically called function to update score over time
         Also used for displaying countdowns and general loop based logic
@@ -110,7 +111,7 @@ class GameController:
         
         
         self.gui.score.set(self.score)
-        self.gui.root.after(1000, self.per_sec)
+        self.gui.root.after(1000, self.gameloop)
 
     def earn(self):
         """
@@ -138,6 +139,9 @@ class GameController:
         self.gui.update_print_display(self.prints_per_click, self.prints_per_sec)
 
         def reverse():
+            """
+            Restore stats to default
+            """
             if self.crisis is not None:
                 self.prints_per_click = 0
             else:
@@ -146,11 +150,12 @@ class GameController:
             self.gui.update_print_display(self.prints_per_click, self.prints_per_sec)
             self.gui.powerup_display.hide()
             self.powerup_timer = -1
+        #Schedule stat restoration
         self.gui.root.after(time, reverse)
 
     def use_powerup(self, powerup: Powerup):
         """
-        Activate powerup
+        Powerup action 
         """
         # prevent activating multiple powerups at the same time
         if self.powerup_timer != -1:
@@ -172,11 +177,11 @@ class GameController:
         if self.crisis != None:
             return
         crisis_index, crisis_name = self.rng.choice(list(self.crises.items()))
-        #crisis_index, crisis_name = list(self.crises.items())[2]
         self.gui.create_crisis(crisis_index)
         self.crisis = crisis_name
 
-        ##Crisis starts
+        # Crisis starts
+        # Store current stats to restore when the crisis ends
         self.original_click = self.prints_per_click
         self.original_sec = self.prints_per_sec
         self.prints_per_click = 0
@@ -185,9 +190,9 @@ class GameController:
         self.time_crisis_start = self.time
 
     def resolve_no_filament(self):
-        """
+        '''
         Checks if "no filament" crisis and resolves if it is
-        """
+        '''
         if self.crisis == "No filament":
             self.gui.show_filament()
             self.resolve_crisis(True)
@@ -196,9 +201,9 @@ class GameController:
             print("Wrong resolution")
 
     def resolve_no_plate(self):
-        """
+        '''
         Checks if "no plate" crisis and resolves if it is
-        """
+        '''
         if self.crisis == "No printer bed":
             self.gui.show_plate()
             self.resolve_crisis(True)
@@ -224,7 +229,8 @@ class GameController:
         """
         Sets crisis state to None, and determines whether 
 
-        userResolved: True if crisis was resolved by the player, False if crisis was resolved by staff
+        userResolved: True if crisis was resolved by the player
+            False if crisis was resolved by staff
         """
         self.crisis = None
         self.time_crisis_start = 0
@@ -233,7 +239,6 @@ class GameController:
         self.gui.update_print_display(self.prints_per_click, self.prints_per_sec)
         # 66% chance of reward
         should_reward = random.choice((False, True, True))
-        #should_reward = True
         if userResolved and should_reward:
             reward = random.choice(list(Powerup))
             print(f"You got the {reward.name}")
