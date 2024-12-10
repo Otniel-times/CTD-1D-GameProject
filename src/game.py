@@ -3,6 +3,9 @@ import dbHandler
 import random
 
 class GameController:
+    """
+    Maintains game state and passes information to GUI for display
+    """
     def __init__(self) -> None:
         ## Initialise local db for leaderboard
         try: # to check if DB file exists
@@ -110,6 +113,9 @@ class GameController:
         # reset click count every 15s
         if self.time % 15 == 0:
             self.clicks_since_last_crisis = 0
+        # time_crisis start should always be greater than self.time
+        # earlier times are greater since self.time is a countdown
+        # automatically call staff once timeout is reached
         if self.time_crisis_start - self.time >= FABLAB_TIMEOUT and \
             self.crisis is not None:
             self.call_staff()
@@ -196,8 +202,13 @@ class GameController:
         self.prints_per_click = 0
         self.prints_per_sec = 0
         self.gui.update_print_display(self.prints_per_click, self.prints_per_sec)
+        # Timestamp
+        # Note that self.time counts down
         self.time_crisis_start = self.time
 
+    """
+    Callback functions for moving objects
+    """
     def resolve_no_filament(self):
         '''
         Checks if "no filament" crisis and resolves if it is

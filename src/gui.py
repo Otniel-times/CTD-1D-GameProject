@@ -452,7 +452,7 @@ class Main_GUI:
         children of this class
         """
         self.play_callback = play
-        self.loginobject.name_callback = name
+        self.loginobject.get_name = name
         self.clicker.on_click(clicker)
         self.filament.callback = resolve_filament
         self.printer_bed.callback = resolve_bed

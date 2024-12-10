@@ -46,7 +46,7 @@ class Login:
         self.clearbtn = ttk.Button(self.root, text="Clear", command=self.clear)
         self.clearbtn.pack(padx=10, pady=10)
         self.play_callback = lambda: None
-        self.name_callback = lambda: None
+        self.get_name = lambda: None
 
         # back button to run exit function to go back to main menu frame
         self.button = ttk.Button(self.root, text ="Back", command = self.exit)
@@ -58,10 +58,10 @@ class Login:
         # uses console to check if name variable is stored correctly
         print(self.name.get())
 
-        # checks if name is not empty, then runs play and name callback functions in game.py
+        # checks if name is not empty, then runs play and get_name callback functions in game.py
         if self.name.get() != "":
             self.play_callback()
-            self.name_callback()
+            self.get_name()
         
         # checks if name is empty, then tells user that username cannot be empty in red text
         elif not self.has_clicked_with_empty_username:
