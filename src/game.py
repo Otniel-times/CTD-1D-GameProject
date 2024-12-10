@@ -197,8 +197,6 @@ class GameController:
 
         # Crisis starts
         # Store current stats to restore when the crisis ends
-        self.original_click = self.prints_per_click
-        self.original_sec = self.prints_per_sec
         self.prints_per_click = 0
         self.prints_per_sec = 0
         self.gui.update_print_display(self.prints_per_click, self.prints_per_sec)
@@ -254,8 +252,8 @@ class GameController:
         """
         self.crisis = None
         self.time_crisis_start = 0
-        self.prints_per_click = self.original_click
-        self.prints_per_sec = self.original_sec
+        self.prints_per_click = 1
+        self.prints_per_sec = 0
         self.gui.update_print_display(self.prints_per_click, self.prints_per_sec)
         # 66% chance of reward
         should_reward = random.choice((False, True, True))
