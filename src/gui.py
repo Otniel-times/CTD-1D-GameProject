@@ -327,10 +327,10 @@ class Main_GUI:
         self.scoreobject.gomenu = lambda: self.change_frame(self.menu_frame)
 
     def update_score_frame(self):
-        self.scoreobject.clr_wgt()
+        self.scoreobject.clear_widgets()
         self.scoreobject.startup()
         self.scoreobject.display_data()
-        self.scoreobject.exit_btn()
+        self.scoreobject.exit_button()
 
 
     def create_name_frame(self):

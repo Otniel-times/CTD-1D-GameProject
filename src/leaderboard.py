@@ -61,7 +61,7 @@ class Leaderboard:
             self.score.grid(row = i, column = 2, pady = 2)
 
     # creates exit button to go to main menu
-    def exit_btn(self):
+    def exit_button(self):
         self.button = ttk.Button(self.root, text ="Exit", command = self.exit)
         self.button.grid(row = 100, column = 1, pady = 10)
 
@@ -70,9 +70,9 @@ class Leaderboard:
         self.gomenu()
     
     # clears all widgets inside frame
-    def clr_wgt(self): 
-        for wgt in self.root.winfo_children():
-            wgt.destroy()
+    def clear_widgets(self): 
+        for widget in self.root.winfo_children():
+            widget.destroy()
 
 # if statement to allow for individual testing of above code within this .py file
 # if name = main is to check if the current file is being run directly
@@ -82,5 +82,5 @@ if __name__ == "__main__":
     menu.root.grid()
     menu.startup()
     menu.display_data()
-    menu.exit_btn()
+    menu.exit_button()
     root.mainloop()

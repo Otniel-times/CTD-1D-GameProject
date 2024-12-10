@@ -70,6 +70,10 @@ class Login:
             self.has_clicked_with_empty_username = True
 
     def shortcut(self, event):
+        """
+        For pressing enter in the text box
+        Not working
+        """
         if event.state ==12 and event.keysym == "Return":
             self.play()
 
