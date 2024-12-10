@@ -27,6 +27,7 @@ class Clicker_Button():
             lambda event: (self.clicker_flash(), fn()))
         
     # Button animation function
+    # Shift the button up and down
     def clicker_flash(self):
         self.canvas.move(self.image, 0, -5)
         self.canvas.after(self.clicker_animation_delay, self.set_state)
@@ -49,6 +50,9 @@ class Print_Head():
         self.enabled = True
 
     def animation_check(self):
+        """
+        Function to be called to begin animation
+        """
         if not self.animation_ongoing and self.enabled:
             self.animation_ongoing = True
             self.go_right()
@@ -75,7 +79,18 @@ class Moving_Object:
     This class is used for objects that are moveable to resolve crisises
     (x/y)_(lower/upper) is for the bounds of the final dragging position.
     '''
-    def __init__(self, canvas: tk.Canvas, image: tk.Image, x: int, y:int, x_lower: int, x_upper: int, y_lower: int, y_upper: int, crisis_id: int):
+    def __init__(
+            self,
+            canvas: tk.Canvas,
+            image: tk.Image,
+            x: int,
+            y:int,
+            x_lower: int,
+            x_upper: int,
+            y_lower: int,
+            y_upper: int,
+            crisis_id: int
+        ):
         self.canvas = canvas
         self.x = x
         self.y = y
@@ -92,11 +107,19 @@ class Moving_Object:
         self.callback = lambda: None
     
     def get_binds(self):
+        """
+        Bind mouse for drag and drop interaction
+        """
         self.canvas.tag_bind(self.image, "<ButtonPress-1>", self.move_start)
         self.canvas.tag_bind(self.image, "<ButtonRelease-1>", self.move_stop)
         self.canvas.tag_bind(self.image, "<B1-Motion>", self.move)
 
     def move_start(self, event):
+        """
+        event: Parameter from Tkinter's API
+            Contains mouse positions
+        Begin moving and store mouse positions
+        """
         self.object_is_moving = True
 
         self.current_x_position = event.x
@@ -105,13 +128,20 @@ class Moving_Object:
         self.original_y_position = event.y
 
     def move_stop(self, event):
+        """
+        Return the object to original position
+        Calls a callback if within rectangular bounds
+        """
         self.object_is_moving = False
 
         # print(f"self.current_x_position: {self.current_x_position:}, self.x_lower: {self.x_lower}, self.x_upper: {self.x_upper}")
         # print(f"self.current_y_position: {self.current_y_position:}, self.y_lower: {self.y_lower}, self.y_upper: {self.y_upper}")
 
         # The position is within the bounds, x_lower < (current x) < x_upper and y_lower < (current y) < y_upper
-        if self.current_x_position > self.x_lower and self.current_x_position < self.x_upper and self.current_y_position > self.y_lower and self.current_y_position < self.y_upper:
+        if self.current_x_position > self.x_lower and \
+            self.current_x_position < self.x_upper and \
+            self.current_y_position > self.y_lower and \
+            self.current_y_position < self.y_upper:
             self.callback()
         self.x_diff = self.original_x_position - self.current_x_position
         self.y_diff = self.original_y_position - self.current_y_position
@@ -121,6 +151,9 @@ class Moving_Object:
         self.current_y_position = 0
 
     def move(self, event):
+        """
+        Move object to current mouse position
+        """
         if self.object_is_moving:
             dx = event.x - self.current_x_position
             dy = event.y - self.current_y_position
@@ -172,7 +205,7 @@ class PowerupDisplay:
         )
 
         self.hide()
-    def appear(self):
+    def show(self):
         self.canvas.itemconfigure(self.image, state='normal')
         self.canvas.itemconfigure(self.countdown, state='normal')
         self.powerup_description.place(x=0, y=250, anchor='nw')
@@ -285,6 +318,10 @@ class Main_GUI:
         s.configure('my.TButton', font=('Comic Sans MS', 18))
     
     def create_score_frame(self):
+        """
+        Scorescreen initialiser
+        Split out from __init__ for code organisation purposes
+        """
         self.scoreobject = Leaderboard(self.root)
         self.score_frame = self.scoreobject.root
         self.scoreobject.gomenu = lambda: self.change_frame(self.menu_frame)
@@ -297,6 +334,10 @@ class Main_GUI:
 
 
     def create_name_frame(self):
+        """
+        Enter name screen initialiser
+        Split out from __init__ for code organisation purposes
+        """
         self.loginobject = Login(self.root)
         self.name_frame = self.loginobject.root
         self.loginobject.play_callback = self.on_play
@@ -305,7 +346,8 @@ class Main_GUI:
     def create_game_frame(self):
         """
         Create game elements
-        Most elements depending on canvas to enable transparency support
+        Split out from __init__ for code organisation purposes
+        Most elements depend on canvas to enable transparency support
         """
         master = self.game_frame
         self.background = tk.Canvas(master, width=900, height=600)
@@ -421,6 +463,9 @@ class Main_GUI:
         self.pps_display.set(f"Auto Prints/sec: {prints_per_sec}")
     
     def update_time_display(self, time, time_crisis_start):
+        """
+        Update text for countdown timers
+        """
         time_remaining_minutes = time // 60
         time_remaining_seconds = time % 60
         time_string = f"{time_remaining_minutes :02d}:{time_remaining_seconds :02d}"
@@ -448,7 +493,7 @@ class Main_GUI:
                 powerup_string = "Jovan is coming to help you"
                 image = self.GFX_november
 
-        self.powerup_display.appear()
+        self.powerup_display.show()
         self.powerup_string.set(powerup_string)
         self.powerup_display.change_image(image=image)
         
@@ -501,7 +546,7 @@ class Main_GUI:
             icon=messagebox.WARNING
         )
         self.printer_head.enabled = True
-        self.powerup_display.appear()
+        self.powerup_display.show()
         self.powerup_string.set("Fablab staff")
         self.powerup_display.update_text("")
         self.powerup_display.change_image(image=self.GFX_fablab_staff)
