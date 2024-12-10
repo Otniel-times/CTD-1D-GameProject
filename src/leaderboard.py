@@ -6,10 +6,23 @@ from tkinter import ttk
 class Leaderboard:
     def __init__(self, master) -> None:
         self.root = ttk.Frame(master)
+        self.CSfont = 'Comic Sans MS'
 
         ## display "High Scores" + "Rank" + "Username" + "Score"
-        self.label = ttk.Label(self.root, text = "High Scores", font =('Comic Sans MS', 18))
-        self.label.pack(padx=10, pady=10)
+        self.high_score = ttk.Label(self.root, text = "HIGH SCORES!", font =(self.CSfont, 28))
+        self.high_score.grid(row = 0, column = 1, pady = 2)
+
+        self.R = ttk.Label(self.root, text = "Rank", font =(self.CSfont, 18))
+        self.R.grid(row = 1, column = 0, pady = 10)
+
+        name_txt = "                                      Name                                      "
+
+        self.R = ttk.Label(self.root, text = name_txt, font =(self.CSfont, 18))
+        self.R.grid(row = 1, column = 1, pady = 10)
+
+        self.R = ttk.Label(self.root, text = "Score", font =(self.CSfont, 18))
+        self.R.grid(row = 1, column = 2, pady = 10)
+
         self.gomenu = lambda: None
 
     def get_data(self): ## Data is already sorted by score, descending (list)s
@@ -18,21 +31,23 @@ class Leaderboard:
     
     def display_data(self):
         data = self.get_data()
-        if data is None:
-            data_len = 0
-        else:
-            data_len = len(data)
-        if data_len > 9:
-            data_len = 9
+        data_len = len(data)
+        if data_len > 10:
+            data_len = 10
         
         # to display data
-        for i in range(data_len):
-            self.label = ttk.Label(self.root, text = data[i], font =('Comic Sans MS', 18))
-            self.label.pack(padx=10, pady=10)
+        for i in range(2, data_len+2):
+            self.rank = ttk.Label(self.root, text = str(i-1), font =(self.CSfont, 18))
+            self.rank.grid(row = i, column = 0, pady = 2)
+            self.name = ttk.Label(self.root, text = str(data[i-2][0]), font =(self.CSfont, 18))
+            self.name.grid(row = i, column = 1, sticky = tk.W, pady = 2)
+            self.score = ttk.Label(self.root, text = str(data[i-2][1]), font =(self.CSfont, 18))
+            self.score.grid(row = i, column = 2, pady = 2)
+
 
     def exit_btn(self):
         self.button = ttk.Button(self.root, text ="Exit", command = self.exit)
-        self.button.pack(padx = 10, pady=10)
+        self.button.grid(row = 100, column = 1, pady = 10)
 
     def exit(self):
         self.gomenu()
@@ -42,12 +57,9 @@ class Leaderboard:
 if __name__ == "__main__":
     root = tk.Tk()
     menu = Leaderboard(root)
-    menu.root.pack()
+    menu.root.grid()
     menu.display_data()
     menu.exit_btn()
     root.mainloop()
 
-else:
-    menu = Leaderboard(root)
-    menu.display_data()
-    menu.exit_btn()
+
