@@ -512,6 +512,10 @@ class Main_GUI:
             self.loginobject.button.configure(state=tk.DISABLED)
         else:
             self.loginobject.button.configure(state=tk.NORMAL)
+        
+        if new_frame is self.score_frame:
+            self.create_score_frame()
+        
         self.active_frame.pack_forget()
         self.active_frame = new_frame
         self.active_frame.pack()

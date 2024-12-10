@@ -1,7 +1,6 @@
 import dbHandler
 import tkinter as tk
 from tkinter import ttk
-import gui
 
 ## TODO: nicholas
 class Leaderboard:
@@ -48,3 +47,7 @@ if __name__ == "__main__":
     menu.exit_btn()
     root.mainloop()
 
+else:
+    menu = Leaderboard(root)
+    menu.display_data()
+    menu.exit_btn()
