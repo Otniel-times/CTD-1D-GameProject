@@ -18,6 +18,7 @@
   - [Background Story](#background-story)
   - [Scenario](#scenario)
   - [Python Concepts](#python-concepts)
+  - [Key Features](#key-features)
   - [References](#references)
   - [Disclaimers](#disclaimers)
 
@@ -93,6 +94,13 @@ The intended demographic is SUTDents in general however it is not necessarily li
 
 ---
 
+## Key Features
+1. Gamification of an educational game.
+2. SQLite, a light-weight database
+3. Tkinter - to construct GUIs
+4. Leaderboard
+5. Relatable for SUTD students
+
 ## References
 Ian Bogost. (2010). Cow Clicker [Facebook].
 
@@ -101,4 +109,4 @@ Julien Theinnot. (2021). Cookie Clicker [Steam]. Playsaurus.
 ---
 
 ## Disclaimers
-Any resemblance to any living or non-living persons is purely coincidental
+Any resemblance to any living or non-living persons is purely coincidental.
