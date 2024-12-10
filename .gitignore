@@ -3,5 +3,3 @@ index.db
 .vs/
 __pycache__
 *.psd
-dbtest.py
-src/test.py

@@ -1,3 +1,5 @@
+
+
 from enum import IntEnum
 # Powerups.Anyquadratic for 0
 # list(Powerups) will give you a list of all Powerups
