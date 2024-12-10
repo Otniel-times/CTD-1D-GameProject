@@ -8,14 +8,14 @@ class Login:
         self.root = ttk.Frame(master)
         self.has_clicked_with_empty_username = False
 
-        self.label = ttk.Label(self.root, text = "How to play", font =('Arial', 18))
+        self.label = ttk.Label(self.root, text = "How to play", font =('Comic Sans MS', 18))
         self.label.pack(padx=10, pady=10)
 
-        self.label = ttk.Label(self.root, text = "Your goal is to get as many prints as possible within the alloted time of 03:20.\n\nFamiliarize yourself with the 3D Printer as you are expected to fix any problems that you may encounter.\nSolve problems with your prints to earn upgrades that temporarily increases your print capacity by a certain amount.\n\nIf you fail to solve the problems, a member of the staff will come and resolve it for you without getting any bonus upgrades.\nNote that sometimes, there will be problems where the solution is to call lab staff.\n\nTo begin the game, enter your username and press play.", font =('Arial', 12), justify="center")
+        self.label = ttk.Label(self.root, text = "Your goal is to get as many prints as possible within the alloted time of 03:20.\n\nFamiliarize yourself with the 3D Printer as you are expected to fix any problems that you may encounter.\nSolve problems with your prints to earn upgrades that temporarily increases your print capacity by a certain amount.\n\nIf you fail to solve the problems, a member of the staff will come and resolve it for you without getting any bonus upgrades.\nNote that sometimes, there will be problems where the solution is to call lab staff.\n\nTo begin the game, enter your username and press play.", font =('Comic Sans MS', 12), justify="center")
         self.label.pack()
 
         self.name = tk.StringVar()
-        self.textbox = ttk.Entry(self.root, font=('Arial', 16), textvariable=self.name)
+        self.textbox = ttk.Entry(self.root, font=('Comic Sans MS', 16), textvariable=self.name)
         self.textbox.bind("<KeyPress>", self.shortcut)
         self.textbox.pack(padx=10, pady=10)
 

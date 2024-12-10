@@ -165,7 +165,7 @@ class PowerupDisplay:
         self.powerup_description = tk.Label(
             self.canvas,
             textvariable=textvariable,
-            font=("Arial", 12),
+            font=("Comic Sans MS", 12),
             background="grey",
             foreground="white",
             justify='left'
@@ -241,7 +241,7 @@ class Main_GUI:
         self.name_frame = ttk.Frame()
         self.create_name_frame()
         self.score_frame = ttk.Frame()
-        #self.create_score_frame()
+        self.create_score_frame()
     
     def create_menu_frame(self):
         """
@@ -283,14 +283,13 @@ class Main_GUI:
             style='my.TButton'
             )
         
-        s.configure('my.TButton', font=('Helvetica', 18))
+        s.configure('my.TButton', font=('Comic Sans MS', 18))
         self.exit_button.place(x=239,y=400)
-    
-    # TODO: Nicholas
     
     def create_score_frame(self):
         self.scoreobject = Leaderboard(self.root)
         self.score_frame = self.scoreobject.root
+        self.scoreobject.callback = lambda: self.change_frame(self.menu_frame)
 
     def create_name_frame(self):
         self.loginobject = Login(self.root)
@@ -326,7 +325,7 @@ class Main_GUI:
         display = tk.Label(
             master,
             textvariable=self.test_username,
-            font=("Arial", 20),
+            font=("Comic Sans MS", 20),
             background="grey",
             foreground="white"
         )
@@ -337,7 +336,7 @@ class Main_GUI:
         display = tk.Label(
             master,
             textvariable=self.time_remaining,
-            font=("Arial", 20),
+            font=("Comic Sans MS", 20),
             background="grey",
             foreground="white"
         )
@@ -347,7 +346,7 @@ class Main_GUI:
         display = tk.Label(
             master,
             textvariable=self.time_intervention,
-            font=("Arial", 20),
+            font=("Comic Sans MS", 20),
             background="grey",
             foreground="white",
             justify='left'
@@ -359,7 +358,7 @@ class Main_GUI:
         counter = tk.Label(
             master,
             textvariable=self.score,
-            font=("Arial", 20),
+            font=("Comic Sans MS", 20),
             background="grey",
             foreground="white",
             width=5
@@ -371,7 +370,7 @@ class Main_GUI:
         counter = tk.Label(
             master,
             textvariable=self.ppc_display,
-            font=("Arial", 14),
+            font=("Comic Sans MS", 14),
             background="grey",
             foreground="white",
             width=17
@@ -383,7 +382,7 @@ class Main_GUI:
         counter = tk.Label(
             master,
             textvariable=self.pps_display,
-            font=("Arial", 12),
+            font=("Comic Sans MS", 12),
             background="grey",
             foreground="white",
             width=17

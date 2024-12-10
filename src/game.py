@@ -5,12 +5,12 @@ import random
 class GameController:
     def __init__(self) -> None:
         ## Initialise local db for leaderboard
-        try:
+        try: # to check if DB file exists
             db = open("index.db")
             db.close()
 
         except FileNotFoundError:
-            dbHandler.on_init()
+            dbHandler.on_init() # creates file if it does not exist
 
         self.rng = random.Random()
         self.rng.seed(random.randint(0, 2**16))
