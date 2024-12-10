@@ -13,7 +13,10 @@ class Leaderboard:
         self.label.pack(padx=10, pady=10)
 
         data = self.get_data()
-        data_len = len(data)
+        if data is None:
+            data_len = 0
+        else:
+            data_len = len(data)
         if data_len > 9:
             data_len = 9
         
