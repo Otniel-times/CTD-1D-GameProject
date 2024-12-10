@@ -13,20 +13,12 @@ class GameController:
             dbHandler.on_init() # creates file if it does not exist
 
         self.rng = random.Random()
-        self.rng.seed(random.randint(0, 2**16))
-
-        self.score = 0
 
         ## crises dict contains {<number>:<crisis name>}
         self.crises = {1:"No filament",
                        2:"No printer bed",
                        3:"Error code HMS_0500-0100-0003-0005"}
-        self.crisis = None
 
-        self.CRISIS_COUNT = len(self.crises)
-        self.powerup_timer = -1
-
-        # TODO: Finalize valuesf
         # parameters for function
         # perclick bonus, persec bonus, time(ms) until disabled
         self.POWERUP_ACTIONS = [
@@ -36,17 +28,32 @@ class GameController:
             (20, 5, 15000), #November
         ]
 
-        self.username = ""
-        self.uid = 0
-
         # Setup values
+        self.username = ""
+        self.score = 0
+        self.crisis = None
+        self.powerup_timer = -1
         self.prints_per_click = 1
         self.prints_per_sec = 0
         self.clicks_since_last_crisis = 0
+        # time limit - value in seconds
+        self.time = 200
+        self.time_crisis_start = 0
+
         
         self.gui = Main_GUI()
         # Function to initialize game logic after button pressed
         def play():
+            self.score = 0
+            self.crisis = None
+            self.powerup_timer = -1
+            # Setup values
+            self.prints_per_click = 1
+            self.prints_per_sec = 0
+            self.clicks_since_last_crisis = 0
+            self.time = 200
+            self.time_crisis_start = 0
+            
             self.gui.root.after(1000, self.per_sec)
             #Schedule crises here
             #self.gui.root.after(2000, self.generate_crisis)
@@ -68,12 +75,8 @@ class GameController:
             self.call_staff
         )
 
-        # time limit - value in seconds
-        self.time = 200
-        self.time_crisis_start = 0
-        self.gui.update_time_display(self.time, self.time_crisis_start)
-
         # GUI setup
+        self.gui.update_time_display(self.time, self.time_crisis_start)
         self.gui.update_print_display(self.prints_per_click, self.prints_per_sec)
 
         self.gui.mainloop()
@@ -81,7 +84,8 @@ class GameController:
     def per_sec(self):
         """
         Periodically called function to update score over time
-        Also used for displaying countdown
+        Also used for displaying countdowns and general loop based logic
+        Yes this means tickrate of the game is technically 1 Hz
         """
         self.score += self.prints_per_sec
         if self.powerup_timer >= 0:
@@ -97,8 +101,6 @@ class GameController:
         # reset click count every 15s
         if self.time % 15 == 0:
             self.clicks_since_last_crisis = 0
-        #if self.time % 10 == 0:
-        #    self.resolve_crisis(True)
         if self.time_crisis_start - self.time >= FABLAB_TIMEOUT and \
             self.crisis is not None:
             self.call_staff()
@@ -119,7 +121,7 @@ class GameController:
         self.gui.printer_head.animation_check()
         # printing too much causes crises
         self.clicks_since_last_crisis += 1
-        # 4 clicks per second
+        # 3 clicks per second
         if self.clicks_since_last_crisis > 3 * 15:
             self.generate_crisis()
             self.clicks_since_last_crisis = 0
