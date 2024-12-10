@@ -19,7 +19,10 @@ class Leaderboard:
     
     def display_data(self):
         data = self.get_data()
-        data_len = len(data)
+        if data is None:
+            data_len = 0
+        else:
+            data_len = len(data)
         if data_len > 9:
             data_len = 9
         
