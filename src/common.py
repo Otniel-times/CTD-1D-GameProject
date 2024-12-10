@@ -1,4 +1,4 @@
-
+# common.py is to declare global variables separately so to import into other files
 
 from enum import IntEnum
 # Powerups.Anyquadratic for 0
