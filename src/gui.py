@@ -242,6 +242,7 @@ class Main_GUI:
         self.create_name_frame()
         self.score_frame = ttk.Frame()
         self.create_score_frame()
+        self.update_score_frame()
     
     def create_menu_frame(self):
         """
@@ -290,8 +291,13 @@ class Main_GUI:
         self.scoreobject = Leaderboard(self.root)
         self.score_frame = self.scoreobject.root
         self.scoreobject.gomenu = lambda: self.change_frame(self.menu_frame)
+
+    def update_score_frame(self):
+        self.scoreobject.clr_wgt()
+        self.scoreobject.startup()
         self.scoreobject.display_data()
         self.scoreobject.exit_btn()
+
 
     def create_name_frame(self):
         self.loginobject = Login(self.root)
@@ -514,7 +520,7 @@ class Main_GUI:
             self.loginobject.button.configure(state=tk.NORMAL)
         
         if new_frame is self.score_frame:
-            self.create_score_frame()
+            self.update_score_frame()
         
         self.active_frame.pack_forget()
         self.active_frame = new_frame
