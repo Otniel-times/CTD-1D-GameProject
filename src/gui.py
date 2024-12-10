@@ -289,12 +289,15 @@ class Main_GUI:
     def create_score_frame(self):
         self.scoreobject = Leaderboard(self.root)
         self.score_frame = self.scoreobject.root
-        self.scoreobject.callback = lambda: self.change_frame(self.menu_frame)
+        self.scoreobject.gomenu = lambda: self.change_frame(self.menu_frame)
+        self.scoreobject.display_data()
+        self.scoreobject.exit_btn()
 
     def create_name_frame(self):
         self.loginobject = Login(self.root)
         self.name_frame = self.loginobject.root
         self.loginobject.play_callback = self.on_play
+        self.loginobject.gomenu = lambda: self.change_frame(self.menu_frame)
 
     def create_game_frame(self):
         """

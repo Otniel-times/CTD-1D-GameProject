@@ -22,10 +22,16 @@ class Login:
         self.button = ttk.Button(self.root, text ="Play", command = self.play)
         self.button.pack(padx = 10, pady=10)
 
+        # Clear Button Init
         self.clearbtn = ttk.Button(self.root, text="Clear", command=self.clear)
         self.clearbtn.pack(padx=10, pady=10)
         self.play_callback = lambda: None
         self.name_callback = lambda: None
+
+        # Back Button Init
+        self.button = ttk.Button(self.root, text ="Back", command = self.exit)
+        self.button.pack(padx = 10, pady=10)
+        self.gomenu = lambda: None
 
     def play(self):
         print(self.name.get())
@@ -43,6 +49,9 @@ class Login:
 
     def clear(self):
         self.name.set("")
+
+    def exit(self):
+        self.gomenu()
 
 if __name__ == "__main__":
     root = tk.Tk()
